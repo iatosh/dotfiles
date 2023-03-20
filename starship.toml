@@ -9,7 +9,6 @@ $directory\
 $git_branch\
 $git_status\
 $docker_context\
-$nodejs\
 $conda\
 $custom\
 $sudo\
@@ -21,22 +20,22 @@ $character"""
 
 right_format = """$time"""
 
-
 [character]
 success_symbol = '[❯](bold #9E83B4)'
 error_symbol ='[❯](bold #BD4E67)'
 
 [conda]
 symbol = " "
+format = '[$symbol$environment]($style) '
+style = 'dimmed green'
 
 [directory]
 read_only = ""
 truncation_length = 2
-truncate_to_repo = true
+# truncate_to_repo = false
 style = 'italic #5294BE'
 read_only_style = '#FFC600'
 truncation_symbol = '.../'
-
 
 [docker_context]
 symbol = " "
@@ -47,7 +46,7 @@ format = '[$symbol$branch(:$remote_branch)]($style)'
 style = 'bold #7D7D7D'
 
 [git_status]
-format = '[$modified$conflicted$stashed$staged$renamed]($style) $deleted$untracked$ahead_behind'
+format = '[$modified$conflicted$stashed$staged$renamed]($style) $deleted$untracked$ahead_behind '
 ahead = '[⇡${count}](#9AEDFF)'
 diverged = '[⇡${ahead_count}⇣${behind_count}](purple)'
 behind = '[⇣${count}](#FFC600)'
@@ -61,14 +60,14 @@ stashed = '\\$'
 style = 'bold #7D7D7D'
 up_to_date = ''
 
-[nodejs]
-symbol = " "
-version_format = 'v${major}.${minor}'
+# [nodejs]
+# format = '[$symbol($version )]($style)'
+# symbol = " "
+# version_format = 'v${major}.${minor}'
 
 [package]
 disable = true
 
-[python]
-symbol = " "
-version_format = 'v${major}.${minor}'
-python_version = 'python3'
+# [time]
+# disabled = false
+# style = 'bold #8E8E8E'
