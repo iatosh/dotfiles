@@ -47,18 +47,18 @@ format = '[$symbol$branch(:$remote_branch)]($style)'
 style = 'bold #7D7D7D'
 
 [git_status]
-format = '$modified $conflicted$stashed$deleted$renamed$staged$untracked$ahead_behind '
+format = '[$modified$conflicted$stashed$staged$renamed]($style) $deleted$untracked$ahead_behind'
 ahead = '⇡${count}'
 diverged = '⇡${ahead_count}⇣${behind_count}'
 behind = '⇣${count}'
 conflicted = '!='
 untracked = '[](bold #FFC600)'
 deleted = '[](bold #DD0000)'
-modified = '[*](bold #7D7D7D)'
+modified = '*'
 renamed = '»'
 staged = '+'
 stashed = '\\$'
-style = 'white'
+style = 'bold #7D7D7D'
 up_to_date = ''
 
 [nodejs]
