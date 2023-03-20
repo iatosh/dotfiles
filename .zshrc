@@ -36,6 +36,8 @@ zinit light-mode for \
 # ----------------------------------------------------------------
 zinit light olets/zsh-abbr
 zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-autosuggestions
+zinit light supercrabtree/k
 
 
 # ----------------------------------------------------------------

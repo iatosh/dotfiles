@@ -12,13 +12,12 @@ $docker_context\
 $conda\
 $custom\
 $sudo\
-$cmd_duration\
 $line_break\ 
 $status\
 $container\
 $character"""
 
-right_format = """$time"""
+right_format = """$cmd_duration$time"""
 
 [character]
 success_symbol = '[❯](bold #9C6CE7)'
