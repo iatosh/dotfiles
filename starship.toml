@@ -47,9 +47,9 @@ style = 'bold #7D7D7D'
 
 [git_status]
 format = '[$modified$conflicted$stashed$staged$renamed]($style) $deleted$untracked$ahead_behind'
-ahead = '[⇡${count}](#9AEDFF)'
-diverged = '[⇡${ahead_count}⇣${behind_count}](purple)'
-behind = '[⇣${count}](#FFC600)'
+ahead = '[⇡${count} ](#9AEDFF)'
+diverged = '[⇡${ahead_count }⇣${behind_count}](purple)'
+behind = '[⇣${count} ](#FFC600)'
 conflicted = '!='
 untracked = '[](bold #FFC600)'
 deleted = '[](bold #DD0000)'
