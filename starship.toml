@@ -21,7 +21,7 @@ $character"""
 right_format = """$time"""
 
 [character]
-success_symbol = '[❯](bold #9E83B4)'
+success_symbol = '[❯](bold #9C6CE7)'
 error_symbol ='[❯](bold #BD4E67)'
 
 [conda]
@@ -33,7 +33,7 @@ style = 'dimmed green'
 read_only = ""
 truncation_length = 2
 # truncate_to_repo = false
-style = 'italic #5294BE'
+style = 'italic #67B7EE'
 read_only_style = '#FFC600'
 truncation_symbol = '.../'
 
@@ -46,7 +46,7 @@ format = '[$symbol$branch(:$remote_branch)]($style)'
 style = 'bold #7D7D7D'
 
 [git_status]
-format = '[$modified$conflicted$stashed$staged$renamed]($style) $deleted$untracked$ahead_behind '
+format = '[$modified$conflicted$stashed$staged$renamed]($style) $deleted$untracked$ahead_behind'
 ahead = '[⇡${count}](#9AEDFF)'
 diverged = '[⇡${ahead_count}⇣${behind_count}](purple)'
 behind = '[⇣${count}](#FFC600)'
