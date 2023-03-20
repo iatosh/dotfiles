@@ -123,10 +123,10 @@ alias g++="g++-12"
 ## Emacs
 alias E="emacs -nw"
 alias em="open -a Emacs.app"
-
 ## Others
 alias wget="wget --user-agent=\"Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.5\""
 alias la="ls -a"
+alias ka="k -a"
 alias latex-tree="/usr/local/texlive/texmf-local/tex/latex/tree"
 alias mecabn="mecab -d /opt/homebrew/lib/mecab/dic/mecab-ipadic-neologd"
 alias git-heroku="git add . && git commit -m \"update\" && git push heroku main" # git-heroku push
