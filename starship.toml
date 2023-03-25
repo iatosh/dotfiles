@@ -6,13 +6,13 @@ add_newline = true
 
 format = """
 $directory\
-$git_branch\
-$git_status\
+$git_branch$git_status \
 $docker_context\
-$conda\
 $custom\
 $sudo\
-$line_break\ 
+
+$line_break\
+$conda\
 $status\
 $container\
 $character"""
@@ -24,9 +24,9 @@ success_symbol = '[❯](bold #9C6CE7)'
 error_symbol ='[❯](bold #BD4E67)'
 
 [conda]
-symbol = " "
+symbol = ""
 format = '[$symbol$environment]($style) '
-style = 'dimmed green'
+style = '#808080'
 
 [directory]
 read_only = ""
