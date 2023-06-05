@@ -1,0 +1,223 @@
+% 基本とドライバ関連
+\usepackage{luatexja}
+\usepackage{graphicx, xcolor}
+\usepackage[top=25truemm,bottom=25truemm,left=20truemm,right=20truemm]{geometry}
+\usepackage{wrapfig}
+\usepackage{pdfpages}
+
+\makeatletter
+\def\caption@documentclass{elsarticle}% beamer, thesis
+\newcommand{\tabcaption}[1]{\def\@captype{table}\caption{#1}}
+\makeatother
+
+
+% 数式(演算子など)のスペースを詰める
+% =,→ 間の余白
+% \thickmuskip=1.2\thickmuskip
+% +,- 間の余白
+% \medmuskip=0.8\medmuskip
+% … などの装飾記号の余白
+% \thinmuskip=0.8\thinmuskip
+% 行列を詰める
+% \arraycolsep=0.3\arraycolsep
+% 数式の上下のスペースの変更
+\AtBeginDocument{
+  % \renewcommand{\abovedisplayskip}{3pt}
+  % \renewcommand{\belowdisplayskip}{3pt}
+  \abovedisplayskip=-4pt
+  % \setlength{\abovedisplayshortskip}{0.3\abovedisplayshortskip}
+  % \setlength{\belowdisplayskip}{0.3\belowdisplayskip}
+  % \setlength{\belowdisplayshortskip}{0.3\belowdisplayshortskip}
+}
+
+
+% 参考資料系
+\usepackage{here}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage[font=small, labelsep=quad]{caption}
+\makeatletter
+\let\MYcaption\@makecaption
+\makeatother
+
+\usepackage{subcaption}
+\captionsetup{compatibility=false}	  % 必要に応じて
+
+\makeatletter
+\let\@makecaption\MYcaption
+\makeatother
+
+\usepackage[super]{cite}
+\renewcommand\citeform[1]{[#1]}
+
+% itembox用
+\usepackage{ascmac}
+\usepackage{fancybox}
+% enumerate用
+\renewcommand{\labelenumi}{(\arabic{enumi})}
+\renewcommand{\labelenumii}{\alph{enumii})}
+\renewcommand{\labelenumiii}{\roman{enumiii})}
+% \renewcommand{\labelitemi}{*}
+
+
+% フォント関連
+\usepackage[no-math]{fontspec}
+\usepackage[deluxe,expert,bold]{luatexja-preset} % hiragino-pron
+% \usepackage{luatexja-fontspec}
+
+% 数式
+\usepackage{empheq}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{bm,ulem} % 太文字、下線
+\usepackage{mathtools}
+% \usepackage[warnings-off={mathtools-colon}]{unicode-math}
+\numberwithin{equation}{section}
+\mathtoolsset{showonlyrefs=true}
+
+% bib関連
+% \usepackage[backend=biber, style=numeric]{biblatex}
+% \usepackage[backend=biber,url=false,style=ieee,sorting=nyt,doi=false]{biblatex}
+
+% オリジナルコマンド
+\renewcommand{\sp}{\vspace{2mm}}
+\newcommand{\hsp}{\hspace{2mm}}
+\newcommand{\f}[2]{\frac{#1}{#2}}
+\newcommand{\wavecom}[2]{\underset{#1}{\uwave{#2}}}
+\newcommand{\undlcom}[2]{\underset{#1}{\dashuline{#2}}}
+\renewcommand{\(}{\left(}
+\renewcommand{\)}{\right)}
+\renewcommand{\[}{\left[}
+\renewcommand{\]}{\right]}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\sbsbsbsec}[1]{\vspace{2mm}\noindent\underline{#1}}
+
+%回路図
+\usepackage{siunitx}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\ctikzset{logic ports=ieee}
+\usetikzlibrary{positioning}
+
+% カルノー図 tikz使用
+\usepackage{askmaps}
+\usepackage{tikz -timing}
+\usetikzlibrary{karnaugh}
+\definecolor{LogisimKMapColor0}{HTML}{696969}
+\definecolor{LogisimKMapColor1}{HTML}{4682B4}
+\definecolor{LogisimKMapColor2}{HTML}{1E90FF}
+\definecolor{LogisimKMapColor3}{HTML}{20B2AA}
+\definecolor{LogisimKMapColor4}{HTML}{008B8B}
+\definecolor{LogisimKMapColor5}{HTML}{006400}
+\definecolor{LogisimKMapColor6}{HTML}{32CD32}
+\definecolor{LogisimKMapColor7}{HTML}{FFD700}
+\definecolor{LogisimKMapColor8}{HTML}{FF8C00}
+\definecolor{LogisimKMapColor9}{HTML}{B22222}
+\definecolor{LogisimKMapColor10}{HTML}{FF4500}
+% \definecolor{LogisimKMapColor11}{HTML}{}
+% \definecolor{LogisimKMapColor12}{HTML}{}
+% \definecolor{LogisimKMapColor13}{HTML}{}
+% \definecolor{LogisimKMapColor14}{HTML}{}
+% \definecolor{LogisimKMapColor15}{HTML}{}
+
+% ハイパーリンク関係
+\usepackage{bookmark,xurl}
+\urlstyle{same}
+\hypersetup{
+  unicode,
+  bookmarksnumbered=true,
+  hidelinks,
+  final,
+}
+
+% ソースコード関連
+\usepackage{listings, chngcntr}
+\renewcommand{\lstlistingname}{コード}
+\definecolor{Green}{HTML}{1D8991}
+\definecolor{Red}{HTML}{DA103F}
+\definecolor{Orange}{HTML}{F76C2B}
+\definecolor{Purple}{HTML}{9847BF}
+\definecolor{Gray}{HTML}{989290}
+\definecolor{Pink}{HTML}{FDF0EC}
+\definecolor{Black}{HTML}{333333}
+% \lstdefinestyle{Default}{
+\lstset{
+  language={C},
+  % morecomment=[s][\color{Orange}]{\ <}{\ },
+  breaklines=true, % 行の折り返し
+  breakindent=10pt, % 自動改行後のインデント量(デフォルトでは20[pt])
+  showstringspaces=false, % 文字列の空白を表示
+  numbers=left, % 行番号の指定
+  numbersep=2pt,  % 行番号とプログラムの間隔
+  stepnumber=1, % 行番号の間隔
+  xrightmargin=0pt, % 右余白
+  xleftmargin=20pt, % 左余白
+  belowskip=7pt, % 下余白
+  numberstyle={\scriptsize}, % 行番号の書体
+  lineskip=-0.5ex,  % 行間の指定
+  tabsize = 4, % タブの大きさ
+  % 枠 "t"は上に線を記載, "T"は上に二重線を記載
+  % 他オプション: leftline, topline, bottomline, lines, single, shadowbox
+  frame=single,
+  framexleftmargin=5mm,
+  framexrightmargin=-2mm,
+  frameround=tttt,
+  % frame=single, % default=tb
+  % frameまでの間隔(行番号とプログラムの間)
+  framesep={3pt},
+  framerule=3pt, % 枠線の太さ
+  captionpos=b, % キャプションの場所("tb"ならば上下両方に記載)
+  columns=[l]{fullflexible}, % 表示幅の指定
+  mathescape=true, % 数式をエスケープ
+  escapeinside={\@}{\@},
+  %% 色、書体 %%
+  % backgroundcolor={\color{Pink}}, % 背景色
+  basicstyle={\ttfamily\small\color{Black}}, % プログラムの書体
+  % identifierstyle={\color{Green}}, % 識別子の書体
+  % identifierstyle={\bfseries},
+  commentstyle={\itshape\color{Gray}}, % コメントの書体
+  % keywordstyle={\color{Purple}}, % キーワードの書体
+  % ndkeywordstyle={\color{Purple}}, % 予約語の書体
+  % stringstyle={\color{Orange}}, % 文字列の書体
+  % stringstyle={\bfseries},
+}
+% \lstnewenvironment{CCode}[1][]{
+%   \lstset{style=Default, language={C},
+%	 morecomment=[l][\color{Red}]{\#}, #1}
+% }{}
+
+\usepackage{tcolorbox}
+\newtcbox{\codeinline}[1][]{
+  % colback=Pink,
+  % colframe=black,
+  % colframe=Pink!0!Pink,
+  boxrule=0pt,
+  left=-2mm,right=0mm,top=0mm,bottom=0mm,
+  box align=base,
+  nobeforeafter,
+  fontupper=\ttfamily
+}
+\newcommand{\code}[2]{\codeinline{\lstinline[#1]!#2!}}
+
+% コンパイル時に図をとばす
+\newif\iffigure
+\figurefalse
+\figuretrue
+
+%数式に節番号を追加. jbookを使ったときはsection -> chapterへ変更.
+\makeatletter
+% 各種番号を"<節番号>.<番号>" へ
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+
+% 節が進むごとに図番号をリセットする
+\@addtoreset{figure}{section}
+\@addtoreset{table}{section}
+\@addtoreset{equation}{section}
+\makeatother
+
+\AtBeginDocument{
+  \counterwithin{lstlisting}{section}
+}
