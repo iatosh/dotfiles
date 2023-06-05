@@ -108,33 +108,32 @@ export PATH=$PATH:$JAVA_HOME/bin
 ## Emacs Path
 export PATH="$HOME/.emacs.d/bin:$PATH"
 
-
 # ----------------------------------------------------------------
-# alias 
+# Alias
 # ----------------------------------------------------------------
 
-## Homebrew
+alias abbrcnfg="code /Users/atosh/.config/zsh-abbr/user-abbreviations"
+alias abbr-update="rm /Users/atosh/.config/zsh-abbr/user-abbreviations && abbr import-aliases"
 alias br="brew update && brew outdated && brew upgrade && brew cleanup && brew"
-
-## Python
-alias python="python3"
-
-## C/C++
-alias gcc="gcc-13"
-alias g++="g++-13"
-
-## Emacs
+alias cdd="cd .."
+alias cds="dirs -v; echo -n \"select number: \"; read newdir; cd +\"\$newdir\""
 alias E="emacs -nw"
 alias em="open -a Emacs.app"
-## Others
-alias wget="wget --user-agent=\"Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.5\""
-alias la="ls -a"
+alias gcc="gcc-13"
+alias git-heroku="git add . && git commit -m \"update\" && git push heroku main"
 alias ka="k -a"
+alias la="ls -a"
 alias latex-tree="/usr/local/texlive/texmf-local/tex/latex/tree"
 alias mecabn="mecab -d /opt/homebrew/lib/mecab/dic/mecab-ipadic-neologd"
-alias git-heroku="git add . && git commit -m \"update\" && git push heroku main" # git-heroku push
-alias cdd='cd ..' # 親ディレクトリに移動
-alias cds='dirs -v; echo -n "select number: "; read newdir; cd +"$newdir"' 
+alias python="python3"
+alias run-help="man"
+alias wget="wget --user-agen=\"Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.5\""
+alias which-command="whence"
+alias zi="zinit"
+alias zini="zinit"
+alias zpl="zinit"
+alias zplg="zinit"
+
 
 # ------------------------------------------------------------------
 # conda initialize
