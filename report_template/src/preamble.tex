@@ -22,12 +22,12 @@
 % \arraycolsep=0.3\arraycolsep
 % 数式の上下のスペースの変更
 \AtBeginDocument{
-  % \renewcommand{\abovedisplayskip}{3pt}
-  % \renewcommand{\belowdisplayskip}{3pt}
-  \abovedisplayskip=-4pt
-  % \setlength{\abovedisplayshortskip}{0.3\abovedisplayshortskip}
-  % \setlength{\belowdisplayskip}{0.3\belowdisplayskip}
-  % \setlength{\belowdisplayshortskip}{0.3\belowdisplayshortskip}
+	% \renewcommand{\abovedisplayskip}{3pt}
+	% \renewcommand{\belowdisplayskip}{3pt}
+	\abovedisplayskip=-4pt
+	% \setlength{\abovedisplayshortskip}{0.3\abovedisplayshortskip}
+	% \setlength{\belowdisplayskip}{0.3\belowdisplayskip}
+	% \setlength{\belowdisplayshortskip}{0.3\belowdisplayshortskip}
 }
 
 
@@ -69,7 +69,7 @@
 % 数式
 \usepackage{empheq}
 \usepackage{amsmath,amsfonts,amssymb}
-\usepackage{bm,ulem} % 太文字、下線
+\usepackage{bm,ulem} % 太文字，下線
 \usepackage{mathtools}
 % \usepackage[warnings-off={mathtools-colon}]{unicode-math}
 \numberwithin{equation}{section}
@@ -91,6 +91,17 @@
 \renewcommand{\]}{\right]}
 \newcommand{\ol}[1]{\overline{#1}}
 \newcommand{\sbsbsbsec}[1]{\vspace{2mm}\noindent\underline{#1}}
+
+\makeatletter
+\newcommand{\Kintou}[2]{\@tempcnta=0
+	\@tfor\STR:=#2\do{\advance\@tempcnta\@ne}%
+	\@tempcntb=\@tempcnta
+	\leavevmode
+	\hbox to #1\zw{\@tempcnta=0
+		\@tfor\STR:=#2\do{\advance\@tempcnta\@ne
+			\STR
+			\ifnum\@tempcnta<\@tempcntb\hfill\fi}}}
+\makeatother
 
 %回路図
 \usepackage{siunitx}
@@ -125,10 +136,10 @@
 \usepackage{bookmark,xurl}
 \urlstyle{same}
 \hypersetup{
-  unicode,
-  bookmarksnumbered=true,
-  hidelinks,
-  final,
+	unicode,
+	bookmarksnumbered=true,
+	hidelinks,
+	final,
 }
 
 % ソースコード関連
@@ -143,44 +154,44 @@
 \definecolor{Black}{HTML}{333333}
 % \lstdefinestyle{Default}{
 \lstset{
-  language={C},
-  % morecomment=[s][\color{Orange}]{\ <}{\ },
-  breaklines=true, % 行の折り返し
-  breakindent=10pt, % 自動改行後のインデント量(デフォルトでは20[pt])
-  showstringspaces=false, % 文字列の空白を表示
-  numbers=left, % 行番号の指定
-  numbersep=2pt,  % 行番号とプログラムの間隔
-  stepnumber=1, % 行番号の間隔
-  xrightmargin=0pt, % 右余白
-  xleftmargin=20pt, % 左余白
-  belowskip=7pt, % 下余白
-  numberstyle={\scriptsize}, % 行番号の書体
-  lineskip=-0.5ex,  % 行間の指定
-  tabsize = 4, % タブの大きさ
-  % 枠 "t"は上に線を記載, "T"は上に二重線を記載
-  % 他オプション: leftline, topline, bottomline, lines, single, shadowbox
-  frame=single,
-  framexleftmargin=5mm,
-  framexrightmargin=-2mm,
-  frameround=tttt,
-  % frame=single, % default=tb
-  % frameまでの間隔(行番号とプログラムの間)
-  framesep={3pt},
-  framerule=3pt, % 枠線の太さ
-  captionpos=b, % キャプションの場所("tb"ならば上下両方に記載)
-  columns=[l]{fullflexible}, % 表示幅の指定
-  mathescape=true, % 数式をエスケープ
-  escapeinside={\@}{\@},
-  %% 色、書体 %%
-  % backgroundcolor={\color{Pink}}, % 背景色
-  basicstyle={\ttfamily\small\color{Black}}, % プログラムの書体
-  % identifierstyle={\color{Green}}, % 識別子の書体
-  % identifierstyle={\bfseries},
-  commentstyle={\itshape\color{Gray}}, % コメントの書体
-  % keywordstyle={\color{Purple}}, % キーワードの書体
-  % ndkeywordstyle={\color{Purple}}, % 予約語の書体
-  % stringstyle={\color{Orange}}, % 文字列の書体
-  % stringstyle={\bfseries},
+	language={C},
+	% morecomment=[s][\color{Orange}]{\ <}{\ },
+	breaklines=true, % 行の折り返し
+	breakindent=10pt, % 自動改行後のインデント量(デフォルトでは20[pt])
+	showstringspaces=false, % 文字列の空白を表示
+	numbers=left, % 行番号の指定
+	numbersep=2pt,  % 行番号とプログラムの間隔
+	stepnumber=1, % 行番号の間隔
+	xrightmargin=0pt, % 右余白
+	xleftmargin=20pt, % 左余白
+	belowskip=7pt, % 下余白
+	numberstyle={\scriptsize}, % 行番号の書体
+	lineskip=-0.5ex,  % 行間の指定
+	tabsize = 4, % タブの大きさ
+	% 枠 "t"は上に線を記載, "T"は上に二重線を記載
+	% 他オプション: leftline, topline, bottomline, lines, single, shadowbox
+	frame=single,
+	framexleftmargin=5mm,
+	framexrightmargin=-2mm,
+	frameround=tttt,
+	% frame=single, % default=tb
+	% frameまでの間隔(行番号とプログラムの間)
+	framesep={3pt},
+	framerule=3pt, % 枠線の太さ
+	captionpos=b, % キャプションの場所("tb"ならば上下両方に記載)
+	columns=[l]{fullflexible}, % 表示幅の指定
+	mathescape=true, % 数式をエスケープ
+	escapeinside={\@}{\@},
+	%% 色，書体 %%
+	% backgroundcolor={\color{Pink}}, % 背景色
+	basicstyle={\ttfamily\small\color{Black}}, % プログラムの書体
+	% identifierstyle={\color{Green}}, % 識別子の書体
+	% identifierstyle={\bfseries},
+	commentstyle={\itshape\color{Gray}}, % コメントの書体
+	% keywordstyle={\color{Purple}}, % キーワードの書体
+	% ndkeywordstyle={\color{Purple}}, % 予約語の書体
+	% stringstyle={\color{Orange}}, % 文字列の書体
+	% stringstyle={\bfseries},
 }
 % \lstnewenvironment{CCode}[1][]{
 %   \lstset{style=Default, language={C},
@@ -189,14 +200,14 @@
 
 \usepackage{tcolorbox}
 \newtcbox{\codeinline}[1][]{
-  % colback=Pink,
-  % colframe=black,
-  % colframe=Pink!0!Pink,
-  boxrule=0pt,
-  left=-2mm,right=0mm,top=0mm,bottom=0mm,
-  box align=base,
-  nobeforeafter,
-  fontupper=\ttfamily
+	% colback=Pink,
+	% colframe=black,
+	% colframe=Pink!0!Pink,
+	boxrule=0pt,
+	left=-2mm,right=0mm,top=0mm,bottom=0mm,
+	box align=base,
+	nobeforeafter,
+	fontupper=\ttfamily
 }
 \newcommand{\code}[2]{\codeinline{\lstinline[#1]!#2!}}
 
@@ -219,5 +230,7 @@
 \makeatother
 
 \AtBeginDocument{
-  \counterwithin{lstlisting}{section}
+	\counterwithin{lstlisting}{section}
 }
+
+\allowdisplaybreaks
