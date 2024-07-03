@@ -4,6 +4,8 @@
 \usepackage[top=25truemm,bottom=25truemm,left=20truemm,right=20truemm]{geometry}
 \usepackage{wrapfig}
 \usepackage{pdfpages}
+\usepackage{udline}
+\usepackage{enumitem}
 
 \makeatletter
 \def\caption@documentclass{elsarticle}% beamer, thesis
@@ -34,6 +36,7 @@
 % 参考資料系
 \usepackage{here}
 \usepackage{booktabs}
+\usepackage{longtable}
 \usepackage{multirow}
 \usepackage{multicol}
 \usepackage[font=small, labelsep=quad]{caption}
@@ -42,14 +45,19 @@
 \makeatother
 
 \usepackage{subcaption}
-\captionsetup{compatibility=false}	  % 必要に応じて
+\captionsetup{compatibility=false}
+\captionsetup[subfigure]{labelformat=simple}
+\renewcommand*{\thesubfigure}{(\alph{subfigure})}	  % 必要に応じて
 
 \makeatletter
 \let\@makecaption\MYcaption
 \makeatother
 
-\usepackage[super]{cite}
-\renewcommand\citeform[1]{[#1]}
+\usepackage{cite}
+
+% \usepackage[super]{cite}
+
+
 
 % itembox用
 \usepackage{ascmac}
@@ -64,9 +72,13 @@
 % フォント関連
 \usepackage[no-math]{fontspec}
 \usepackage[deluxe,expert,bold]{luatexja-preset} % hiragino-pron
-% \usepackage{luatexja-fontspec}
+\usepackage{luatexja-fontspec}
+\setmainfont[Ligatures={Rare, TeX}]{Times New Roman}
+\setmainjfont{Harano Aji Mincho}[AutoFakeSlant=0.25]
+\setsansjfont{Harano Aji Gothic}[AutoFakeSlant=0.25]
 
 % 数式
+\usepackage{mathrsfs}
 \usepackage{empheq}
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{bm,ulem} % 太文字，下線
@@ -89,8 +101,12 @@
 \renewcommand{\)}{\right)}
 \renewcommand{\[}{\left[}
 \renewcommand{\]}{\right]}
-\newcommand{\ol}[1]{\overline{#1}}
+\renewcommand{\ol}[1]{\overline{#1}}
 \newcommand{\sbsbsbsec}[1]{\vspace{2mm}\noindent\underline{#1}}
+\newcommand{\set}[1]{\setcounter{section}{#1} \setcounter{lstlisting}{0}}
+\newcommand\dsuml{\sum\limits}
+\newcommand{\argmax}{\mathop{\mathrm{arg~max}}\limits}
+\newcommand{\argmin}{\mathop{\mathrm{arg~min}}\limits}
 
 \makeatletter
 \newcommand{\Kintou}[2]{\@tempcnta=0
@@ -144,7 +160,7 @@
 
 % ソースコード関連
 \usepackage{listings, chngcntr}
-\renewcommand{\lstlistingname}{コード}
+\renewcommand{\lstlistingname}{プログラム}
 \definecolor{Green}{HTML}{1D8991}
 \definecolor{Red}{HTML}{DA103F}
 \definecolor{Orange}{HTML}{F76C2B}
@@ -154,20 +170,22 @@
 \definecolor{Black}{HTML}{333333}
 % \lstdefinestyle{Default}{
 \lstset{
-	language={C},
+	% language={C},
 	% morecomment=[s][\color{Orange}]{\ <}{\ },
 	breaklines=true, % 行の折り返し
 	breakindent=10pt, % 自動改行後のインデント量(デフォルトでは20[pt])
 	showstringspaces=false, % 文字列の空白を表示
 	numbers=left, % 行番号の指定
-	numbersep=2pt,  % 行番号とプログラムの間隔
+	numbersep=7pt,  % 行番号とプログラムの間隔
 	stepnumber=1, % 行番号の間隔
 	xrightmargin=0pt, % 右余白
 	xleftmargin=20pt, % 左余白
 	belowskip=7pt, % 下余白
 	numberstyle={\scriptsize}, % 行番号の書体
 	lineskip=-0.5ex,  % 行間の指定
-	tabsize = 4, % タブの大きさ
+	% tabsize = 4, % タブの大きさ
+	showtabs=true,
+	tab=,
 	% 枠 "t"は上に線を記載, "T"は上に二重線を記載
 	% 他オプション: leftline, topline, bottomline, lines, single, shadowbox
 	frame=single,
@@ -177,13 +195,13 @@
 	% frame=single, % default=tb
 	% frameまでの間隔(行番号とプログラムの間)
 	framesep={3pt},
-	framerule=3pt, % 枠線の太さ
+	framerule=3pt, % 枠線の太さc
 	captionpos=b, % キャプションの場所("tb"ならば上下両方に記載)
 	columns=[l]{fullflexible}, % 表示幅の指定
-	mathescape=true, % 数式をエスケープ
-	escapeinside={\@}{\@},
+	mathescape=false, % 数式をエスケープ
+	% escapeinside={\@\@}{\@\@},
 	%% 色，書体 %%
-	% backgroundcolor={\color{Pink}}, % 背景色
+	backgroundcolor={\color{white}}, % 背景色
 	basicstyle={\ttfamily\small\color{Black}}, % プログラムの書体
 	% identifierstyle={\color{Green}}, % 識別子の書体
 	% identifierstyle={\bfseries},
@@ -193,10 +211,76 @@
 	% stringstyle={\color{Orange}}, % 文字列の書体
 	% stringstyle={\bfseries},
 }
+\lstdefinelanguage[RISC-V]{Assembler}
+{
+	alsoletter={.}, % allow dots in keywords
+	alsodigit={0x}, % hex numbers are numbers too!
+	morekeywords=[1]{ % instructions
+			la, li, lb, lh, lw, lbu, lhu,
+			sb, sh, sw,
+			sll, slli, srl, srli, sra, srai,
+			add, addi, sub, lui, auipc,
+			xor, xori, or, ori, and, andi,
+			slt, slti, sltu, sltiu,
+			beq, bne, blt, bge, bltu, bgeu,
+			j, jr, jal, jalr, ret,
+			scall, break, nop
+		},
+	morekeywords=[2]{ % sections of our code and other directives
+			.align, .ascii, .asciiz, .byte, .data, .double, .extern,
+			.float, .globl, .half, .kdata, .ktext, .set, .space, .text, .word
+		},
+	morekeywords=[3]{ % registers
+			zero, ra, sp, gp, tp, s0, fp,
+			t0, t1, t2, t3, t4, t5, t6,
+			s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11,
+			a0, a1, a2, a3, a4, a5, a6, a7,
+			ft0, ft1, ft2, ft3, ft4, ft5, ft6, ft7,
+			fs0, fs1, fs2, fs3, fs4, fs5, fs6, fs7, fs8, fs9, fs10, fs11,
+			fa0, fa1, fa2, fa3, fa4, fa5, fa6, fa7
+		},
+	morecomment=[l]{;},   % mark ; as line comment start
+	morecomment=[l]{\#},  % as well as # (even though it is unconventional)
+	morestring=[b]",      % mark " as string start/end
+	morestring=[b]'       % also mark ' as string start/end
+}
 % \lstnewenvironment{CCode}[1][]{
 %   \lstset{style=Default, language={C},
 %	 morecomment=[l][\color{Red}]{\#}, #1}
 % }{}
+
+%% Verilog HDL start
+\definecolor{vgreen}{RGB}{104,180,104}
+\definecolor{vblue}{RGB}{49,49,255}
+\definecolor{vorange}{RGB}{255,143,102}
+
+\lstdefinestyle{verilog}
+{
+language=Verilog,
+basicstyle=\small\ttfamily,
+keywordstyle=\color{vblue},
+identifierstyle=\color{black},
+tabsize=8,
+moredelim=*[s][\colorIndex]{[}{]},
+literate=*{:}{:}1
+}
+
+\makeatletter
+\newcommand*\@lbracket{[}
+\newcommand*\@rbracket{]}
+\newcommand*\@colon{:}
+\newcommand*\colorIndex{%
+	\edef\@temp{\the\lst@token}%
+	\ifx\@temp\@lbracket \color{black}%
+	\else\ifx\@temp\@rbracket \color{black}%
+		\else\ifx\@temp\@colon \color{black}%
+			\else \color{vorange}%
+			\fi\fi\fi
+}
+\makeatother
+%% Verilog HDL end
+
+\newcommand{\cd}[1]{ \lstinline{#1} }
 
 \usepackage{tcolorbox}
 \newtcbox{\codeinline}[1][]{
@@ -218,19 +302,29 @@
 
 %数式に節番号を追加. jbookを使ったときはsection -> chapterへ変更.
 \makeatletter
-% 各種番号を"<節番号>.<番号>" へ
-\renewcommand{\thefigure}{\thesection.\arabic{figure}}
-\renewcommand{\thetable}{\thesection.\arabic{table}}
-\renewcommand{\theequation}{\thesection.\arabic{equation}}
+% % 各種番号を"<節番号>.<番号>" へ
+% \renewcommand{\thefigure}{\thesection.\arabic{figure}}
+% \renewcommand{\thetable}{\thesection.\arabic{table}}
+% \renewcommand{\theequation}{\thesection.\arabic{equation}}
 
-% 節が進むごとに図番号をリセットする
-\@addtoreset{figure}{section}
-\@addtoreset{table}{section}
-\@addtoreset{equation}{section}
+% % 節が進むごとに図番号をリセットする
+% \@addtoreset{figure}{section}
+% \@addtoreset{table}{section}
+% \@addtoreset{equation}{section}
 \makeatother
 
+\makeatletter
+\newcommand*{\themonth}{\two@digits\month}
+\newcommand*{\theday}{\two@digits\day}
+\makeatother
+
+\renewcommand{\theequation}{\arabic{equation}}
+\renewcommand{\today}{{\the\year}/{\themonth}/{\theday}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
 \AtBeginDocument{
-	\counterwithin{lstlisting}{section}
+	\preto{\section}{\setcounter{subsection}{0}}
+	% 	\counterwithin{lstlisting}{section}
 }
+
 
 \allowdisplaybreaks

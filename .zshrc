@@ -1,6 +1,6 @@
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
-
+# Amazon Q pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
+# Q pre block. Keep at the top of this file.
 typeset -U path PATH
 
 # ----------------------------------------------------------------
@@ -50,12 +50,12 @@ zinit light supercrabtree/k
 eval "$(starship init zsh)"
 # export STARSHIP_CONFIG=~/.config/pastel-powerline.toml
 
-TMOUT=1
-TRAPALRM() {
-    if [ "$WIDGET" != "expand-or-complete" ]; then
-        zle reset-prompt
-    fi
-}
+# TMOUT=1
+# TRAPALRM() {
+#     if [ "$WIDGET" != "expand-or-complete" ]; then
+#         zle reset-prompt
+#     fi
+# }
 
 # DIRSTACKSIZE=100
 
@@ -90,9 +90,18 @@ export CLICOLOR=1
 export TERM=xterm-256color
 
 
+export GREP_OPTIONS='--color=auto'
+# export GREP_COLORS='ms=01;33:mc=:sl=01;32:01;32:fn=35:ln=32:bn=32:se=36'
+
 # ----------------------------------------------------------------
 # PATH
 # ----------------------------------------------------------------
+
+## API key
+export GROQ_KEY=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
+export GROQ_BASE_URL=https://api.groq.dev/v1
+export GOOGLE_API_KEY=AIzaSyA8lneUuFytbMUcqm-ZQ1IYcbJJ6SMBqTA
+
 
 ## C/C++
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
@@ -108,6 +117,9 @@ export PATH=$PATH:$JAVA_HOME/bin
 ## Emacs Path
 export PATH="$HOME/.emacs.d/bin:$PATH"
 
+## Custom commands
+export PATH="$HOME/.commands:$PATH"
+
 # ----------------------------------------------------------------
 # Alias
 # ----------------------------------------------------------------
@@ -117,9 +129,9 @@ alias abbr-update="rm /Users/atosh/.config/zsh-abbr/user-abbreviations && abbr i
 alias br="brew update && brew outdated && brew upgrade && brew cleanup && brew"
 alias cdd="cd .."
 alias cds="dirs -v; echo -n \"select number: \"; read newdir; cd +\"\$newdir\""
+alias ca="conda activate"
 alias E="emacs -nw"
 alias em="open -a Emacs.app"
-alias gcc="gcc-13"
 alias git-heroku="git add . && git commit -m \"update\" && git push heroku main"
 alias ka="k -a"
 alias la="ls -a"
@@ -133,6 +145,9 @@ alias zi="zinit"
 alias zini="zinit"
 alias zpl="zinit"
 alias zplg="zinit"
+alias texfind="kpsewhich"
+alias texselfupd="sudo tlmgr update --self --all"
+alias texupd="sudo mktexlsr"
 
 
 # ------------------------------------------------------------------
@@ -154,6 +169,15 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+conda activate CMN
 
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+
+[[ -f "$HOME/fig-export/dotfiles/dotfile.zsh" ]] && builtin source "$HOME/fig-export/dotfiles/dotfile.zsh"
+
+alias gcc="gcc-14"
+
+export PATH="/opt/homebrew/opt/ffmpeg@6/bin:$PATH"
+
+
+# Amazon Q post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"

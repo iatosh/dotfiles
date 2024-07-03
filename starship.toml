@@ -1,6 +1,8 @@
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
 
+command_timeout = 5000
+
 # Inserts a blank line between shell prompts
 add_newline = true
 
@@ -14,9 +16,10 @@ $line_break\
 $conda\
 $status\
 $container\
-$character"""
+$character\
+"""
 
-right_format = """$cmd_duration$time"""
+right_format = """$cmd_duration$job$time"""
 
 [character]
 success_symbol = '[❯](bold #9C6CE7)'

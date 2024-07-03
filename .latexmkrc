@@ -1,13 +1,15 @@
 #!/usr/bin/env perl
 
-# LaTeX
-$latex='uplatex -kanji=utf8 -synctex=1 -halt-on-error -file-line-error %O %S';
+# %O：オプション
+# %S：ソースファイル
+# %D：出力ファイル
 
-# pdfLaTeX のビルドコマンド
-$pdflatex = 'pdflatex %O -synctex=1 -halt-on-error -file-line-error -interaction=nonstopmode %S';
+
+# LaTeX
+$latex='uplatex %O %S';
 
 # LuaLaTeX
-$lualatex = 'lualatex %O -synctex=1 -halt-on-error -interaction=nonstopmode %S';
+# $lualatex='lualatex %O %S';
 
 # BibTeX
 $bibtex='upbibtex %O %S';
@@ -38,4 +40,4 @@ else{
 }
 
 # clean up
-$clean_full_ext="%R.synctex.gz"
+$clean_full_ext="%R.synctex.gz";
