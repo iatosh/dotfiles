@@ -1,0 +1,2 @@
+#!/bin/sh
+cp -pR ~/dotfiles/report_template/. ./

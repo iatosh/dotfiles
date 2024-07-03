@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# dir=$1
+
+# mkdir -p /tmp/photo_organizer
+# log_file_base="/tmp/photo_organizer/"$(date "+%Y%m%d-%H%M%S")
+# /usr/local/bin/exiftool -r -j "${dir}"  2> "${log_file_base}"_err.log | tee -a "${log_file_base}".log | python3 arrange_photo.py "${dir}"
+
+python3 /Users/atosh/dotfiles/.commands/arrange_photo.py "$@"

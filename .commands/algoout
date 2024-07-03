@@ -1,0 +1,2 @@
+#!/bin/sh
+command cd ~/GitHub/Univ./Codes/Algo/${1::2}\_work && gcc $1\_22266013.c -o ../out/$1\_22266013 -Wall -fsanitize=undefined && ASAN_OPTIONS=detect_leaks=1 ../out/$1\_22266013 < in$1-$2.txt

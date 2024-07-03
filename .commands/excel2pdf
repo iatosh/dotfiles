@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# 変換対象のディレクトリを指定
+target_directory="$1"
+
+# 対象ディレクトリが指定されていない場合は終了
+if [ -z "$target_directory" ]; then
+    echo "Usage: $0 <directory>"
+    exit 1
+fi
+
+# 指定されたディレクトリ内のすべてのExcelファイルを探索しPDFに変換
+find "$target_directory" -type f \( -name "*.xls" -o -name "*.xlsx" \) -exec bash -c '
+    for file; do
+        # PDFファイルの保存パスを設定
+        pdf_path="${file%.*}.pdf"
+        
+        # ExcelファイルをPDFに変換
+        echo "Converting $file to $pdf_path..."
+        soffice --headless --convert-to pdf --outdir "$(dirname "$file")" "$file"
+    done
+' bash {} +
+
