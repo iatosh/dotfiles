@@ -1,0 +1,1 @@
+cd ~/dify/docker && docker compose up -d && open http://localhost

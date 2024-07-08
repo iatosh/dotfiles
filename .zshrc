@@ -3,6 +3,11 @@
 # Q pre block. Keep at the top of this file.
 typeset -U path PATH
 
+# Brewfile
+if [ -f $(brew --prefix)/etc/brew-wrap ];then
+  source $(brew --prefix)/etc/brew-wrap
+fi
+
 # ----------------------------------------------------------------
 # Zinit
 # ----------------------------------------------------------------
@@ -36,7 +41,6 @@ zinit light-mode for \
 # ----------------------------------------------------------------
 zinit light olets/zsh-abbr
 zinit light zsh-users/zsh-syntax-highlighting
-zinit light zsh-users/zsh-autosuggestions
 zinit light supercrabtree/k
 
 
@@ -101,7 +105,7 @@ export GREP_OPTIONS='--color=auto'
 export GROQ_KEY=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
 export GROQ_BASE_URL=https://api.groq.dev/v1
 export GOOGLE_API_KEY=AIzaSyA8lneUuFytbMUcqm-ZQ1IYcbJJ6SMBqTA
-
+export HUGGINGFACE_API_KEY=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
 
 ## C/C++
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
@@ -130,8 +134,7 @@ alias br="brew update && brew outdated && brew upgrade && brew cleanup && brew"
 alias cdd="cd .."
 alias cds="dirs -v; echo -n \"select number: \"; read newdir; cd +\"\$newdir\""
 alias ca="conda activate"
-alias E="emacs -nw"
-alias em="open -a Emacs.app"
+alias e="emacs -nw"
 alias git-heroku="git add . && git commit -m \"update\" && git push heroku main"
 alias ka="k -a"
 alias la="ls -a"
@@ -148,6 +151,18 @@ alias zplg="zinit"
 alias texfind="kpsewhich"
 alias texselfupd="sudo tlmgr update --self --all"
 alias texupd="sudo mktexlsr"
+
+# ------------------------------------------------------------------
+# fzf
+# ------------------------------------------------------------------
+
+source <(fzf --zsh)
+
+# ------------------------------------------------------------------
+# thefuck
+# ------------------------------------------------------------------
+
+eval $(thefuck --alias)
 
 
 # ------------------------------------------------------------------

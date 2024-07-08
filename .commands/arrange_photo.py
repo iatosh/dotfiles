@@ -12,12 +12,10 @@ from datetime import datetime
 from exiftool import ExifTool
 from tqdm import tqdm
 
-import tools.spinner as spinner
+from tools.spinner import Spinner
 
 DEFAULT_OUTPUT_BASE_PATH = "../OutBox"
-DEFAULT_FILENAME_FORMAT = (
-    "{y}/{m}/{y}-{m}-{d}_{H}-{M}-{S}_{bn}.{FileTypeExtension}"
-)
+DEFAULT_FILENAME_FORMAT = "{y}/{m}/{y}-{m}-{d}_{H}-{M}-{S}"
 INPUT_BASE_PATH = ""
 IF_COPY = False
 
@@ -76,35 +74,49 @@ def is_same_photo(photo1_path, photo2_path):
                     return False
             return True
         except Exception as e:
-            print(f"Error with {photo1_path}: {e}")
+            tqdm.write(f"Error with {photo1_path}: {e}")
+            return True
 
 
-def branch_no(output_base_path, filename_format, photo_info):
+def get_newpath(output_base_path, filename_format, photo_info):
     """枝番を求める.
 
     同一ファイル名のファイルがある場合枝番をカウントアップする.
     枝番は0から始まる
 
     """
-    photo_info["bn"] = "[0-9]*"
-    new_name = filename_format.format(**photo_info)
-    new_path = os.path.join(output_base_path, new_name)
-    files = glob.glob(new_path)
-    if not files:
-        return 0
-    else:
+    re_name = (
+        f"{filename_format.format(**photo_info)}*.{photo_info['FileTypeExtension']}"
+    )
+    re_path = os.path.join(output_base_path, re_name)
+    files = glob.glob(re_path)
+    file_count = len(files)
+
+    # Check if there are any duplicates
+    if file_count:
         for fn in files:
             if is_same_photo(photo_info["SourceFile"], fn):
                 tqdm.write(f"[Skipped] {photo_info['SourceFile']} ↔︎ {fn}")
                 return -1
 
-    bn = 0
-    photo_info["bn"] = "([0-9]*)"
-    bn_search = string.Formatter().vformat(filename_format, (), photo_info)
-    for fn in files:
-        m = re.search(bn_search, fn)
-        bn = max(bn, int(m.group(1)))
-    return bn + 1
+    new_path = re_path.replace(
+        "*",
+        "",
+    )
+    if file_count == 1 and files[0] == new_path:
+        new_path = re_path.replace(
+            "*",
+            "_1",
+        )
+    elif file_count > 1:
+        bn = 1
+        bn_search = f"{filename_format.format(**photo_info)}(_[0-9]*).{photo_info['FileTypeExtension']}"
+        for fn in files:
+            m = re.search(bn_search, fn)
+            number = m.group(1) if m else "_0"
+            bn = max(bn, int(number.replace("_", "")))
+        new_path = re_path.replace("*", f"_{bn + 1}")
+    return new_path
 
 
 def load_configure():
@@ -150,46 +162,56 @@ def copy_outbox(photo):
     )
     photo_info.update(parse_datetime(datetime))  # 日付の取得
 
-    photo_info["bn"] = branch_no(
-        output_base_path, filename_format, photo_info
-    )  # 枝番の取得
+    new_path = get_newpath(output_base_path, filename_format, photo_info)
 
-    if photo_info["bn"] == -1:
+    if new_path == -1:
         return
-
-    new_name = filename_format.format(**photo_info)
-    new_path = os.path.join(output_base_path, new_name)
 
     # make dirs
     if not os.path.exists(os.path.dirname(new_path)):
         os.makedirs(os.path.dirname(new_path))
 
-    # if IF_COPY:
-    #     shutil.copyfile(photo.get("SourceFile"), new_path)
-    #     shutil.copystat(photo.get("SourceFile"), new_path)
-    # else:
-    #     shutil.move(photo.get("SourceFile"), new_path)
+    if IF_COPY:
+        shutil.copyfile(photo.get("SourceFile"), new_path)
+        shutil.copystat(photo.get("SourceFile"), new_path)
+    else:
+        shutil.move(photo.get("SourceFile"), new_path)
+
+
+def get_exif_json(directory):
+    spinner = Spinner(
+        text="Extracting EXIF information...", etext="Extraction complete.", overwrite=False
+    )
+    spinner.start()
+    with ExifTool(common_args=["-r"]) as et:
+        # directory以下のファイルのEXIF情報を取得
+        metadata = et.execute_json(directory)
+    spinner.stop()
+
+    # 結果をJSON形式で出力
+    return metadata
+
+
+# INPUT_BASE_PATH以下の空ディレクトリを削除
+def remove_empty_dirs():
+    spinner = Spinner(text="Removing empty directories...", etext="Removal complete.", overwrite=False)
+    spinner.start()
+    for root, dirs, _ in os.walk(INPUT_BASE_PATH, topdown=False):
+        for name in dirs:
+            try:
+                os.rmdir(os.path.join(root, name))
+            except OSError:
+                pass
+    spinner.stop()
 
 
 def main(photos):
     """exiftoolが出力するJSONファイルの属性から写真を整理する"""
     for photo in tqdm(
-        photos, desc="Arranging photos...", dynamic_ncols=True, miniters=5
+        photos, desc="Arranging photos...", dynamic_ncols=True, unit="files"
     ):
         if "Error" not in photo:
             copy_outbox(photo)
-
-
-def get_exif_json(directory):
-    spinner.Spinner(
-        text="Extracting EXIF information...", etext="Extraction complete."
-    ).start()
-    with ExifTool(common_args=["-r"]) as et:
-        # directory以下のファイルのEXIF情報を取得
-        metadata = et.execute_json(directory)
-
-    # 結果をJSON形式で出力
-    return metadata
 
 
 if __name__ == "__main__":
@@ -207,3 +229,5 @@ if __name__ == "__main__":
     input_json = get_exif_json(INPUT_BASE_PATH)
 
     main(input_json)
+
+    remove_empty_dirs()
