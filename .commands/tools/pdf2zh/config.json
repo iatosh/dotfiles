@@ -1,0 +1,32 @@
+{
+    "USE_MODELSCOPE": "0",
+    "NOTO_FONT_PATH": "/Library/Fonts/Microsoft/MS Mincho.ttf",
+    "translators": [
+        {
+            "name": "gemini",
+            "envs": {
+                "GEMINI_API_KEY": "AIzaSyA8lneUuFytbMUcqm-ZQ1IYcbJJ6SMBqTA",
+                "GEMINI_MODEL": "gemini-2.0-flash-exp"
+            }
+        },
+        {
+            "name": "groq",
+            "envs": {
+                "GROQ_API_KEY": "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",
+                "GROQ_MODEL": "llama-3.3-70b-versatile"
+            }
+        },
+        {
+            "name": "deeplx",
+            "envs": {
+                "DEEPLX_ENDPOINT": "http://localhost:1188/translate/v1"
+            }
+        },
+        {
+            "name": "deepl",
+            "envs": {
+                "DEEPL_AUTH_KEY": "abc71171-d883-4726-d088-beb02a0a0f01:fx"
+            }
+        }
+    ]
+}

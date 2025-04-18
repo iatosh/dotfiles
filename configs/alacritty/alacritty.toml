@@ -1,0 +1,25 @@
+
+[env]
+TERM = "xterm-256color"
+
+[window]
+padding.x = 12
+padding.y = 16
+
+decorations = "Buttonless"
+
+opacity = 0.9
+blur = true
+
+option_as_alt = "Both"
+
+
+[font]
+normal.family = "UDEV Gothic 35NFLG"
+
+size = 14
+
+[general]
+import = [
+  "~/.config/alacritty/themes/doom_one.toml"
+]
