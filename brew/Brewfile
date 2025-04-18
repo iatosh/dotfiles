@@ -1,0 +1,50 @@
+
+# tap repositories and their packages
+
+tap homebrew/core
+brew ca-certificates
+brew eza
+brew fzf
+brew gettext
+brew libgit2
+brew libssh2
+brew libunistring
+brew libuv
+brew lpeg
+brew luajit
+brew luv
+brew mpdecimal
+brew neovim
+brew openssl@3
+brew python@3.13
+brew readline
+brew sqlite
+brew thefuck
+brew tree-sitter
+brew unibilium
+brew utf8proc
+brew xz
+brew zinit
+brew zoxide
+
+tap homebrew/cask
+cask appcleaner
+cask arc
+cask claude
+cask git-credential-manager
+cask iterm2
+cask itermai
+cask karabiner-elements
+cask maccy
+cask miniforge
+cask raycast
+cask slack
+cask visual-studio-code
+
+tap rcmdnk/file
+brew brew-file
+
+# App Store applications
+appstore 1355679052 Dropover (5.0.2)
+appstore 1452453066 Hidden Bar (1.8)
+appstore 1429033973 RunCat (11.4)
