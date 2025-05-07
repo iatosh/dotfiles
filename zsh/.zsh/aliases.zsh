@@ -3,7 +3,7 @@
 # ls関連
 alias ls='eza --color=always --icons=always'
 alias ll='eza -la --git'
-alias la='eza -a'
+alias la='eza -al'
 alias lt='eza -T --level=2'
 alias l='eza -F'
 
