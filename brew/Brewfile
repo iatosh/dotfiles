@@ -142,6 +142,7 @@ cask blender
 cask claude
 cask cursor
 cask discord
+cask displaylink
 cask eqmac
 cask git-credential-manager
 cask hammerspoon
@@ -157,6 +158,7 @@ cask microsoft-remote-desktop
 cask miniforge
 cask obsidian
 cask onyx
+cask raspberry-pi-imager
 cask raycast
 cask slack
 cask the-unarchiver
