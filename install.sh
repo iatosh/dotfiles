@@ -2,6 +2,7 @@
 set -e
 
 DOTFILES="$HOME/dotfiles"
+EXCLUDE_DIRS=("bin" "macos" "brew" ".git" "theme" "ssh")
 
 # 色付き出力関数
 print_header() {
@@ -24,22 +25,38 @@ print_error() {
   printf "\033[0;31m%s\033[0m\n" "$1"
 }
 
+# OS判定
+get_os() {
+  unameOut="$(uname -s)"
+  case "${unameOut}" in
+  Linux*) os=Linux ;;
+  Darwin*) os=Mac ;;
+  *) os="UNKNOWN:${unameOut}" ;;
+  esac
+  echo "$os"
+}
+
 # 依存関係のインストール
 install_dependencies() {
   print_header "Installing dependencies"
 
-  # Homebrewのインストール
+  # OS判定
+  OS=$(get_os)
+
+  # Homebrewのインストール（共通）
   if ! command -v brew >/dev/null 2>&1; then
     print_info "Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-    # Homebrewのパスを通す
+    # Homebrewのパスを通す（共通）
     if [[ -f /opt/homebrew/bin/brew ]]; then
-      eval "$(/opt/homebrew/bin/brew shellenv)"
+      eval "$('/opt/homebrew/bin/brew' shellenv)"
     elif [[ -f /usr/local/bin/brew ]]; then
-      eval "$(/usr/local/bin/brew shellenv)"
+      eval "$('/usr/local/bin/brew' shellenv)"
+    elif [[ -f ~/.linuxbrew/bin/brew ]]; then
+      eval "$(~/.linuxbrew/bin/brew shellenv)"
+    elif [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+      eval "$('/home/linuxbrew/.linuxbrew/bin/brew' shellenv)"
     fi
-
     print_success "Homebrew installed successfully."
   else
     print_info "Homebrew is already installed."
@@ -80,6 +97,11 @@ install_brewfile() {
 
 # macOSデフォルト設定の適用
 apply_macos_defaults() {
+  OS=$(get_os)
+  if [[ "$OS" != "Mac" ]]; then
+    gum style --foreground 220 "macOS defaults skipped (not macOS)."
+    return
+  fi
   gum style --foreground 212 "Applying macOS default settings..."
 
   if [[ -f "$DOTFILES/macos/defaults.sh" ]]; then
@@ -116,7 +138,6 @@ run_stow() {
 
 # すべてのパッケージを検出
 detect_packages() {
-  local exclude_dirs=("bin" "macos" "brew" ".git" "misc" "theme")
   local packages=()
 
   for dir in "$DOTFILES"/*/; do
@@ -124,7 +145,7 @@ detect_packages() {
 
     # 除外チェック
     local exclude=false
-    for excluded in "${exclude_dirs[@]}"; do
+    for excluded in "${EXCLUDE_DIRS[@]}"; do
       if [[ "$dir" == "$excluded" ]]; then
         exclude=true
         break
