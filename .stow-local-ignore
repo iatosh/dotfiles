@@ -6,3 +6,4 @@
 \.secrets
 \.gitignore
 \.stow-local-ignore
+\.DS_Store

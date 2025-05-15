@@ -104,9 +104,9 @@ apply_macos_defaults() {
   fi
   gum style --foreground 212 "Applying macOS default settings..."
 
-  if [[ -f "$DOTFILES/macos/defaults.sh" ]]; then
+  if [[ -f "$DOTFILES/bin/macos/defaults.sh" ]]; then
     gum confirm "Do you want to apply macOS default settings? This may restart some applications." && {
-      gum spin --spinner dot --title "Applying settings..." -- bash "$DOTFILES/macos/defaults.sh"
+      gum spin --spinner dot --title "Applying settings..." -- bash "$DOTFILES/bin/macos/defaults.sh"
       gum style --foreground 46 "macOS settings applied successfully."
     }
   else
