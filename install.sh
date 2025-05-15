@@ -2,7 +2,7 @@
 set -e
 
 DOTFILES="$HOME/dotfiles"
-EXCLUDE_DIRS=("bin" "macos" "brew" ".git" "theme" "ssh")
+EXCLUDE_DIRS=("bin" "macos" "brew" ".git" "theme" "misc")
 
 # 色付き出力関数
 print_header() {
