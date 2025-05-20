@@ -49,7 +49,7 @@ if [ -f $(brew --prefix)/etc/brew-wrap ];then
 fi
 
 # p10k
-[[ -f $HOME/.p10k.zsh ]] && source ~/.p10k.zsh
+[[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"
 
 # FZF
 source <(fzf --zsh)
@@ -61,4 +61,4 @@ eval $(thefuck --alias fk)
 eval "$(zoxide init zsh)"
 
 # bun completions
-[ -s "/Users/atosh/.bun/_bun" ] && source "/Users/atosh/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
