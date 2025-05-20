@@ -59,3 +59,6 @@ eval $(thefuck --alias fk)
 
 # Zoxide
 eval "$(zoxide init zsh)"
+
+# bun completions
+[ -s "/Users/atosh/.bun/_bun" ] && source "/Users/atosh/.bun/_bun"

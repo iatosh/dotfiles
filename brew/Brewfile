@@ -1,15 +1,17 @@
+
+# tap repositories and their packages
+
 tap homebrew/core
-brew neovim
-brew eza
-brew fzf
-brew git
-brew gh
+brew bat
 brew docker
 brew docker-completion
-brew miniforge
-brew bat
-brew zoxide
+brew eza
+brew fzf
+brew gh
+brew neovim
 brew thefuck
 brew zinit
+brew zoxide
 
-main ./Brewfile.$OSTYPE.$PLATFORM
+# Main file
+main ./Brewfile.$PLATFORM

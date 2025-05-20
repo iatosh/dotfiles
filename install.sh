@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-DOTFILES="$HOME/dotfiles"
+DOTFILES="${HOME}/dotfiles"
 EXCLUDE_DIRS=("bin" "macos" "brew" ".git" "theme" "misc")
 
 # 色付き出力関数
@@ -33,7 +33,7 @@ get_os() {
   Darwin*) os=Mac ;;
   *) os="UNKNOWN:${unameOut}" ;;
   esac
-  echo "$os"
+  echo "${os}"
 }
 
 # 依存関係のインストール
@@ -87,8 +87,8 @@ install_dependencies() {
 install_brewfile() {
   gum style --foreground 212 "Installing applications from Brewfile..."
 
-  if [[ -f "$DOTFILES/brew/Brewfile" ]]; then
-    gum spin --spinner dot --title "Installing brew packages..." -- brew bundle --file="$DOTFILES/brew/Brewfile"
+  if [[ -f "${DOTFILES}/brew/Brewfile" ]]; then
+    gum spin --spinner dot --title "Installing brew packages..." -- brew bundle --file="${DOTFILES}/brew/Brewfile"
     gum style --foreground 46 "Brewfile installed successfully."
   else
     gum style --foreground 196 "Brewfile not found."
@@ -98,15 +98,15 @@ install_brewfile() {
 # macOSデフォルト設定の適用
 apply_macos_defaults() {
   OS=$(get_os)
-  if [[ "$OS" != "Mac" ]]; then
+  if [[ "${OS}" != "Mac" ]]; then
     gum style --foreground 220 "macOS defaults skipped (not macOS)."
     return
   fi
   gum style --foreground 212 "Applying macOS default settings..."
 
-  if [[ -f "$DOTFILES/bin/macos/defaults.sh" ]]; then
+  if [[ -f "${DOTFILES}/bin/macos/defaults.sh" ]]; then
     gum confirm "Do you want to apply macOS default settings? This may restart some applications." && {
-      gum spin --spinner dot --title "Applying settings..." -- bash "$DOTFILES/bin/macos/defaults.sh"
+      gum spin --spinner dot --title "Applying settings..." -- bash "${DOTFILES}/bin/macos/defaults.sh"
       gum style --foreground 46 "macOS settings applied successfully."
     }
   else
@@ -121,15 +121,15 @@ run_stow() {
   local packages=("$@")
 
   # dotfilesディレクトリに移動
-  cd "$DOTFILES"
+  cd "${DOTFILES}"
 
   # 各パッケージを処理
   for package in "${packages[@]}"; do
-    if [[ -d "$package" ]]; then
-      gum style --foreground 212 "stow $action $package"
-      gum spin --spinner dot --title "Processing $package..." -- stow --verbose --target="$HOME" "$action" "$package"
+    if [[ -d "${package}" ]]; then
+      gum style --foreground 212 "stow ${action} ${package}"
+      gum spin --spinner dot --title "Processing ${package}..." -- stow --verbose --target="${HOME}" "${action}" "${package}"
     else
-      gum style --foreground 196 "Package directory not found: $package"
+      gum style --foreground 196 "Package directory not found: ${package}"
     fi
   done
 
