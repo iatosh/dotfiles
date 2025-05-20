@@ -4,6 +4,12 @@ set -e
 DOTFILES="${HOME}/dotfiles"
 EXCLUDE_DIRS=("bin" "macos" "brew" ".git" "theme" "misc")
 
+# On Linux, skip macOS-only Karabiner configuration
+if [[ "$(get_os)" == "Linux" ]]; then
+  rm -rf "${DOTFILES}/karabiner"
+  print_info "Removed karabiner directory for Linux compatibility."
+fi
+
 # 色付き出力関数
 print_header() {
   printf "\n\033[1;36m%s\033[0m\n\n" "$1"
@@ -199,7 +205,7 @@ main() {
     esac
 
     # パッケージ検出
-    PACKAGES=($(detect_packages))
+    read -r -a PACKAGES <<<"$(detect_packages)"
 
     # 検出されたパッケージを表示
     gum style --foreground 212 "Detected packages: $(gum style --foreground 220 "${PACKAGES[*]}")"
@@ -210,7 +216,7 @@ main() {
 
   "Stow specific packages")
     # パッケージ検出
-    PACKAGES=($(detect_packages))
+    read -r -a PACKAGES <<<"$(detect_packages)"
 
     # パッケージを選択
     SELECTED=$(printf "%s\n" "${PACKAGES[@]}" | gum filter --placeholder "Select packages to stow (type to filter)")
@@ -229,7 +235,7 @@ main() {
       esac
 
       # 選択されたパッケージを処理
-      run_stow "$ACTION" $SELECTED
+      run_stow "$ACTION" "$SELECTED"
     else
       gum style --foreground 220 "No packages selected."
     fi
@@ -248,7 +254,7 @@ main() {
     install_brewfile
 
     # パッケージ検出
-    PACKAGES=($(detect_packages))
+    read -r -a PACKAGES <<<"$(detect_packages)"
 
     # パッケージをstow
     gum style --foreground 212 "Stowing all packages..."

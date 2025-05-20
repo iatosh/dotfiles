@@ -1,2 +1,5 @@
 .secrets
 .DS_Store
+git/
+misc/*recovery*
+misc/*license*

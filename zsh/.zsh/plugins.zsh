@@ -55,7 +55,7 @@ fi
 source <(fzf --zsh)
 
 # thefuck
-eval $(thefuck --alias fk)
+eval $(thefuck --alias)
 
 # Zoxide
 eval "$(zoxide init zsh)"

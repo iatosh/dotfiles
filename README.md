@@ -1,41 +1,93 @@
-# dotfiles
+# Dotfiles Collection
 
-Mac OS向けにGNU Stowを使用して管理する個人設定ファイル集です。
+A curated set of personal configuration files ("dotfiles") for macOS and Linux, managed with GNU Stow and an installation script powered by [Gum](https://github.com/charmbracelet/gum).
 
-## 概要
+---
 
-このリポジトリは以下のようなディレクトリ構造になっています：
+## Prerequisites
 
-- `bin/`: 実行可能スクリプト
-- `zsh/`: Zsh設定
-- `nvim/`: Neovim設定
-- `brew/`: Brewfile
-- `git/`: Git設定
-- `karabiner/`: Karabiner-Elements設定
-- `macos/`: macOS固有の設定
+You should have the following tools installed, though the installer will handle the rest:
 
-## 必要なツール
+- **Git** and **curl**: usually pre-installed on most systems.
+- **Xcode Command Line Tools** (macOS only): provides `git`, `curl`, and other build utilities.
+- **Development tools** (Linux only): GCC, Make, and other essentials (e.g., install `build-essential` on Debian/Ubuntu).
 
-- [GNU Stow](https://www.gnu.org/software/stow/)
-- [Homebrew](https://brew.sh/)
-- [Gum](https://github.com/charmbracelet/gum)
+All other dependencies—including Homebrew, GNU Stow, and Gum—are automatically installed by the script.
 
-## インストール方法
+---
+
+## Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/iatosh/dotfiles.git $HOME/dotfiles
+   ```
+
+2. **Run the install script**
+
+   ```bash
+   cd ~/dotfiles
+   chmod +x install.sh
+   ./install.sh
+   ```
+
+This script uses GNU Stow to create symlinks from your home directory (`~`) and `~/.config` to the files in this repository.
+
+---
+
+## Configuration
+
+### Secrets and API Keys
+
+Store any private keys or environment variables in a separate file:
 
 ```bash
-# リポジトリをクローン
-git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
-
-# インストールスクリプトを実行
-cd ~/dotfiles
-chmod +x install.sh
-./install.sh
+~/dotfiles/.secrets
 ```
 
-各種APIキーなどは`dotfiles/.secrets`に置いてください。
-ファイル名やパスは`dotfiles/zsh/.zsh/env.zsh`の末尾にある下記の内容を編集することで変更可能です。
-```
-# API KEYS
+The installation script automatically sources this file if it exists. To change its path, edit the following line in `zsh/.zsh/env.zsh`:
+
+```bash
 SECRET_FILE="$DOTFILES_PATH/.secrets"
 [[ -f "$SECRET_FILE" ]] && source "$SECRET_FILE"
 ```
+
+---
+
+## Directory Structure
+
+```text
+brew/             # Homebrew bundles (Brewfile)
+git/              # Git configuration
+karabiner/        # Karabiner-Elements configuration
+nvim/             # Neovim settings
+p10k/             # Powerlevel10k theme for Zsh
+theme/            # Terminal and editor color schemes
+zsh/              # Zsh configuration and plugins
+install.sh        # Installation script using Stow and Gum
+```
+
+---
+
+## Updating & Maintenance
+
+After pulling new changes, run:
+
+```bash
+cd ~/dotfiles
+git pull
+./install.sh
+```
+
+To remove all stowed configurations:
+
+```bash
+./install.sh --uninstall
+```
+
+---
+
+## License
+
+This repository is open-source under the MIT License. See the [LICENSE](LICENSE) file for details.

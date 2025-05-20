@@ -1,9 +1,10 @@
-\.git
 ^/README.*
 ^/LICENSE
 ^/install.sh
-^/macos
+^/git
+\.git
 \.secrets
 \.gitignore
 \.stow-local-ignore
 \.DS_Store
+
