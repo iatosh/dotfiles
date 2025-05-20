@@ -32,50 +32,10 @@ chmod +x install.sh
 ./install.sh
 ```
 
-このインストールスクリプトは、以下のことを行います：
-
-1. 必要な依存関係（Homebrew、GNU Stow、Gum）のインストール
-2. 選択したパッケージの設定ファイルのシンボリックリンク作成
-3. 必要に応じてBrewfileからのアプリケーションインストール
-4. オプションでmacOSのデフォルト設定の適用
-
-## 管理されているパッケージ
-
-### Zsh
-
-ターミナルシェルの設定
-
-### Neovim
-
-モダンなVimエディタの設定
-
-### Git
-
-バージョン管理システムの設定
-
-### Karabiner-Elements
-
-キーボードカスタマイズツールの設定
-
-## 使用方法
-
-### 特定のパッケージのみインストール
-
-```bash
-cd ~/dotfiles
-stow --verbose --target="$HOME" zsh nvim git
+各種APIキーなどは`dotfiles/.secrets`に置いてください。
+ファイル名やパスは`dotfiles/zsh/.zsh/env.zsh`の末尾にある下記の内容を編集することで変更可能です。
 ```
-
-### 特定のパッケージをアンインストール
-
-```bash
-cd ~/dotfiles
-stow --verbose --target="$HOME" --delete zsh nvim git
-```
-
-### Brewfileの更新
-
-```bash
-cd ~/dotfiles
-./bin/utils/update-brew.sh
+# API KEYS
+SECRET_FILE="$DOTFILES_PATH/.secrets"
+[[ -f "$SECRET_FILE" ]] && source "$SECRET_FILE"
 ```
