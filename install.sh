@@ -4,12 +4,6 @@ set -e
 DOTFILES="${HOME}/dotfiles"
 EXCLUDE_DIRS=("bin" "macos" "brew" ".git" "theme" "misc")
 
-# On Linux, skip macOS-only Karabiner configuration
-if [[ "$(get_os)" == "Linux" ]]; then
-  rm -rf "${DOTFILES}/karabiner"
-  print_info "Removed karabiner directory for Linux compatibility."
-fi
-
 # 色付き出力関数
 print_header() {
   printf "\n\033[1;36m%s\033[0m\n\n" "$1"
