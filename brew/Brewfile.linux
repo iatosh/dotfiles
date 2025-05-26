@@ -1,0 +1,42 @@
+
+# tap repositories and their packages
+
+tap homebrew/core
+brew acl
+brew berkeley-db@5
+brew bzip2
+brew ca-certificates
+brew expat
+brew gdbm
+brew gettext
+brew gum
+brew icu4c@77
+brew libedit
+brew libffi
+brew libgit2
+brew libssh2
+brew libunistring
+brew libuv
+brew libxcrypt
+brew libxml2
+brew lpeg
+brew luajit
+brew luv
+brew mpdecimal
+brew ncurses
+brew oniguruma
+brew openssl@3
+brew perl
+brew python@3.13
+brew readline
+brew sqlite
+brew stow
+brew tree-sitter
+brew unibilium
+brew unzip
+brew utf8proc
+brew xz
+brew zlib
+
+tap rcmdnk/file
+brew brew-file

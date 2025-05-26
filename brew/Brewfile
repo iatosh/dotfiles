@@ -10,7 +10,6 @@ brew fzf
 brew gh
 brew neovim
 brew thefuck
-brew zinit
 brew zoxide
 
 # Main file
