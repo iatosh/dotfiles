@@ -1,84 +1,72 @@
 #!/usr/bin/env bash
 set -e
 
+# 定数定義
 DOTFILES="${HOME}/dotfiles"
 EXCLUDE_DIRS=("bin" "macos" "brew" ".git" "theme" "misc")
-
-# 色付き出力関数
-print_header() {
-	printf "\n\033[1;36m%s\033[0m\n\n" "$1"
-}
-
-print_info() {
-	printf "\033[0;34m%s\033[0m\n" "$1"
-}
-
-print_success() {
-	printf "\033[0;32m%s\033[0m\n" "$1"
-}
-
-print_warning() {
-	printf "\033[0;33m%s\033[0m\n" "$1"
-}
-
-print_error() {
-	printf "\033[0;31m%s\033[0m\n" "$1"
-}
+BREW_PATHS=(
+	"/opt/homebrew/bin/brew"
+	"/usr/local/bin/brew"
+	"${HOME}/.linuxbrew/bin/brew"
+	"/home/linuxbrew/.linuxbrew/bin/brew"
+)
 
 # OS判定
-get_os() {
-	unameOut="$(uname -s)"
-	case "${unameOut}" in
-	Linux*) os=Linux ;;
-	Darwin*) os=Mac ;;
-	*) os="UNKNOWN:${unameOut}" ;;
-	esac
-	echo "${os}"
+case "$(uname -s)" in
+Linux*) OS="Linux" ;;
+Darwin*) OS="Mac" ;;
+*) OS="UNKNOWN:$(uname -s)" ;;
+esac
+
+if [[ ${OS} == "Linux" ]]; then
+	EXCLUDE_DIRS+=("karabiner")
+fi
+
+# 色付き出力関数
+print_header() { printf "\n\033[1;36m%s\033[0m\n\n" "$1"; }
+print_info() { printf "\033[0;34m%s\033[0m\n" "$1"; }
+print_success() { printf "\033[0;32m%s\033[0m\n" "$1"; }
+print_warning() { printf "\033[0;33m%s\033[0m\n" "$1"; }
+print_error() { printf "\033[0;31m%s\033[0m\n" "$1"; }
+
+# Homebrewのパス設定
+setup_brew_path() {
+	for brew_path in "${BREW_PATHS[@]}"; do
+		if [[ -f "${brew_path}" ]]; then
+			eval "$("${brew_path}" shellenv)"
+			return 0
+		fi
+	done
+	return 1
 }
 
 # 依存関係のインストール
 install_dependencies() {
 	print_header "Installing dependencies"
 
-	# OS判定
-	OS=$(get_os)
-
-	# Homebrewのインストール（共通）
+	# Homebrewのインストール
 	if ! command -v brew >/dev/null 2>&1; then
 		print_info "Installing Homebrew..."
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-		# Homebrewのパスを通す（共通）
-		if [[ -f /opt/homebrew/bin/brew ]]; then
-			eval "$('/opt/homebrew/bin/brew' shellenv)"
-		elif [[ -f /usr/local/bin/brew ]]; then
-			eval "$('/usr/local/bin/brew' shellenv)"
-		elif [[ -f ~/.linuxbrew/bin/brew ]]; then
-			eval "$(~/.linuxbrew/bin/brew shellenv)"
-		elif [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
-			eval "$('/home/linuxbrew/.linuxbrew/bin/brew' shellenv)"
-		fi
+		setup_brew_path
 		print_success "Homebrew installed successfully."
 	else
 		print_info "Homebrew is already installed."
 	fi
 
-	# stowのインストール
-	if ! command -v stow >/dev/null 2>&1; then
-		print_info "Installing GNU Stow..."
-		brew install stow
-		print_success "GNU Stow installed successfully."
-	else
-		print_info "GNU Stow is already installed."
-	fi
+	# 必要なパッケージのインストール
+	local packages=("stow" "gum")
+	local package_names=("GNU Stow" "Charmbracelet Gum")
 
-	# gumのインストール
-	if ! command -v gum >/dev/null 2>&1; then
-		print_info "Installing Charmbracelet Gum..."
-		brew install gum
-		print_success "Charmbracelet Gum installed successfully."
-	else
-		print_info "Charmbracelet Gum is already installed."
-	fi
+	for i in "${!packages[@]}"; do
+		if ! command -v "${packages[$i]}" >/dev/null 2>&1; then
+			print_info "Installing ${package_names[$i]}..."
+			brew install "${packages[$i]}"
+			print_success "${package_names[$i]} installed successfully."
+		else
+			print_info "${package_names[$i]} is already installed."
+		fi
+	done
 
 	print_success "All dependencies are installed."
 }
@@ -86,9 +74,10 @@ install_dependencies() {
 # Brewfileのインストール
 install_brewfile() {
 	gum style --foreground 212 "Installing applications from Brewfile..."
+	local brewfile="${DOTFILES}/brew/Brewfile"
 
-	if [[ -f "${DOTFILES}/brew/Brewfile" ]]; then
-		gum spin --spinner dot --title "Installing brew packages..." -- brew bundle --file="${DOTFILES}/brew/Brewfile"
+	if [[ -f "${brewfile}" ]]; then
+		gum spin --spinner dot --title "Installing brew packages..." -- brew bundle --file="${brewfile}"
 		gum style --foreground 46 "Brewfile installed successfully."
 	else
 		gum style --foreground 196 "Brewfile not found."
@@ -97,16 +86,17 @@ install_brewfile() {
 
 # macOSデフォルト設定の適用
 apply_macos_defaults() {
-	OS=$(get_os)
 	if [[ ${OS} != "Mac" ]]; then
 		gum style --foreground 220 "macOS defaults skipped (not macOS)."
 		return
 	fi
+
+	local defaults_script="${DOTFILES}/bin/macos/defaults.sh"
 	gum style --foreground 212 "Applying macOS default settings..."
 
-	if [[ -f "${DOTFILES}/bin/macos/defaults.sh" ]]; then
+	if [[ -f "${defaults_script}" ]]; then
 		gum confirm "Do you want to apply macOS default settings? This may restart some applications." && {
-			gum spin --spinner dot --title "Applying settings..." -- bash "${DOTFILES}/bin/macos/defaults.sh"
+			gum spin --spinner dot --title "Applying settings..." -- bash "${defaults_script}"
 			gum style --foreground 46 "macOS settings applied successfully."
 		}
 	else
@@ -120,10 +110,8 @@ run_stow() {
 	shift
 	local packages=("$@")
 
-	# dotfilesディレクトリに移動
-	cd "${DOTFILES}"
+	cd "${DOTFILES}" || exit 1
 
-	# 各パッケージを処理
 	for package in "${packages[@]}"; do
 		if [[ -d ${package} ]]; then
 			gum style --foreground 212 "stow ${action} ${package}"
@@ -136,38 +124,34 @@ run_stow() {
 	gum style --foreground 46 "All packages processed successfully!"
 }
 
-# すべてのパッケージを検出
+# パッケージ検出
 detect_packages() {
 	local packages=()
+	local dir
 
 	for dir in "$DOTFILES"/*/; do
 		dir=$(basename "$dir")
-
-		# 除外チェック
-		local exclude=false
-		for excluded in "${EXCLUDE_DIRS[@]}"; do
-			if [[ $dir == "$excluded" ]]; then
-				exclude=true
-				break
-			fi
-		done
-
-		if [[ $exclude == "false" ]]; then
-			packages+=("$dir")
-		fi
+		[[ " ${EXCLUDE_DIRS[*]} " =~ ${dir} ]] || packages+=("$dir")
 	done
 
 	echo "${packages[@]}"
 }
 
+# アクション選択
+select_stow_action() {
+	local action
+	action=$(gum choose --height 10 "install/update (--restow)" "uninstall (--delete)")
+	case "$action" in
+	"install/update (--restow)") echo "--restow" ;;
+	"uninstall (--delete)") echo "--delete" ;;
+	esac
+}
+
 # メイン処理
 main() {
 	print_header "Setting up dotfiles"
-
-	# 依存関係のインストール
 	install_dependencies
 
-	# ウェルカムメッセージ
 	gum style \
 		--border normal \
 		--margin "1" \
@@ -175,8 +159,8 @@ main() {
 		--border-foreground 212 \
 		"Welcome to dotfiles installer"
 
-	# インストールオプションの選択
-	CHOICE=$(gum choose --height 15 \
+	local choice
+	choice=$(gum choose --height 15 \
 		"Stow all packages" \
 		"Stow specific packages" \
 		"Install Brewfile" \
@@ -184,52 +168,24 @@ main() {
 		"Full installation" \
 		"Exit")
 
-	case "$CHOICE" in
+	case "$choice" in
 	"Stow all packages")
-		# アクション選択
-		ACTION=$(gum choose --height 10 "install/update (--restow)" "uninstall (--delete)")
-
-		case "$ACTION" in
-		"install/update (--restow)")
-			ACTION="--restow"
-			;;
-		"uninstall (--delete)")
-			ACTION="--delete"
-			;;
-		esac
-
-		# パッケージ検出
-		read -r -a PACKAGES <<<"$(detect_packages)"
-
-		# 検出されたパッケージを表示
-		gum style --foreground 212 "Detected packages: $(gum style --foreground 220 "${PACKAGES[*]}")"
-
-		# 確認
-		gum confirm "Continue with stow $ACTION for these packages?" && run_stow "$ACTION" "${PACKAGES[@]}"
+		local action
+		action=$(select_stow_action)
+		read -r -a packages <<<"$(detect_packages)"
+		gum style --foreground 212 "Detected packages: $(gum style --foreground 220 "${packages[*]}")"
+		gum confirm "Continue with stow $action for these packages?" && run_stow "$action" "${packages[@]}"
 		;;
 
 	"Stow specific packages")
-		# パッケージ検出
-		read -r -a PACKAGES <<<"$(detect_packages)"
+		read -r -a packages <<<"$(detect_packages)"
+		local selected
+		selected=$(printf "%s\n" "${packages[@]}" | gum filter --placeholder "Select packages to stow (type to filter)")
 
-		# パッケージを選択
-		SELECTED=$(printf "%s\n" "${PACKAGES[@]}" | gum filter --placeholder "Select packages to stow (type to filter)")
-
-		if [[ -n $SELECTED ]]; then
-			# アクション選択
-			ACTION=$(gum choose --height 10 "install/update (--restow)" "uninstall (--delete)")
-
-			case "$ACTION" in
-			"install/update (--restow)")
-				ACTION="--restow"
-				;;
-			"uninstall (--delete)")
-				ACTION="--delete"
-				;;
-			esac
-
-			# 選択されたパッケージを処理
-			run_stow "$ACTION" "$SELECTED"
+		if [[ -n $selected ]]; then
+			local action
+			action=$(select_stow_action)
+			run_stow "$action" "$selected"
 		else
 			gum style --foreground 220 "No packages selected."
 		fi
@@ -244,17 +200,10 @@ main() {
 		;;
 
 	"Full installation")
-		# Brewfileインストール
 		install_brewfile
-
-		# パッケージ検出
-		read -r -a PACKAGES <<<"$(detect_packages)"
-
-		# パッケージをstow
+		read -r -a packages <<<"$(detect_packages)"
 		gum style --foreground 212 "Stowing all packages..."
-		run_stow "--restow" "${PACKAGES[@]}"
-
-		# macOSデフォルト設定を適用
+		run_stow "--restow" "${packages[@]}"
 		apply_macos_defaults
 		;;
 
@@ -267,5 +216,4 @@ main() {
 	gum style --foreground 46 "Dotfiles setup completed!"
 }
 
-# スクリプト実行
 main

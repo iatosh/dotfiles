@@ -96,6 +96,7 @@ brew p11-kit
 brew pango
 brew pcre2
 brew perl
+brew pixi
 brew pixman
 brew python@3.13
 brew rav1e
@@ -123,6 +124,7 @@ brew xz
 brew yt-dlp
 brew zeromq
 brew zimg
+brew zinit
 brew zstd
 
 tap homebrew/cask
@@ -148,7 +150,6 @@ cask mia-for-gmail
 cask microsoft-auto-update
 cask microsoft-office
 cask microsoft-remote-desktop
-cask miniforge
 cask musescore
 cask obsidian
 cask onyx
