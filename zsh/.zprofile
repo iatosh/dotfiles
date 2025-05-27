@@ -1,23 +1,24 @@
 # Amazon Q pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zprofile.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zprofile.pre.zsh"
-eval "$(/opt/homebrew/bin/brew shellenv)"
+
+eval "$("$HOMEBREW_PREFIX/bin/brew" shellenv)"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/homebrew/Caskroom/miniforge/base/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$("$HOMEBREW_PREFIX/Caskroom/miniforge/base/bin/conda" 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
-        . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/conda.sh"
+    if [ -f "$HOMEBREW_PREFIX/Caskroom/miniforge/base/etc/profile.d/conda.sh" ]; then
+        . "$HOMEBREW_PREFIX/Caskroom/miniforge/base/etc/profile.d/conda.sh"
     else
-        export PATH="/opt/homebrew/Caskroom/miniforge/base/bin:$PATH"
+        export PATH="$HOMEBREW_PREFIX/Caskroom/miniforge/base/bin:$PATH"
     fi
 fi
 unset __conda_setup
 
-if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/mamba.sh" ]; then
-    . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/mamba.sh"
+if [ -f "$HOMEBREW_PREFIX/Caskroom/miniforge/base/etc/profile.d/mamba.sh" ]; then
+    . "$HOMEBREW_PREFIX/Caskroom/miniforge/base/etc/profile.d/mamba.sh"
 fi
 # <<< conda initialize <<<
 
