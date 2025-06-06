@@ -10,6 +10,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     export PATH="$PATH:/Library/TeX/texbin/"
 fi
 
+# Create NVM directory if it doesn't exist
+[ -d "$HOME/.nvm" ] || mkdir -p "$HOME/.nvm"
+export NVM_DIR="$HOME/.nvm"
+
 # Perl
 # eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib=$HOME/perl5)"
 

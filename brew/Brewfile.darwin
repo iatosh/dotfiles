@@ -6,7 +6,6 @@ brew aom
 brew aribb24
 brew berkeley-db@5
 brew brotli
-brew c-ares
 brew ca-certificates
 brew cairo
 brew certifi
@@ -85,7 +84,7 @@ brew mbedtls
 brew mpdecimal
 brew mpg123
 brew nettle
-brew node
+brew nvm
 brew oniguruma
 brew opencore-amr
 brew openexr
@@ -139,6 +138,7 @@ cask cursor
 cask discord
 cask displaylink
 cask eqmac
+cask gimp
 cask git-credential-manager
 cask hammerspoon
 cask iterm2
@@ -167,11 +167,12 @@ brew brew-file
 
 # App Store applications
 appstore 937984704 Amphetamine (5.3.2)
-appstore 1355679052 Dropover (5.0.2)
+appstore 1355679052 Dropover (5.0.3)
 appstore 1452453066 Hidden Bar (1.8)
 appstore 409183694 Keynote (14.4)
-appstore 539883307 LINE (9.7.0)
+appstore 539883307 LINE (9.8.1)
 appstore 1429033973 RunCat (11.4)
-appstore 1176895641 Spark (2.11.54)
-appstore 6445813049 Spark Desktop (3.22.7)
-appstore 1475387142 Tailscale (1.82.5)
+appstore 1176895641 Spark (2.11.55)
+appstore 6445813049 Spark Desktop (3.23.0)
+appstore 1475387142 Tailscale (1.84.0)
+appstore 497799835 Xcode (16.4)

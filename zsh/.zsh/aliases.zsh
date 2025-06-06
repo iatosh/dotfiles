@@ -67,10 +67,6 @@ alias mv='mv -iv'
 alias rm='rm -iv'
 alias mkdir='mkdir -pv'
 
-# Miniforge
-alias conda="mamba"
-alias mb="mamba"
-
 # Docker関連
 alias d='docker'
 alias dc='docker-compose'
