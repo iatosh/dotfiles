@@ -8,6 +8,6 @@ end
 
 require("ui").apply_to_config(config)
 require("remote").apply_to_config(config)
--- config.exit_behavior = ""
+require("tmux").apply_to_config(config)
 
 return config

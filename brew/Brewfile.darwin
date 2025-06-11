@@ -83,6 +83,7 @@ brew mas
 brew mbedtls
 brew mpdecimal
 brew mpg123
+brew ncurses
 brew nettle
 brew nvm
 brew oniguruma
@@ -110,6 +111,7 @@ brew stow
 brew svt-av1
 brew tesseract
 brew theora
+brew tmux
 brew tree-sitter
 brew unbound
 brew unibilium

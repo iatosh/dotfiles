@@ -2,16 +2,20 @@ local wezterm = require("wezterm")
 local module = {}
 
 local function window_settings(config)
+    config.window_decorations = "RESIZE"
+    config.window_background_opacity = 0.85
+    config.macos_window_background_blur = 36
     config.window_padding = {
         left = 16,
         right = 10,
         top = 12,
         bottom = 10,
     }
+
+    -- tab bar
     config.hide_tab_bar_if_only_one_tab = true
-    config.window_background_opacity = 0.75
-    config.macos_window_background_blur = 28
-    -- config.window_decorations = 'RESIZE'
+    config.tab_bar_at_bottom = true
+    config.use_fancy_tab_bar = true
 end
 
 local function cursor_settings(config)
