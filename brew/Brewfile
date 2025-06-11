@@ -4,7 +4,6 @@
 tap homebrew/core
 brew bat
 brew btop
-brew docker
 brew docker-completion
 brew eza
 brew fzf

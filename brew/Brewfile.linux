@@ -22,21 +22,33 @@ brew libxml2
 brew lpeg
 brew luajit
 brew luv
+brew lz4
 brew mpdecimal
 brew ncurses
+brew neofetch
+brew nvm
 brew oniguruma
 brew openssl@3
 brew perl
+brew pixi
+brew popt
 brew python@3.13
 brew readline
+brew rsync
 brew sqlite
 brew stow
+brew tree
 brew tree-sitter
 brew unibilium
 brew unzip
 brew utf8proc
+brew xxhash
 brew xz
 brew zlib
+brew zstd
 
 tap rcmdnk/file
 brew brew-file
+
+tap wezterm/wezterm-linuxbrew
+brew wezterm
