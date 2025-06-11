@@ -3,7 +3,7 @@ set -e
 
 # 定数定義
 DOTFILES="${HOME}/dotfiles"
-EXCLUDE_DIRS=("bin" "macos" "brew" ".git" "theme" "misc")
+EXCLUDE_DIRS=("bin" "macos" "brew" ".git" "theme" "misc" "config")
 BREW_PATHS=(
 	"/opt/homebrew/bin/brew"
 	"/usr/local/bin/brew"
@@ -129,10 +129,18 @@ detect_packages() {
 	local packages=()
 	local dir
 
+	# 通常のパッケージを検出
 	for dir in "$DOTFILES"/*/; do
 		dir=$(basename "$dir")
 		[[ " ${EXCLUDE_DIRS[*]} " =~ ${dir} ]] || packages+=("$dir")
 	done
+
+	# configディレクトリ内のパッケージを検出
+	if [[ -d "$DOTFILES/config" ]]; then
+		for dir in "$DOTFILES/config"/*/; do
+			[[ -d "$dir" ]] && packages+=("$(basename "$dir")")
+		done
+	fi
 
 	echo "${packages[@]}"
 }
@@ -162,7 +170,6 @@ main() {
 	local choice
 	choice=$(gum choose --height 15 \
 		"Stow all packages" \
-		"Stow specific packages" \
 		"Install Brewfile" \
 		"Apply macOS defaults" \
 		"Full installation" \
@@ -174,21 +181,13 @@ main() {
 		action=$(select_stow_action)
 		read -r -a packages <<<"$(detect_packages)"
 		gum style --foreground 212 "Detected packages: $(gum style --foreground 220 "${packages[*]}")"
-		gum confirm "Continue with stow $action for these packages?" && run_stow "$action" "${packages[@]}"
-		;;
-
-	"Stow specific packages")
-		read -r -a packages <<<"$(detect_packages)"
-		local selected
-		selected=$(printf "%s\n" "${packages[@]}" | gum filter --placeholder "Select packages to stow (type to filter)")
-
-		if [[ -n $selected ]]; then
-			local action
-			action=$(select_stow_action)
-			run_stow "$action" "$selected"
-		else
-			gum style --foreground 220 "No packages selected."
-		fi
+		gum confirm "Continue with stow $action for these packages?" && {
+			run_stow "$action" "${packages[@]}"
+			if [[ -d "${DOTFILES}/config" ]]; then
+				gum style --foreground 212 "Stowing config packages..."
+				gum spin --spinner dot --title "Processing config..." -- stow --verbose --target="${HOME}/.config" "${action}" config
+			fi
+		}
 		;;
 
 	"Install Brewfile")
@@ -204,6 +203,10 @@ main() {
 		read -r -a packages <<<"$(detect_packages)"
 		gum style --foreground 212 "Stowing all packages..."
 		run_stow "--restow" "${packages[@]}"
+		if [[ -d "${DOTFILES}/config" ]]; then
+			gum style --foreground 212 "Stowing config packages..."
+			gum spin --spinner dot --title "Processing config..." -- stow --verbose --target="${HOME}/.config" --restow config
+		fi
 		apply_macos_defaults
 		;;
 
