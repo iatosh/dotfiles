@@ -7,9 +7,9 @@ local function window_settings(config)
     config.macos_window_background_blur = 36
     config.window_padding = {
         left = 16,
-        right = 10,
+        right = 12,
         top = 12,
-        bottom = 10,
+        bottom = 8,
     }
 
     -- tab bar
