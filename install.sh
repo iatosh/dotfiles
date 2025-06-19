@@ -124,6 +124,37 @@ run_stow() {
 	gum style --foreground 46 "All packages processed successfully!"
 }
 
+# config stowの実行
+run_config_stow() {
+	local action=$1
+	
+	if [[ ! -d "${DOTFILES}/config" ]]; then
+		gum style --foreground 196 "Config directory not found."
+		return 1
+	fi
+	
+	# config内のパッケージを検出して表示
+	local config_packages=()
+	local dir
+	for dir in "$DOTFILES/config"/*/; do
+		[[ -d "$dir" ]] && config_packages+=("$(basename "$dir")")
+	done
+	
+	if [[ ${#config_packages[@]} -eq 0 ]]; then
+		gum style --foreground 196 "No config packages found."
+		return 1
+	fi
+	
+	gum style --foreground 212 "Detected config packages: $(gum style --foreground 220 "${config_packages[*]}")"
+	
+	cd "${DOTFILES}" || exit 1
+	
+	gum style --foreground 212 "stow ${action} config (target: ~/.config)"
+	gum spin --spinner dot --title "Processing config packages..." -- stow --verbose --target="${HOME}/.config" "${action}" config
+	
+	gum style --foreground 46 "Config packages processed successfully!"
+}
+
 # パッケージ検出
 detect_packages() {
 	local packages=()
@@ -134,13 +165,6 @@ detect_packages() {
 		dir=$(basename "$dir")
 		[[ " ${EXCLUDE_DIRS[*]} " =~ ${dir} ]] || packages+=("$dir")
 	done
-
-	# configディレクトリ内のパッケージを検出
-	if [[ -d "$DOTFILES/config" ]]; then
-		for dir in "$DOTFILES/config"/*/; do
-			[[ -d "$dir" ]] && packages+=("$(basename "$dir")")
-		done
-	fi
 
 	echo "${packages[@]}"
 }
@@ -183,10 +207,7 @@ main() {
 		gum style --foreground 212 "Detected packages: $(gum style --foreground 220 "${packages[*]}")"
 		gum confirm "Continue with stow $action for these packages?" && {
 			run_stow "$action" "${packages[@]}"
-			if [[ -d "${DOTFILES}/config" ]]; then
-				gum style --foreground 212 "Stowing config packages..."
-				gum spin --spinner dot --title "Processing config..." -- stow --verbose --target="${HOME}/.config" "${action}" config
-			fi
+			run_config_stow "$action"
 		}
 		;;
 
@@ -203,10 +224,7 @@ main() {
 		read -r -a packages <<<"$(detect_packages)"
 		gum style --foreground 212 "Stowing all packages..."
 		run_stow "--restow" "${packages[@]}"
-		if [[ -d "${DOTFILES}/config" ]]; then
-			gum style --foreground 212 "Stowing config packages..."
-			gum spin --spinner dot --title "Processing config..." -- stow --verbose --target="${HOME}/.config" --restow config
-		fi
+		run_config_stow "--restow"
 		apply_macos_defaults
 		;;
 
