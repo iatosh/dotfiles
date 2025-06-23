@@ -13,7 +13,6 @@ brew cjson
 brew cloudflared
 brew cpanminus
 brew dav1d
-brew docker
 brew fd
 brew ffmpeg
 brew flac
@@ -28,6 +27,7 @@ brew giflib
 brew glib
 brew gmp
 brew gnutls
+brew go
 brew graphite2
 brew gum
 brew harfbuzz
@@ -169,6 +169,9 @@ cask visual-studio-code
 cask wezterm
 cask zoom
 cask zotero
+
+tap daipeihust/tap
+brew im-select
 
 tap rcmdnk/file
 brew brew-file
