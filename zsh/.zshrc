@@ -1,11 +1,12 @@
+# Amazon Q pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
 # ------------
 # Main zsh file
 # ------------
 
 # --- Amazon Q pre block. Keep at the top of this file.
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
-fi
+  fi
 # --- Amazon Q pre block. Keep at the top of this file.
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -24,6 +25,8 @@ done
 
 # --- Amazon Q post block. Keep at the bottom of this file.
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
-fi
+  fi
 # --- Amazon Q post block. Keep at the bottom of this file.
+
+# Amazon Q post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"

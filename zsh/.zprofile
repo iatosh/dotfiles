@@ -1,7 +1,8 @@
 # Amazon Q pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zprofile.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zprofile.pre.zsh"
+# Amazon Q pre block. Keep at the top of this file.
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zprofile.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zprofile.pre.zsh"
-fi
+    fi
 
 # Homebrewのパスを通す
 if [[ -f /opt/homebrew/bin/brew ]]; then
@@ -24,5 +25,7 @@ eval "$("$HOMEBREW_PATH/bin/brew" shellenv)"
 
 # Amazon Q post block. Keep at the bottom of this file.
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zprofile.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zprofile.post.zsh"
-fi
+    fi
+
+# Amazon Q post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zprofile.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zprofile.post.zsh"
