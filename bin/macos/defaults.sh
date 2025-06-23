@@ -1,4 +1,7 @@
+#!/bin/bash
+
 defaults write com.apple.dock autohide-delay -int 0
+
 
 # Finderを再起動
 killall Finder
