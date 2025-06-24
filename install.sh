@@ -3,7 +3,7 @@ set -e
 
 # 定数定義
 DOTFILES="${HOME}/dotfiles"
-EXCLUDE_DIRS=("bin" "macos" "brew" ".git" "theme" "misc" "config")
+EXCLUDE_DIRS=("bin" "brew" ".git" "theme" "misc" "config")
 BREW_PATHS=(
 	"/opt/homebrew/bin/brew"
 	"/usr/local/bin/brew"
@@ -163,7 +163,7 @@ detect_packages() {
 	# 通常のパッケージを検出
 	for dir in "$DOTFILES"/*/; do
 		dir=$(basename "$dir")
-		[[ " ${EXCLUDE_DIRS[*]} " =~ ${dir} ]] || packages+=("$dir")
+		[[ " ${EXCLUDE_DIRS[*]} " == *" ${dir} "* ]] || packages+=("$dir")
 	done
 
 	echo "${packages[@]}"
