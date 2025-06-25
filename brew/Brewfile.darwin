@@ -176,6 +176,9 @@ brew im-select
 tap rcmdnk/file
 brew brew-file
 
+tap th-ch/youtube-music
+cask youtube-music
+
 # App Store applications
 appstore 937984704 Amphetamine (5.3.2)
 appstore 1355679052 Dropover (5.0.3)
