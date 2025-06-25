@@ -1,0 +1,21 @@
+# macOS files
+\.DS_Store
+
+# Editor files
+\#.*\#
+\.#.*
+.*~
+.*\.swp
+.*\.swo
+
+# Backup files
+.*\.bak
+.*\.backup
+.*\.old
+
+# Log files
+.*\.log
+
+# Temporary files
+.*\.tmp
+.*\.temp
