@@ -1,6 +1,11 @@
 # ------------
 # Path
 # ------------
+# Custom Commands
+export PATH="$PATH:$HOME/.commands"
+
+# local bin
+export PATH="$PATH:$HOME/.local/bin"
 
 # C/C++
 export PATH="$HOMEBREW_PREFIX/opt/llvm/bin:$PATH"

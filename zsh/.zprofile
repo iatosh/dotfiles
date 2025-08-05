@@ -23,6 +23,10 @@ eval "$("$HOMEBREW_PATH/bin/brew" shellenv)"
 [ -s "$HOMEBREW_PATH/opt/nvm/nvm.sh" ] && \. "$HOMEBREW_PATH/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "$HOMEBREW_PATH/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$HOMEBREW_PATH/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
+if command -v ngrok &>/dev/null; then
+    eval "$(ngrok completion)"
+fi
+
 # Amazon Q post block. Keep at the bottom of this file.
 if [[ "$OSTYPE" == "darwin"* ]]; then
     fi

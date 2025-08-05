@@ -9,7 +9,7 @@ local function window_settings(config)
         left = 16,
         right = 12,
         top = 12,
-        bottom = 8,
+        bottom = 0,
     }
 
     -- tab bar

@@ -1,0 +1,242 @@
+# Project structure definitions
+project_types:
+  ML:
+    base_dependencies:
+      - 'numpy = "*"'
+      - 'pandas = "*"'
+      - 'matplotlib = "*"'
+      - 'scikit-learn = "*"'
+      - 'tqdm = "*"'
+
+    directories:
+      - src
+      - data
+      - checkpoints
+      - experiments
+
+    files:
+      "src/__init__.py": ""
+
+      "src/model.py": |
+        """Model definitions"""
+        import torch
+        import torch.nn as nn
+        from typing import Optional
+
+        class Model(nn.Module):
+            """Base model class"""
+            def __init__(
+                self, 
+                num_classes: int = 10,
+                pretrained: bool = False,
+                dropout: float = 0.5
+            ):
+                super().__init__()
+                self.num_classes = num_classes
+                self.dropout = dropout
+                
+                # TODO: Define your architecture
+                self.features = nn.Sequential(
+                    nn.Conv2d(3, 64, kernel_size=3, padding=1),
+                    nn.ReLU(inplace=True),
+                    nn.MaxPool2d(2),
+                    nn.Dropout2d(dropout)
+                )
+                
+                self.classifier = nn.Sequential(
+                    nn.AdaptiveAvgPool2d((1, 1)),
+                    nn.Flatten(),
+                    nn.Linear(64, num_classes)
+                )
+                
+            def forward(self, x: torch.Tensor) -> torch.Tensor:
+                x = self.features(x)
+                x = self.classifier(x)
+                return x
+
+      "src/dataset.py": |
+        """Dataset utilities"""
+        import torch
+        from torch.utils.data import Dataset, DataLoader
+        from typing import Tuple, Optional
+        import numpy as np
+        from pathlib import Path
+
+        class CustomDataset(Dataset):
+            """Custom dataset class"""
+            def __init__(
+                self,
+                data_dir: Path,
+                split: str = "train",
+                transform: Optional[callable] = None
+            ):
+                self.data_dir = Path(data_dir)
+                self.split = split
+                self.transform = transform
+                
+                # TODO: Load your data
+                
+            def __len__(self) -> int:
+                # TODO: Return dataset size
+                return 0
+                
+            def __getitem__(self, idx: int) -> Tuple[torch.Tensor, int]:
+                # TODO: Return single sample
+                pass
+
+        def get_dataloaders(
+            data_dir: str,
+            batch_size: int = 32,
+            num_workers: int = 4
+        ) -> Tuple[DataLoader, DataLoader]:
+            """Create train and validation dataloaders"""
+            # TODO: Implement data loading
+            train_dataset = CustomDataset(data_dir, split="train")
+            val_dataset = CustomDataset(data_dir, split="val")
+            
+            train_loader = DataLoader(
+                train_dataset,
+                batch_size=batch_size,
+                shuffle=True,
+                num_workers=num_workers,
+                pin_memory=True
+            )
+            
+            val_loader = DataLoader(
+                val_dataset,
+                batch_size=batch_size,
+                shuffle=False,
+                num_workers=num_workers,
+                pin_memory=True
+            )
+            
+            return train_loader, val_loader
+
+      "src/train.py": |
+        """Training script"""
+        import torch
+        import torch.nn as nn
+        from torch.utils.data import DataLoader
+        import logging
+        from typing import Dict, Any
+
+        logging.basicConfig(level=logging.INFO)
+        logger = logging.getLogger(__name__)
+
+        def train_epoch(
+            model: nn.Module,
+            dataloader: DataLoader,
+            optimizer: torch.optim.Optimizer,
+            device: torch.device
+        ) -> float:
+            """Train for one epoch"""
+            model.train()
+            total_loss = 0.0
+            
+            for batch_idx, (data, target) in enumerate(dataloader):
+                data, target = data.to(device), target.to(device)
+                
+                optimizer.zero_grad()
+                output = model(data)
+                loss = nn.functional.cross_entropy(output, target)
+                loss.backward()
+                optimizer.step()
+                
+                total_loss += loss.item()
+                
+            return total_loss / len(dataloader)
+
+        def main():
+            """Main training function"""
+            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            logger.info(f"Using device: {device}")
+            
+            # TODO: Implement training logic
+            
+        if __name__ == "__main__":
+            main()
+
+      "src/utils.py": |
+        """Utility functions"""
+        import torch
+        import random
+        import numpy as np
+        from pathlib import Path
+        from typing import Optional
+
+        def set_seed(seed: int = 42) -> None:
+            """Set random seed for reproducibility"""
+            random.seed(seed)
+            np.random.seed(seed)
+            torch.manual_seed(seed)
+            torch.cuda.manual_seed_all(seed)
+            torch.backends.cudnn.deterministic = True
+            torch.backends.cudnn.benchmark = False
+
+        def save_checkpoint(
+            model: torch.nn.Module,
+            optimizer: torch.optim.Optimizer,
+            epoch: int,
+            loss: float,
+            path: Path
+        ) -> None:
+            """Save model checkpoint"""
+            path = Path(path)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            
+            torch.save({
+                'epoch': epoch,
+                'model_state_dict': model.state_dict(),
+                'optimizer_state_dict': optimizer.state_dict(),
+                'loss': loss,
+            }, path)
+            
+        def load_checkpoint(
+            path: Path,
+            model: torch.nn.Module,
+            optimizer: Optional[torch.optim.Optimizer] = None
+        ) -> int:
+            """Load model checkpoint"""
+            checkpoint = torch.load(path)
+            model.load_state_dict(checkpoint['model_state_dict'])
+            
+            if optimizer is not None:
+                optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+                
+            return checkpoint['epoch']
+
+    tasks:
+      train: "python src/train.py"
+
+    gitignore_additions:
+      - "# Data and models"
+      - "data/"
+      - "*.pth"
+      - "*.ckpt"
+      - "*.safetensors"
+      - "checkpoints/"
+      - "outputs/"
+      - "experiments/"
+      - ""
+      - "# Jupyter"
+      - ".ipynb_checkpoints/"
+      - "*.ipynb"
+      - "!notebooks/*.ipynb"
+    
+    gitattributes_additions:
+      - "# ML model files"
+      - "*.pth binary"
+      - "*.ckpt binary"
+      - "*.safetensors binary"
+      - "*.npy binary"
+      - "*.npz binary"
+      - "*.h5 binary"
+      - "*.hdf5 binary"
+
+  Custom:
+    # No special structure for custom projects
+    files: {}
+    directories: []
+    base_dependencies: []
+    tasks: {}
+    gitignore_additions: []

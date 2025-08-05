@@ -10,6 +10,7 @@ brew ca-certificates
 brew cairo
 brew certifi
 brew cjson
+brew claude-squad
 brew cloudflared
 brew cpanminus
 brew dav1d
@@ -26,8 +27,11 @@ brew ghostscript
 brew giflib
 brew glib
 brew gmp
+brew gnupg
 brew gnutls
 brew go
+brew gpgme
+brew gpgmepp
 brew graphite2
 brew gum
 brew harfbuzz
@@ -42,13 +46,17 @@ brew latexindent
 brew leptonica
 brew libarchive
 brew libass
+brew libassuan
 brew libb2
 brew libbluray
 brew libdeflate
 brew libevent
+brew libgcrypt
 brew libgit2
+brew libgpg-error
 brew libidn
 brew libidn2
+brew libksba
 brew libmicrohttpd
 brew libnghttp2
 brew libogg
@@ -64,6 +72,7 @@ brew libtasn1
 brew libtiff
 brew libunibreak
 brew libunistring
+brew libusb
 brew libuv
 brew libvidstab
 brew libvmaf
@@ -88,6 +97,9 @@ brew mpg123
 brew ncurses
 brew neofetch
 brew nettle
+brew npth
+brew nspr
+brew nss
 brew nvm
 brew oniguruma
 brew opencore-amr
@@ -99,8 +111,11 @@ brew p11-kit
 brew pango
 brew pcre2
 brew perl
+brew pinentry
 brew pixi
 brew pixman
+brew poppler
+brew pv
 brew python@3.13
 brew rav1e
 brew readline
@@ -121,6 +136,7 @@ brew tree-sitter
 brew unbound
 brew unibilium
 brew utf8proc
+brew uv
 brew webp
 brew x264
 brew x265
@@ -148,6 +164,7 @@ cask displaylink
 cask eqmac
 cask gimp
 cask git-credential-manager
+cask google-drive
 cask hammerspoon
 cask iterm2
 cask itermai
@@ -159,6 +176,8 @@ cask microsoft-auto-update
 cask microsoft-office
 cask microsoft-remote-desktop
 cask musescore
+cask ngrok
+cask nomachine
 cask obsidian
 cask onyx
 cask raspberry-pi-imager
@@ -173,6 +192,9 @@ cask zotero
 tap daipeihust/tap
 brew im-select
 
+tap nikitabobko/tap
+cask aerospace
+
 tap rcmdnk/file
 brew brew-file
 
@@ -182,11 +204,12 @@ cask youtube-music
 # App Store applications
 appstore 937984704 Amphetamine (5.3.2)
 appstore 1355679052 Dropover (5.0.3)
+appstore 1444383602 Goodnotes (6.7.6)
 appstore 1452453066 Hidden Bar (1.8)
 appstore 409183694 Keynote (14.4)
-appstore 539883307 LINE (9.8.1)
+appstore 539883307 LINE (9.9.0)
 appstore 1429033973 RunCat (11.4)
 appstore 1176895641 Spark (2.11.55)
 appstore 6445813049 Spark Desktop (3.23.0)
-appstore 1475387142 Tailscale (1.84.0)
+appstore 1475387142 Tailscale (1.84.1)
 appstore 497799835 Xcode (16.4)
