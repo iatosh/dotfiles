@@ -6,10 +6,14 @@ brew acl
 brew berkeley-db@5
 brew bzip2
 brew ca-certificates
+brew certifi
+brew docker-completion
 brew expat
 brew gdbm
 brew gettext
+brew git-lfs
 brew gum
+brew huggingface-cli
 brew icu4c@77
 brew libedit
 brew libffi
@@ -19,6 +23,7 @@ brew libunistring
 brew libuv
 brew libxcrypt
 brew libxml2
+brew libyaml
 brew lpeg
 brew luajit
 brew luv
@@ -42,6 +47,7 @@ brew tree-sitter
 brew unibilium
 brew unzip
 brew utf8proc
+brew uv
 brew xxhash
 brew xz
 brew zlib
