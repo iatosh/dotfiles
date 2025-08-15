@@ -1,35 +1,29 @@
-# Amazon Q pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zprofile.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zprofile.pre.zsh"
-# Amazon Q pre block. Keep at the top of this file.
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    fi
+# ============================================================================
+# .zprofile - Login Shell Configuration
+# ============================================================================
 
-# Homebrewのパスを通す
+# ----------------------------------------------------------------------------
+# Homebrew Initialization
+# ----------------------------------------------------------------------------
+
+# Detect Homebrew installation (cross-platform support)
 if [[ -f /opt/homebrew/bin/brew ]]; then
+    # Apple Silicon Mac
     HOMEBREW_PATH="/opt/homebrew"
 elif [[ -f /usr/local/bin/brew ]]; then
+    # Intel Mac
     HOMEBREW_PATH="/usr/local"
 elif [[ -f ~/.linuxbrew/bin/brew ]]; then
+    # Linux (user installation)
     HOMEBREW_PATH="$HOME/.linuxbrew"
 elif [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+    # Linux (system installation)
     HOMEBREW_PATH="/home/linuxbrew/.linuxbrew"
 else
-    echo "Homebrew not found. Please install Homebrew first."
-    exit 1
+    echo "Warning: Homebrew not found"
 fi
 
-eval "$("$HOMEBREW_PATH/bin/brew" shellenv)"
-
-[ -s "$HOMEBREW_PATH/opt/nvm/nvm.sh" ] && \. "$HOMEBREW_PATH/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "$HOMEBREW_PATH/opt/nvm/etc/bash_completion.d/nvm" ] && \. "$HOMEBREW_PATH/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-if command -v ngrok &>/dev/null; then
-    eval "$(ngrok completion)"
+# Initialize Homebrew if found
+if [[ -n "$HOMEBREW_PATH" ]]; then
+    eval "$("$HOMEBREW_PATH/bin/brew" shellenv)"
 fi
-
-# Amazon Q post block. Keep at the bottom of this file.
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    fi
-
-# Amazon Q post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zprofile.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zprofile.post.zsh"

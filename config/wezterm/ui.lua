@@ -1,10 +1,11 @@
+-- ui.lua 
 local wezterm = require("wezterm")
 local module = {}
 
 local function window_settings(config)
     config.window_decorations = "RESIZE"
-    config.window_background_opacity = 0.85
-    config.macos_window_background_blur = 36
+    config.window_background_opacity = 100
+    config.macos_window_background_blur = 0
     config.window_padding = {
         left = 16,
         right = 12,
@@ -29,7 +30,7 @@ end
 local function font_settings(config)
     config.font = wezterm.font_with_fallback({
         {
-            family = "Fira Code",
+            family = "JetBrainsMono Nerd Font",
             weight = "Regular",
             italic = false,
             stretch = "Normal",
@@ -45,7 +46,16 @@ local function font_settings(config)
 end
 
 local function color_scheme_settings(config)
-    config.color_scheme = "Monokai Remastered"
+    -- Import the Monokai Pro colors module
+    local colors = require("colors")
+    
+    -- Apply Monokai Pro theme
+    -- Available variants: "pro", "octagon", "machine", "ristretto", "spectrum", "classic", "light"
+    colors.apply_to_config(config, "spectrum")  -- Change variant here
+    
+    -- Previous color scheme (commented out)
+    -- config.color_scheme = "Monokai Pro (Gogh)"
+    -- config.color_scheme = "Tinacious Design (Dark)"
 end
 
 function module.apply_to_config(config)

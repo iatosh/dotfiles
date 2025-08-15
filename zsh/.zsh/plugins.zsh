@@ -1,8 +1,11 @@
-# ------------
-# Plugins
-# ------------
+# ============================================================================
+# Plugin Management with Zinit
+# ============================================================================
 
-# Zinit (ZSH plugin manager)
+# ----------------------------------------------------------------------------
+# Zinit Installation
+# ----------------------------------------------------------------------------
+
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
     command mkdir -p "$HOME/.local/share/zinit" && command chmod g-rwX "$HOME/.local/share/zinit"
@@ -14,51 +17,44 @@ fi
 # Load Zinit
 source "$HOME/.local/share/zinit/zinit.git/zinit.zsh"
 
-# Zinit's autocompletion
+# Enable Zinit completions
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 
-# Zinit's default annexes (extensions)
-zinit light-mode for \
+# ----------------------------------------------------------------------------
+# Theme - Load immediately for prompt
+# ----------------------------------------------------------------------------
+
+# Powerlevel10k
+zinit ice depth=1
+zinit light romkatv/powerlevel10k
+
+# Load p10k configuration
+[[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"
+
+# ----------------------------------------------------------------------------
+# Plugins - Turbo Mode for performance
+# ----------------------------------------------------------------------------
+
+# Zinit annexes
+zinit wait lucid light-mode for \
     zdharma-continuum/zinit-annex-as-monitor \
     zdharma-continuum/zinit-annex-bin-gem-node \
     zdharma-continuum/zinit-annex-patch-dl \
     zdharma-continuum/zinit-annex-rust
 
-# Custom plugins
-zinit light-mode for \
-    zsh-users/zsh-autosuggestions \
-    zsh-users/zsh-syntax-highlighting \
-    zsh-users/zsh-completions \
-    supercrabtree/k
+# Syntax highlighting
+zinit wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay" \
+    light-mode for zdharma-continuum/fast-syntax-highlighting
 
-# powerlevel10k
-zinit ice depth=1; zinit light romkatv/powerlevel10k
+# Completions
+zinit wait lucid blockf atpull'zinit creinstall -q .' \
+    light-mode for zsh-users/zsh-completions
 
-# ------------
+# Auto suggestions
+zinit wait lucid atload"!_zsh_autosuggest_start" \
+    light-mode for zsh-users/zsh-autosuggestions
 
-
-# Brewfile
-if [ -f $(brew --prefix)/etc/brew-wrap ];then
-  source $(brew --prefix)/etc/brew-wrap
-
-  # Brewfileが更新されたら実行
-  _post_brewfile_update () {
-    echo "Brewfile was updated!"
-  }
-fi
-
-# p10k
-[[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"
-
-# FZF
-source <(fzf --zsh)
-
-# thefuck
-eval $(thefuck --alias)
-
-# Zoxide
-eval "$(zoxide init zsh)"
-
-# bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+# Additional utilities
+zinit wait"1" lucid light-mode for \
+    supercrabtree/k  # Better ls with git features
