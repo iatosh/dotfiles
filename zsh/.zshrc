@@ -21,3 +21,14 @@ DOTFILES_PATH=$HOME/dotfiles
 for config_file in $DOTFILES_PATH/zsh/.zsh/*.zsh(N); do
     source "$config_file"
 done
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/atosh/.lmstudio/bin"
+# End of LM Studio CLI section
+
+
+alias claude-mem='bun "/Users/atosh/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
+
+# Added by Antigravity
+export PATH="/Users/atosh/.antigravity/antigravity/bin:$PATH"
+

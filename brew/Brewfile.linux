@@ -35,7 +35,6 @@ brew nvm
 brew oniguruma
 brew openssl@3
 brew perl
-brew pixi
 brew popt
 brew python@3.13
 brew readline

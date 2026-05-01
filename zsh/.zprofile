@@ -27,3 +27,6 @@ fi
 if [[ -n "$HOMEBREW_PATH" ]]; then
     eval "$("$HOMEBREW_PATH/bin/brew" shellenv)"
 fi
+
+# Added by Obsidian
+export PATH="$PATH:/Applications/Obsidian.app/Contents/MacOS"

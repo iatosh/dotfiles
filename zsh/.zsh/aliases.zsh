@@ -1,4 +1,4 @@
-# ============================================================================
+
 # Command Aliases
 # ============================================================================
 
@@ -68,6 +68,8 @@ alias bi='brew install'
 alias bs='brew search'
 alias bf='brew info'
 
+alias tailscale='/Applications/Tailscale.app/Contents/MacOS/Tailscale'
+
 # ----------------------------------------------------------------------------
 # System Utilities
 # ----------------------------------------------------------------------------
@@ -82,7 +84,7 @@ alias reload='exec $SHELL -l'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-
+ 
 # Network
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
@@ -105,3 +107,7 @@ fi
 # Dotfiles management
 alias dotfiles='cd $DOTFILES_PATH'
 alias dots='cd $DOTFILES_PATH'
+
+# SSH and attach to TMUX
+# alias sr='sst kodama.remote'
+# alias sl='sst kodama.local'

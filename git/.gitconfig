@@ -40,3 +40,5 @@
 
 [credential "https://dev.azure.com"]
 	useHttpPath = true
+[ghq]
+	root = ~/GitHub

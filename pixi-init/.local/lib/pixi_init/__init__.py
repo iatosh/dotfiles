@@ -1,1 +1,0 @@
-"""Pixi Init Library - Modular components for project generation"""

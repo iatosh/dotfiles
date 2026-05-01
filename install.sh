@@ -115,7 +115,11 @@ run_stow() {
 	for package in "${packages[@]}"; do
 		if [[ -d ${package} ]]; then
 			gum style --foreground 212 "stow ${action} ${package}"
-			gum spin --spinner dot --title "Processing ${package}..." -- stow --verbose --target="${HOME}" "${action}" "${package}"
+			if gum spin --spinner dot --title "Processing ${package}..." -- stow --verbose --target="${HOME}" "${action}" "${package}"; then
+				gum style --foreground 46 "✓ ${package} processed"
+			else
+				gum style --foreground 196 "✗ ${package} failed"
+			fi
 		else
 			gum style --foreground 196 "Package directory not found: ${package}"
 		fi
@@ -150,14 +154,17 @@ run_config_stow() {
 	cd "${DOTFILES}" || exit 1
 	
 	gum style --foreground 212 "stow ${action} config (target: ~/.config)"
-	gum spin --spinner dot --title "Processing config packages..." -- stow --verbose --target="${HOME}/.config" "${action}" config
-	
-	gum style --foreground 46 "Config packages processed successfully!"
+	if gum spin --spinner dot --title "Processing config packages..." -- stow --verbose --target="${HOME}/.config" "${action}" config; then
+		gum style --foreground 46 "✓ Config packages processed successfully!"
+	else
+		gum style --foreground 196 "✗ Config packages failed"
+	fi
 }
 
 # パッケージ検出
 detect_packages() {
 	local packages=()
+  # local config_packages=()
 	local dir
 
 	# 通常のパッケージを検出
@@ -166,7 +173,11 @@ detect_packages() {
 		[[ " ${EXCLUDE_DIRS[*]} " == *" ${dir} "* ]] || packages+=("$dir")
 	done
 
-	echo "${packages[@]}"
+	# for dir in "$DOTFILES/config"/*/; do
+	# 	[[ -d "$dir" ]] && config_packages+=("$(basename "$dir")")
+	# done
+	
+	echo "${packages[@]} ${config_packages[@]}"
 }
 
 # アクション選択

@@ -30,7 +30,7 @@ zinit ice depth=1
 zinit light romkatv/powerlevel10k
 
 # Load p10k configuration
-[[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"
+[[ -f "$HOME/.config/p10k/.p10k.zsh" ]] && source "$HOME/.config/p10k/.p10k.zsh"
 
 # ----------------------------------------------------------------------------
 # Plugins - Turbo Mode for performance

@@ -64,6 +64,16 @@ fe() {
     [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
 }
 
+# Ctrl+G: fzf directory search and cd
+fzf-cd-widget() {
+    local dir
+    dir=$(find ${1:-.} -type d -name ".git" -prune -o -type d -print 2> /dev/null | fzf +m --preview 'eza --tree --color=always {} | head -200') &&
+    cd "$dir"
+    zle reset-prompt
+}
+zle -N fzf-cd-widget
+bindkey '^G' fzf-cd-widget
+
 # ----------------------------------------------------------------------------
 # Git Functions
 # ----------------------------------------------------------------------------
@@ -109,25 +119,71 @@ sysinfo() {
 # Development Helpers
 # ----------------------------------------------------------------------------
 
-# Quick Python virtual environment
-venv() {
-    if [ $# -eq 0 ]; then
-        # Activate venv if it exists
-        if [ -d "venv" ]; then
-            source venv/bin/activate
-        elif [ -d ".venv" ]; then
-            source .venv/bin/activate
-        else
-            echo "No virtual environment found. Create one with: venv create"
-        fi
-    elif [ "$1" = "create" ]; then
-        python3 -m venv ${2:-venv}
-        echo "Virtual environment created. Activate with: venv"
-    fi
-}
-
 # Quick HTTP server
 serve() {
     local port="${1:-8000}"
     python3 -m http.server "$port"
 }
+
+
+# SSH and attach to Tmux
+sst() {
+    # 引数チェック
+    if [[ -z "$1" ]]; then
+        echo "Usage: sst <host>"
+        return 1
+    fi
+
+    local host="$1"
+
+    # tmuxセッション一覧を取得
+    local sessions=$(ssh "$host" 'zsh -l -c "tmux ls 2>/dev/null"')
+
+    # 選択肢を作成（新規セッション作成オプションを追加）
+    local options="[Create New Session]"
+    if [[ -n "$sessions" ]]; then
+        options="$options\n$sessions"
+    fi
+
+    # fzfで選択
+    local selected=$(echo -e "$options" | fzf \
+        --prompt="Select tmux session on $host > " \
+        --height=50% \
+        --layout=reverse \
+        --border \
+        --header="Enter: attach | Ctrl-C: cancel")
+
+    # 選択されなかった場合
+    if [[ -z "$selected" ]]; then
+        return
+    fi
+
+    # 新規セッション作成を選択した場合
+    if [[ "$selected" == "[Create New Session]" ]]; then
+        echo -n "Enter new session name: "
+        read session_name
+        if [[ -n "$session_name" ]]; then
+            ssh "$host" -t "zsh -l -c \"tmux new -s '$session_name'\""
+        else
+            ssh "$host" -t 'zsh -l -c "tmux"'
+        fi
+    else
+        # セッション名を抽出
+        local session_name=$(echo "$selected" | cut -d':' -f1)
+        echo "Attaching to session: $session_name on $host"
+        ssh "$host" -t "zsh -l -c \"tmux a -t '$session_name'\""
+    fi
+}
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # SSH to kodama with tailscale-aware host selection
+  sk() { 
+    # Tailscaleの出力から100.で始まるIPアドレスがあるかチェック（接続中の証拠）
+    if tailscale status 2>/dev/null | grep -q "100\."; then
+    else
+      echo "Starting Tailscale..."
+      tailscale up
+    fi
+    sst kodama
+  }
+fi

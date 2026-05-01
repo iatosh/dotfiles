@@ -8,19 +8,18 @@
 $pdf_mode=4;
 $max_repeat=5;
 
-
 # DVIファイルを中間ファイルとして扱う
-$dvi_mode = 1;
+# $dvi_mode = 1;
 
 $default_options = '-synctex=1 -interaction=nonstopmode -silent -file-line-error';
 
-$latex     = 'uplatex -kanji=utf8 -no-guess-input-enc ' .  $default_options . '%O %S';
+# $latex     = 'uplatex -kanji=utf8 -no-guess-input-enc ' .  $default_options . '%O %S';
 $lualatex  = 'lualatex ' . $default_options . '%O %S';
 
 $bibtex    = 'upbibtex -kanji=utf8 -no-guess-input-enc %O %B';
 $biber     = 'biber --bblencoding=utf8 -u -U --output_safechars %O %B';
 $makeindex = 'upmendex %O -o %D %S';
-$dvipdf    = 'dvipdfmx %O -o %D %S';
+# $dvipdf    = 'dvipdfmx %O -o %D %S';
 
 # PDF viewer 設定
 $pvc_view_file_via_temporary = 0;

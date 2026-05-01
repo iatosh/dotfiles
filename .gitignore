@@ -1,5 +1,4 @@
 .secrets
 .DS_Store
-misc/*recovery*
-misc/*license*
+misc/
 config/tmux/plugins/

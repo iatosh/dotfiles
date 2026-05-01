@@ -233,15 +233,15 @@ function module.register_color_schemes(config)
   end
 end
 
--- Apply the color scheme (can be called from ui.lua)
+-- Apply the color scheme
 function module.apply_to_config(config, variant)
   -- Register all color schemes first
   module.register_color_schemes(config)
   
   -- Set the default variant (if not specified, use "pro")
-  variant = variant or "pro"
+  variant = variant or "pro" 
   local scheme_name = "Monokai Pro (" .. variant:gsub("^%l", string.upper) .. ")"
-  
+
   -- Apply the color scheme
   config.color_scheme = scheme_name
   
