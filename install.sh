@@ -60,14 +60,17 @@ bootstrap_gum() {
   local url="https://github.com/charmbracelet/gum/releases/download/${version}/${fname}"
   local tmpdir
   tmpdir=$(mktemp -d)
-  trap "rm -rf '${tmpdir}'" EXIT
+  trap '[[ -n "${tmpdir}" && "${tmpdir}" == /tmp/* ]] && rm -rf "${tmpdir}"' EXIT
 
   curl -sL "$url" -o "${tmpdir}/${fname}" || { _err "Failed to download gum."; exit 1; }
-  tar -xzf "${tmpdir}/${fname}" -C "$tmpdir"  || { _err "Failed to extract gum."; exit 1; }
-  mv "${tmpdir}/gum" "${install_dir}/gum"
+  tar -xzf "${tmpdir}/${fname}" -C "$tmpdir" || { _err "Failed to extract gum."; exit 1; }
+  local gum_bin
+  gum_bin=$(find "$tmpdir" -type f -name "gum" | head -1)
+  [[ -z "$gum_bin" ]] && { _err "gum binary not found after extraction."; exit 1; }
+  mv "$gum_bin" "${install_dir}/gum"
   chmod +x "${install_dir}/gum"
-  rm -rf "$tmpdir"
   trap - EXIT
+  rm -rf "$tmpdir"
 
   export PATH="${install_dir}:${PATH}"
   _success "gum installed to ${install_dir}/gum"
