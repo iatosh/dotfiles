@@ -1,0 +1,23 @@
+{
+  "name": "japanese-copywriting",
+  "displayName": "Japanese Copywriting",
+  "description": "Write compelling Japanese marketing copy including catchphrases, product descriptions, landing pages, and ad copy with cultural nuances and emotional triggers",
+  "version": "1.0.0",
+  "author": "Ronan Takizawa",
+  "category": "Marketing",
+  "tags": [
+    "japanese",
+    "copywriting",
+    "marketing",
+    "advertising",
+    "localization",
+    "japan",
+    "キャッチコピー",
+    "landing-page",
+    "e-commerce",
+    "b2b",
+    "saas",
+    "transcreation"
+  ],
+  "repository": "https://github.com/ronantakizawa/japanese-copywriting"
+}

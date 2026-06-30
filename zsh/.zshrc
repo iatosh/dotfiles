@@ -32,3 +32,6 @@ alias claude-mem='bun "/Users/atosh/.claude/plugins/marketplaces/thedotmack/plug
 # Added by Antigravity
 export PATH="/Users/atosh/.antigravity/antigravity/bin:$PATH"
 
+
+# bun completions
+[ -s "/Users/atosh/.bun/_bun" ] && source "/Users/atosh/.bun/_bun"

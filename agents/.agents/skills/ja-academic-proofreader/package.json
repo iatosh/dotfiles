@@ -1,0 +1,16 @@
+{
+  "name": "ja-academic-proofreader",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Static layer for the ja-academic-proofreader skill: textlint(prh) + kuromoji morphology + structure/LaTeX checks.",
+  "type": "commonjs",
+  "scripts": {
+    "proofread": "node scripts/proofread.js",
+    "test": "node tests/static/run.js"
+  },
+  "dependencies": {
+    "kuromoji": "^0.1.2",
+    "textlint": "^14.0.4",
+    "textlint-rule-prh": "^6.0.0"
+  }
+}

@@ -269,16 +269,16 @@ backspace = ['close-all-windows-but-current', 'mode main']
 
 ##### IGNORE LIST #####
 
-[[on-window-detected]]
-  if.app-id = 'com.chabomakers.Antinote'
-  run = 'layout floating'
+# [[on-window-detected]]
+#  if.app-id = 'com.chabomakers.Antinote'
+#  run = 'layout floating'
 
 # 2. ワークスペースを切り替えるたびに Antinote を現在の場所に移動させる
-exec-on-workspace-change = [
-    '/bin/bash', '-c',
-    '''
-    aerospace list-windows --all --app-id com.chabomakers.Antinote | awk '{print $1}' | while read -r id; do
-        aerospace move-node-to-workspace --window-id "$id" --focused
-    done
-    '''
-]
+# exec-on-workspace-change = [
+#     '/bin/bash', '-c',
+#     '''
+#     aerospace list-windows --all --app-id com.chabomakers.Antinote | awk '{print $1}' | while read -r id; do
+#         aerospace move-node-to-workspace --window-id "$id" --focused
+#     done
+#     '''
+# ]

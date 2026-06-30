@@ -2,3 +2,15 @@
 .DS_Store
 misc/
 config/tmux/plugins/
+claude/.claude/*
+!claude/.claude/commands/
+!claude/.claude/modules/
+!claude/.claude/plugins/
+!claude/.claude/plugins/marketplaces/
+!claude/.claude/CLAUDE.md
+!claude/.claude/statusline.sh
+!claude/.claude/settings.json
+cache/
+**/cache/
+node_modules/
+**/node_modules/

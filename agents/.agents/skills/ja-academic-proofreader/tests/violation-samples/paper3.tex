@@ -1,0 +1,35 @@
+\documentclass{article}
+\begin{document}
+\title{塩味識別のためのEEGデコーディング}
+\maketitle
+
+\section{序論}
+
+本論文では塩味の識別を行う。評価には式\eqref{eq:acc}に示す正解率を用いる。塩味は味覚研究の分野では古くから扱われてきた重要な指標である。
+\begin{equation}
+acc = \frac{TP + TN}{N}
+\label{eq:acc}
+\end{equation}
+
+\section{結果}
+
+\begin{figure}[h]
+\includegraphics{result.png}
+\caption{各条件の識別率}
+\end{figure}
+
+図1に各条件の識別率を表示する。実験では刺激を3秒間呈示し、その応答を計測した。各被験者の識別率を図1に示す。
+
+\section{方法}
+
+塩味溶液(NaCl)を被験者に呈示した。本論文ではラーメン指数を
+\begin{equation}
+R = \alpha A + \beta B
+\end{equation}
+と定義される。ここで $A$ は塩分濃度、$B$ は麺の硬度を表す。
+
+\section{考察}
+
+塩味の識別は重要である。本手法は有効であった。今後は他の基本味にも適用したい。
+
+\end{document}

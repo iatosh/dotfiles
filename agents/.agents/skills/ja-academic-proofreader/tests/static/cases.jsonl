@@ -1,0 +1,50 @@
+{"id":1,"rule":"S-01","expect_fire":true,"text":"近年、深層学習が発展している。","note":"近年"}
+{"id":2,"rule":"S-01","expect_fire":false,"text":"2020年以降、深層学習が発展している。","note":"具体年代"}
+{"id":3,"rule":"S-02","expect_fire":true,"text":"提案手法は高速である。加えて、精度も高い。","note":"接続詞の加えて"}
+{"id":4,"rule":"S-02","expect_fire":false,"text":"塩を加えて混ぜる。","note":"動詞の加えて（誤検出ガード）"}
+{"id":5,"rule":"S-03","expect_fire":true,"text":"分類手法という枠組みを用いる。","note":"という"}
+{"id":6,"rule":"S-03","expect_fire":false,"text":"分類の枠組みを用いる。","note":"言い換え"}
+{"id":7,"rule":"S-04","expect_fire":true,"text":"てんかん治療のため記録を行った。","note":"を行った"}
+{"id":8,"rule":"S-04","expect_fire":false,"text":"てんかん治療のため記録した。","note":"〜する"}
+{"id":9,"rule":"S-05","expect_fire":true,"text":"信号を処理し、特徴を抽出した。","note":"連用中止"}
+{"id":10,"rule":"S-05","expect_fire":false,"text":"信号を処理した後、特徴を抽出した。","note":"明示的接続"}
+{"id":44,"rule":"S-05","expect_fire":true,"text":"本手法は高速であり、精度も高い。","note":"であり、（助動詞ある連用形）"}
+{"id":45,"rule":"S-05","expect_fire":false,"text":"本手法は高速である。精度も高い。","note":"2文に分割"}
+{"id":11,"rule":"S-07","expect_fire":true,"text":"実験参加者の脳波が記録された。","note":"受動態"}
+{"id":12,"rule":"S-07","expect_fire":false,"text":"実験参加者の脳波を記録した。","note":"能動態"}
+{"id":13,"rule":"S-08H","expect_fire":true,"text":"持続的注意と呼ばれる集中力は重要だ。","note":"と呼ばれるB"}
+{"id":14,"rule":"S-08H","expect_fire":false,"text":"持続的注意は集中力とも呼ばれる。","note":"AはBとも呼ばれ"}
+{"id":15,"rule":"S-09","expect_fire":true,"text":"機械学習の分野では応用が進む。","note":"の分野では"}
+{"id":16,"rule":"S-09","expect_fire":false,"text":"画像認識への応用が進む。","note":"具体的記述"}
+{"id":17,"rule":"S-10","expect_fire":true,"text":"これに関連する研究がある。","note":"文末がある"}
+{"id":18,"rule":"S-10","expect_fire":false,"text":"成果が出る可能性がある場合を考える。","note":"文中がある"}
+{"id":19,"rule":"S-11","expect_fire":true,"text":"より高速な最適化手法が存在する。","note":"が存在する"}
+{"id":20,"rule":"S-11","expect_fire":false,"text":"より高速な最適化手法を用いる。","note":"言い換え"}
+{"id":21,"rule":"S-12","expect_fire":true,"text":"高速な近似手法が提案されている。","note":"提案されている"}
+{"id":22,"rule":"S-12","expect_fire":false,"text":"Tanakaらは高速な近似手法を提案した。","note":"主語明確"}
+{"id":23,"rule":"S-13","expect_fire":true,"text":"取得した脳波を解析した。","note":"を解析"}
+{"id":24,"rule":"S-13","expect_fire":false,"text":"取得した脳波のパワーを評価した。","note":"具体的評価"}
+{"id":46,"rule":"S-23","expect_fire":true,"text":"識別ができれば、診断ができる。","note":"P⇒Q十分条件の誤用"}
+{"id":47,"rule":"S-23","expect_fire":false,"text":"識別精度を診断に活用する。","note":"できればなし"}
+{"id":25,"rule":"S-14","expect_fire":true,"text":"分類器の出力はＡＢＣである。","note":"全角英字"}
+{"id":26,"rule":"S-14","expect_fire":false,"text":"分類器の出力はABCである。","note":"半角英字"}
+{"id":27,"rule":"S-14","expect_fire":true,"text":"3種類(信号と雑音)を比較する。","note":"日本語を含む半角括弧"}
+{"id":28,"rule":"S-14","expect_fire":false,"text":"3種類（信号と雑音）を比較する。","note":"全角括弧"}
+{"id":29,"rule":"S-14","expect_fire":false,"text":"活性化にReLU(x)を用いる。","note":"英語モードの半角括弧"}
+{"id":48,"rule":"S-14","expect_fire":true,"text":"脳波(EEG)を記録した。","note":"日本語直後の半角括弧（中身が英語でも）"}
+{"id":49,"rule":"S-14","expect_fire":true,"text":"短時間(0.2s)で応答した。","note":"日本語直後の半角括弧（数値）"}
+{"id":50,"rule":"S-14","expect_fire":false,"text":"We use ReLU(x) here.","note":"英文中の半角括弧は対象外"}
+{"id":30,"rule":"S-16","expect_fire":true,"text":"しかしながら課題が残る。しかしながら別の課題もある。","note":"同一セクションで2回"}
+{"id":31,"rule":"S-16","expect_fire":false,"text":"しかしながら課題が残る。","note":"1回のみ"}
+{"id":32,"rule":"S-17","expect_fire":true,"text":"本手法は既存手法に比べて有意に高い精度を達成することが本実験を通じて明らかになった。","note":"1文段落"}
+{"id":33,"rule":"S-17","expect_fire":false,"text":"本手法は高速である。さらに精度も高いことを確認した。","note":"2文段落"}
+{"id":34,"rule":"S-18","expect_fire":true,"text":"# 章A\n\n## 節1\n\n本文である。\n","note":"節が1つだけ"}
+{"id":35,"rule":"S-18","expect_fire":false,"text":"# 章A\n\n## 節1\n\n本文。\n\n## 節2\n\n本文。\n","note":"節が2つ"}
+{"id":36,"rule":"S-19","type":"latex","expect_fire":true,"text":"\\begin{equation}\nx = y + z\n\\end{equation}","note":"数式末尾に句読点なし"}
+{"id":37,"rule":"S-19","type":"latex","expect_fire":false,"text":"\\begin{equation}\nx = y + z.\n\\end{equation}","note":"末尾ピリオドあり"}
+{"id":38,"rule":"S-20","type":"latex","expect_fire":true,"text":"式\\eqref{eq:a}を参照する。\n\\begin{equation}\nx=1\n\\label{eq:a}\n\\end{equation}","note":"定義前に引用"}
+{"id":39,"rule":"S-20","type":"latex","expect_fire":false,"text":"\\begin{equation}\nx=1.\n\\label{eq:a}\n\\end{equation}\n式\\eqref{eq:a}を参照する。","note":"定義後に引用"}
+{"id":40,"rule":"S-21","type":"latex","expect_fire":true,"text":"\\begin{figure}[h]\n\\includegraphics{a.pdf}\n\\end{figure}","note":"figure[h]"}
+{"id":41,"rule":"S-21","type":"latex","expect_fire":false,"text":"\\begin{figure}[t]\n\\includegraphics{a.pdf}\n\\end{figure}","note":"figure[t]"}
+{"id":42,"rule":"S-22","type":"latex","expect_fire":true,"text":"\\includegraphics{result.png}","note":"png"}
+{"id":43,"rule":"S-22","type":"latex","expect_fire":false,"text":"\\includegraphics{result.pdf}","note":"pdf"}

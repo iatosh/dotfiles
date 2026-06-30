@@ -1,0 +1,62 @@
+# 研究室Tips フレーズ禁止辞書（textlint-rule-prh）
+#
+# expected … textlint 単体実行時にユーザーへ見せるメッセージ（ルールIDは入れない）。
+# ruleId / severity … proofread.js が読む付加メタデータ（textlint は無視する）。
+#   severity を各ルールのここ（定義場所）に持たせ、中央の ID→severity 表は使わない。
+# 文脈判定は LLM 層に任せる前提で、ここでは語の検出のみ行う。
+version: 1
+rules:
+  - expected: 「近年」は避け、具体的な年代やその後等にする（語感が人により異なり論文の経時的価値も損なう）
+    pattern: 近年
+    ruleId: S-01
+    severity: error
+
+  - expected: 接続詞「加えて」は論理が不明瞭になりやすく科学技術文章では避ける
+    pattern: "/加えて[、，]/"
+    ruleId: S-02
+    severity: error
+
+  - expected: 「という」は冗長・幼稚になりやすいため避ける
+    pattern: という
+    ruleId: S-03
+    severity: error
+
+  - expected: 「〜を行う」は「〜する」に直せる（実験を行う→実験する）
+    pattern: "/を行(う|っ|わ|い|え)/"
+    ruleId: S-04
+    severity: error
+
+  - expected: 「Aと呼ばれるB」は言い換え・定義に使わない（A=Bは『AはBとも呼ばれ』、A⊂Bは『Bの一種であるA』）
+    pattern: と呼ばれる
+    ruleId: S-08H
+    severity: error
+
+  - expected: 「〜の分野では」は分野の恣意的な切り取り。応用例は具体的に記述する
+    pattern: "/の分野(では|において|でも|で,|で，)/"
+    ruleId: S-09
+    severity: error
+
+  - expected: 文末「〜がある」(there is/are) は根拠薄弱・天下り感があり文の連続性を切る。主語を先頭にした定義文に
+    pattern: "/がある[。．]/"
+    ruleId: S-10
+    severity: warning
+
+  - expected: 「〜が存在する」は「〜がある」の言い換えにすぎず本質は同じ。避ける
+    pattern: が存在する
+    ruleId: S-11
+    severity: error
+
+  - expected: 「〜が提案/報告されている」も天下り的。主語を明確にする
+    pattern: "/が(提案|報告)されている/"
+    ruleId: S-12
+    severity: warning
+
+  - expected: 「解析/調査する」はワイルドカード。具体的に何をしたか（評価する等）述べる
+    pattern: "/を(解析|調査)/"
+    ruleId: S-13
+    severity: warning
+
+  - expected: 「Pができれば、Qができる」型は十分条件の誤用（QのためにPが必要なだけ）
+    pattern: "/できれば[、，]/"
+    ruleId: S-23
+    severity: warning

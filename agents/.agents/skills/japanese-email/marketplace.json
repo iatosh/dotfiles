@@ -1,0 +1,28 @@
+{
+  "name": "japanese-email",
+  "version": "1.0.0",
+  "description": "Writes professional Japanese business emails with correct keigo (honorifics), seasonal greetings (時候の挨拶), and proper structure. Handles teineigo, sonkeigo, and kenjogo appropriately.",
+  "author": "ronantakizawa",
+  "repository": "https://github.com/ronantakizawa/japanese-email",
+  "license": "MIT",
+  "keywords": [
+    "japanese",
+    "business-email",
+    "keigo",
+    "honorifics",
+    "敬語",
+    "ビジネスメール",
+    "時候の挨拶",
+    "localization"
+  ],
+  "categories": [
+    "communication",
+    "writing",
+    "localization"
+  ],
+  "compatibility": [
+    "claude-code",
+    "codex-cli",
+    "cursor"
+  ]
+}

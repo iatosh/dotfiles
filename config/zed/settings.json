@@ -1,0 +1,279 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "proxy": "",
+  "languages": {
+    "Typst": {
+      "inlay_hints": {
+        "enabled": true,
+      },
+    },
+  },
+  "soft_wrap": "editor_width",
+  "relative_line_numbers": "enabled",
+  "project_panel": {
+    "dock": "left",
+  },
+  "outline_panel": {
+    "dock": "left",
+  },
+  "git_panel": {
+    "dock": "left",
+  },
+  "buffer_font_family": "UDEV Gothic 35NFLG",
+  "terminal": {
+    "font_family": "UDEV Gothic 35NFLG",
+    // "font_fallbacks": ["Yutapon coding Demi Bold Sl", "UDEV Gothic 35NFLG"],
+    "font_size": 14.0,
+  },
+  "ssh_connections": [
+    {
+      "host": "kodama",
+      "args": [],
+      "projects": [
+        {
+          "paths": ["/home/atosh"],
+        },
+        {
+          "paths": ["/home/atosh/Projects"],
+        },
+        {
+          "paths": ["/home/atosh/Projects/./"],
+        },
+        {
+          "paths": ["/home/atosh/Projects/M1"],
+        },
+        {
+          "paths": ["/home/atosh/Projects/Q-SingLEM"],
+        },
+        {
+          "paths": ["/home/atosh/Projects/research-plan"],
+        },
+      ],
+    },
+    {
+      "host": "kodama",
+      "args": [],
+      "projects": [
+        {
+          "paths": ["/mnt/nas/DownstreamDatasets/Seizure_Detection"],
+        },
+      ],
+    },
+  ],
+  "agent_buffer_font_size": 14.0,
+  "agent_servers": {
+    "github-copilot-cli": {
+      "type": "registry",
+    },
+    "claude-acp": {
+      "default_config_options": {
+        "model": "sonnet",
+        "mode": "auto",
+      },
+      "type": "registry",
+    },
+    "hermes-agent": {
+      "type": "custom",
+      "command": "hermes",
+      "args": ["acp"],
+    },
+  },
+  "agent": {
+    "dock": "right",
+    "inline_assistant_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-5.2",
+      "enable_thinking": false,
+    },
+    "default_model": {
+      "provider": "Kodama",
+      "model": "qwen3.6-35b",
+      "enable_thinking": false,
+    },
+    "favorite_models": [
+      {
+        "provider": "GLM",
+        "model": "glm-5.1",
+        "enable_thinking": false,
+      },
+      {
+        "provider": "Z.ai Coding",
+        "model": "glm-5.1",
+        "enable_thinking": false,
+      },
+      {
+        "provider": "Z.ai Coding",
+        "model": "glm-5-turbo",
+        "enable_thinking": false,
+      },
+    ],
+    "model_parameters": [],
+  },
+  "language_models": {
+    "anthropic_compatible": {
+      "Kodama": {
+        "api_url": "https://kodama:4000",
+        "available_models": [
+          {
+            "name": "qwen3.6-27b",
+            "max_tokens": 262144,
+            "max_output_tokens": 32000,
+            "capabilities": {
+              "tools": true,
+              "images": true,
+              "prompt_caching": false,
+            },
+          },
+          {
+            "name": "qwen3.6-35b",
+            "max_tokens": 65536,
+            "max_output_tokens": 32000,
+            "capabilities": {
+              "tools": true,
+              "images": true,
+              "prompt_caching": false,
+            },
+          },
+        ],
+      },
+    },
+    "openai_compatible": {
+      "Z.ai Coding": {
+        "api_url": "https://api.z.ai/api/coding/paas/v4",
+        "available_models": [
+          {
+            "name": "glm-5.1",
+            "display_name": "GLM-5.1",
+            "max_tokens": 200000,
+            "max_output_tokens": 128000,
+            "max_completion_tokens": 128000,
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+            },
+          },
+          {
+            "name": "glm-5-turbo",
+            "display_name": "GLM-5 Turbo",
+            "max_tokens": 200000,
+            "max_output_tokens": 128000,
+            "max_completion_tokens": 128000,
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+            },
+          },
+          {
+            "name": "glm-4.7",
+            "display_name": "GLM-4.7",
+            "max_tokens": 200000,
+            "max_output_tokens": 128000,
+            "max_completion_tokens": 128000,
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+            },
+          },
+          {
+            "name": "glm-4.6",
+            "display_name": "GLM-4.6",
+            "max_tokens": 200000,
+            "max_output_tokens": 128000,
+            "max_completion_tokens": 128000,
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+            },
+          },
+          {
+            "name": "glm-4.5-air",
+            "display_name": "GLM-4.5 Air",
+            "max_tokens": 128000,
+            "max_output_tokens": 96000,
+            "max_completion_tokens": 96000,
+            "capabilities": {
+              "tools": true,
+              "images": false,
+              "parallel_tool_calls": true,
+              "prompt_cache_key": true,
+            },
+          },
+        ],
+      },
+    },
+  },
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Base Charmed Icons",
+    "dark": "Base Charmed Icons",
+  },
+  "which_key": {
+    "enabled": true,
+  },
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 1000,
+    },
+  },
+  "edit_predictions": {
+    "mode": "subtle",
+    "provider": "copilot",
+    "open_ai_compatible_api": {
+      "model": "qwen3.6-27b",
+      "api_url": "http://kodama:4000",
+      "max_output_tokens": 64,
+      "prompt_format": "qwen",
+    },
+  },
+  "collaboration_panel": {
+    "dock": "right",
+  },
+  "telemetry": {
+    "diagnostics": true,
+    "metrics": true,
+  },
+  "session": {
+    "trust_all_worktrees": true,
+  },
+  "vim_mode": true,
+  "base_keymap": "Cursor",
+  "ui_font_size": 16,
+  "buffer_font_size": 15,
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Zedokai Darker",
+  },
+  // Other settings
+  "lsp": {
+    "tinymist": {
+      "settings": {
+        "exportPdf": "onSave",
+        "outputPath": "$root/$dir/$name",
+      },
+    },
+    "matlab-language-server": {
+      "settings": {
+        "installPath": "/usr/local/MATLAB/R2024a",
+        "indexWorkspace": true,
+        "matlabConnectionTiming": "onStart",
+        "telemetry": false,
+      },
+    },
+  },
+}

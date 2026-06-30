@@ -111,3 +111,11 @@ alias dots='cd $DOTFILES_PATH'
 # SSH and attach to TMUX
 # alias sr='sst kodama.remote'
 # alias sl='sst kodama.local'
+
+alias ccl='ANTHROPIC_BASE_URL="http://kodama:4000" \
+ANTHROPIC_AUTH_TOKEN="kodama-llm" \
+ANTHROPIC_MODEL="qwen3.6-27b" \
+ANTHROPIC_DEFAULT_HAIKU_MODEL="qwen3.6-35b" \
+ANTHROPIC_SMALL_FAST_MODEL="qwen3.6-35b" \
+CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1 \
+claude'

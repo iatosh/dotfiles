@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "plugins": {
+    "claude-mem@thedotmack": [
+      {
+        "scope": "user",
+        "installPath": "/Users/atosh/.claude/plugins/cache/thedotmack/claude-mem/13.9.1",
+        "version": "13.9.1",
+        "installedAt": "2026-05-10T08:27:58.117Z",
+        "lastUpdated": "2026-06-30T05:01:43.018Z",
+        "gitCommitSha": "3a2ba296135b89c74b9ea9835af170fc7dae4fab"
+      }
+    ]
+  }
+}

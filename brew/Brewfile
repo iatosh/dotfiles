@@ -1,15 +1,14 @@
 
 # tap repositories and their packages
 
-tap homebrew/core
-brew bat
-brew btop
-brew eza
-brew fzf
-brew gh
-brew neovim
-brew thefuck
-brew zoxide
+brew "bat"
+brew "btop"
+brew "eza"
+brew "fzf"
+brew "gh"
+brew "neovim"
+brew "thefuck"
+brew "zoxide"
 
 # Main file
 main ./Brewfile.$PLATFORM

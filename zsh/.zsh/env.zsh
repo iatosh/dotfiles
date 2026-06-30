@@ -28,6 +28,10 @@ export NVM_DIR="$HOME/.nvm"
 # Bun
 export BUN_INSTALL="$HOME/.bun"
 
+# Java Runtime
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
+
 # ----------------------------------------------------------------------------
 # PATH Configuration
 # ----------------------------------------------------------------------------
