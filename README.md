@@ -1,93 +1,88 @@
-# Dotfiles Collection
+# dotfiles
 
-A curated set of personal configuration files ("dotfiles") for macOS and Linux, managed with GNU Stow and an installation script powered by [Gum](https://github.com/charmbracelet/gum).
+My personal configuration files for macOS and Linux development environments, with an interactive installer powered by [Gum](https://github.com/charmbracelet/gum).
+
+> **Note:** This is a personal setup tailored to my workflow — not a plug-and-play solution. Feel free to browse and borrow whatever looks useful.
 
 ---
 
-## Prerequisites
+## What's inside
 
-You should have the following tools installed, though the installer will handle the rest:
+| Area | Tool | Notes |
+|------|------|-------|
+| Shell | Zsh + [Zinit](https://github.com/zdharma-continuum/zinit) | Modular config under `zsh/.zsh/` |
+| Prompt | [Powerlevel10k](https://github.com/romkatv/powerlevel10k) | |
+| Editor | [Neovim](https://neovim.io) | Managed as a submodule, based on Kickstart.nvim |
+| Terminal | [WezTerm](https://wezfurlong.org/wezterm/) | |
+| Multiplexer | [Tmux](https://github.com/tmux/tmux) | Plugin manager via TPM |
+| Key remapping | [Karabiner-Elements](https://karabiner-elements.pqrs.org) | macOS only |
+| Window manager | [Aerospace](https://github.com/nikitabobko/AeroSpace) | macOS only |
+| Git UI | [Lazygit](https://github.com/jesseduffield/lazygit) | |
+| File manager | [Yazi](https://github.com/sxyazi/yazi) | |
+| Package manager | [Homebrew](https://brew.sh) | Single Brewfile with `on_macos`/`on_linux` blocks |
+| Runtime manager | [mise](https://mise.jdx.dev) | Used on shared Linux servers (no root needed) |
 
-- **Git** and **curl**: usually pre-installed on most systems.
-- **Xcode Command Line Tools** (macOS only): provides `git`, `curl`, and other build utilities.
-- **Development tools** (Linux only): GCC, Make, and other essentials (e.g., install `build-essential` on Debian/Ubuntu).
+### Modern CLI replacements
 
-All other dependencies—including Homebrew, GNU Stow, and Gum—are automatically installed by the script.
+| Classic | Replacement |
+|---------|-------------|
+| `cat` | [bat](https://github.com/sharkdp/bat) |
+| `ls` | [eza](https://github.com/eza-community/eza) |
+| `grep` | [ripgrep](https://github.com/BurntSushi/ripgrep) |
+| `find` | [fd](https://github.com/sharkdp/fd) |
+| `cd` | [zoxide](https://github.com/ajeetdsouza/zoxide) |
+| `top` | [btop](https://github.com/aristocratsoftware/btop) |
+| `fzf` | — (fuzzy finder, used throughout) |
+
+---
+
+## Directory structure
+
+```
+dotfiles/
+├── bin/            # Utility scripts (update-brew.sh, macos/defaults.sh, …)
+├── brew/           # Brewfile + install.conf (mise tool list, exclusions)
+├── claude/         # Claude Code configuration
+├── config/         # XDG configs → ~/.config/ (tmux, wezterm, zed, yazi, …)
+├── git/            # .gitconfig
+├── karabiner/      # Karabiner-Elements (macOS)
+├── nvim/           # Neovim config (git submodule)
+├── p10k/           # Powerlevel10k config
+├── zsh/            # .zshrc + modular config under zsh/.zsh/
+└── install.sh      # Interactive installer (no stow required)
+```
 
 ---
 
 ## Installation
 
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/iatosh/dotfiles.git $HOME/dotfiles
-   ```
-
-2. **Run the install script**
-
-   ```bash
-   cd ~/dotfiles
-   chmod +x install.sh
-   ./install.sh
-   ```
-
-This script uses GNU Stow to create symlinks from your home directory (`~`) and `~/.config` to the files in this repository.
-
----
-
-## Configuration
-
-### Secrets and API Keys
-
-Store any private keys or environment variables in a separate file:
+Requires only `git` and `curl` to get started.
 
 ```bash
-~/dotfiles/.secrets
-```
-
-The installation script automatically sources this file if it exists. To change its path, edit the following line in `zsh/.zsh/env.zsh`:
-
-```bash
-SECRET_FILE="$DOTFILES_PATH/.secrets"
-[[ -f "$SECRET_FILE" ]] && source "$SECRET_FILE"
-```
-
----
-
-## Directory Structure
-
-```text
-brew/             # Homebrew bundles (Brewfile)
-git/              # Git configuration
-karabiner/        # Karabiner-Elements configuration
-nvim/             # Neovim settings
-p10k/             # Powerlevel10k theme for Zsh
-theme/            # Terminal and editor color schemes
-zsh/              # Zsh configuration and plugins
-install.sh        # Installation script using Stow and Gum
-```
-
----
-
-## Updating & Maintenance
-
-After pulling new changes, run:
-
-```bash
+git clone https://github.com/iatosh/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-git pull
 ./install.sh
 ```
 
-To remove all stowed configurations:
+The installer will:
+
+- Ask which packages to symlink into `~` / `~/.config`
+- On **macOS** or a **private Linux server**: install packages via Homebrew
+- On a **shared Linux server** (no root): install CLI tools via mise into `~/.local/bin`
+
+### Secrets
+
+Keep private keys and environment variables out of the repo:
 
 ```bash
-./install.sh --uninstall
+# ~/dotfiles/.secrets  (gitignored)
+export GITHUB_TOKEN="..."
 ```
+
+This file is sourced automatically by `zsh/.zsh/env.zsh` if it exists.
 
 ---
 
 ## License
 
-This repository is open-source under the MIT License. See the [LICENSE](LICENSE) file for details.
+MIT
