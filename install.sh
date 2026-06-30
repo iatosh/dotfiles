@@ -60,12 +60,14 @@ bootstrap_gum() {
   local url="https://github.com/charmbracelet/gum/releases/download/${version}/${fname}"
   local tmpdir
   tmpdir=$(mktemp -d)
+  trap "rm -rf '${tmpdir}'" EXIT
 
-  curl -sL "$url" -o "${tmpdir}/${fname}"
-  tar -xzf "${tmpdir}/${fname}" -C "$tmpdir"
+  curl -sL "$url" -o "${tmpdir}/${fname}" || { _err "Failed to download gum."; exit 1; }
+  tar -xzf "${tmpdir}/${fname}" -C "$tmpdir"  || { _err "Failed to extract gum."; exit 1; }
   mv "${tmpdir}/gum" "${install_dir}/gum"
   chmod +x "${install_dir}/gum"
   rm -rf "$tmpdir"
+  trap - EXIT
 
   export PATH="${install_dir}:${PATH}"
   _success "gum installed to ${install_dir}/gum"
@@ -164,9 +166,15 @@ setup_brew() {
     "/home/linuxbrew/.linuxbrew/bin/brew"
     "/usr/local/bin/brew"
   )
+  local found=0
   for p in "${brew_paths[@]}"; do
-    [[ -f "$p" ]] && eval "$("$p" shellenv)" && break
+    if [[ -f "$p" ]]; then
+      eval "$("$p" shellenv)"
+      found=1
+      break
+    fi
   done
+  [[ $found -eq 0 ]] && { _err "Homebrew installed but could not locate brew binary."; exit 1; }
 }
 
 # ─── mise setup ───────────────────────────────────────────────────────────────

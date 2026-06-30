@@ -27,6 +27,13 @@ insert_into_block() {
     fi
     echo "$row" >> "$tmpfile"
   done < "$BREWFILE"
+
+  if [[ $inserted -eq 0 ]]; then
+    rm -f "$tmpfile"
+    echo "  ⚠ Block '${BLOCK} do' not found in Brewfile — skipped: ${line}"
+    return 1
+  fi
+
   mv "$tmpfile" "$BREWFILE"
 }
 
