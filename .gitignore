@@ -9,8 +9,8 @@ claude/.claude/*
 !claude/.claude/plugins/marketplaces/
 !claude/.claude/CLAUDE.md
 !claude/.claude/statusline.sh
-!claude/.claude/settings.json
 cache/
+config/zed/prompts/
 **/cache/
 node_modules/
 **/node_modules/
