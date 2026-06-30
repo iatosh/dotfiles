@@ -28,10 +28,6 @@ export NVM_DIR="$HOME/.nvm"
 # Bun
 export BUN_INSTALL="$HOME/.bun"
 
-# Java Runtime
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
-export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
-
 # ----------------------------------------------------------------------------
 # PATH Configuration
 # ----------------------------------------------------------------------------
@@ -40,11 +36,16 @@ export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
 export PATH="$PATH:$HOME/.commands"
 export PATH="$PATH:$HOME/.local/bin"
 
-# Development tools
-export PATH="$HOMEBREW_PREFIX/opt/llvm/bin:$PATH"
-
-# LaTeX (macOS only)
+# macOS-specific paths
 if [[ "$OSTYPE" == "darwin"* ]]; then
+    # Java (Homebrew)
+    if [[ -d "/opt/homebrew/opt/openjdk/bin" ]]; then
+        export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+        export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"
+    fi
+    # LLVM (Homebrew)
+    [[ -n "$HOMEBREW_PREFIX" ]] && export PATH="$HOMEBREW_PREFIX/opt/llvm/bin:$PATH"
+    # LaTeX
     export PATH="$PATH:/Library/TeX/texbin/"
 fi
 

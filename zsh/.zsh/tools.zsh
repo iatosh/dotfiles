@@ -39,10 +39,9 @@ fi
 # ----------------------------------------------------------------------------
 
 # Brew wrap - Brewfile management
-if [ -f $(brew --prefix)/etc/brew-wrap ]; then
-    source $(brew --prefix)/etc/brew-wrap
-    
-    # Post-Brewfile update hook
+if command -v brew &>/dev/null && [ -f "$(brew --prefix)/etc/brew-wrap" ]; then
+    source "$(brew --prefix)/etc/brew-wrap"
+
     _post_brewfile_update() {
         echo "Brewfile was updated!"
     }
