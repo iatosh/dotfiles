@@ -1,5 +1,0 @@
-# Linux-specific packages for private servers with Homebrew
-# Most common CLI tools are in the main Brewfile
-
-tap "wezterm/wezterm-linuxbrew"
-brew "wezterm"
