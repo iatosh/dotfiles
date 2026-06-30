@@ -1,28 +1,59 @@
 #!/usr/bin/env bash
-set -e
+set -eo pipefail
 
 DOTFILES="$HOME/dotfiles"
 BREWFILE="$DOTFILES/brew/Brewfile"
 
-echo "Checking for packages not listed in Brewfile..."
-echo "(Uses 'brew leaves' to show only top-level packages, excluding transitive deps)"
-echo ""
+# Detect which block to insert into based on OS
+case "$(uname -s)" in
+  Linux*)  BLOCK="on_linux"  ;;
+  Darwin*) BLOCK="on_macos" ;;
+  *) echo "Unsupported OS"; exit 1 ;;
+esac
 
-echo "=== brew packages not in Brewfile ==="
-brew leaves | while read -r pkg; do
+# Insert a brew/cask line before the `end` of the target block
+insert_into_block() {
+  local line=$1  # e.g. '  brew "foo"' or '  cask "bar"'
+  local tmpfile
+  tmpfile=$(mktemp)
+  local in_block=0 inserted=0
+  while IFS= read -r row; do
+    if [[ "$row" =~ ^${BLOCK}\ do ]]; then
+      in_block=1
+    fi
+    if [[ $in_block -eq 1 && "$row" == "end" && $inserted -eq 0 ]]; then
+      echo "$line" >> "$tmpfile"
+      inserted=1
+    fi
+    echo "$row" >> "$tmpfile"
+  done < "$BREWFILE"
+  mv "$tmpfile" "$BREWFILE"
+}
+
+added=0
+
+echo "Checking brew leaves against Brewfile..."
+while read -r pkg; do
   if ! grep -q "\"${pkg}\"" "$BREWFILE"; then
-    echo "  MISSING: $pkg"
+    insert_into_block "  brew \"${pkg}\""
+    echo "  + brew \"${pkg}\" → ${BLOCK}"
+    (( added++ )) || true
   fi
-done
+done < <(brew leaves)
 
-echo ""
-echo "=== casks not in Brewfile ==="
-brew list --cask 2>/dev/null | while read -r pkg; do
+echo "Checking casks..."
+while read -r pkg; do
   if ! grep -q "\"${pkg}\"" "$BREWFILE"; then
-    echo "  MISSING: $pkg"
+    insert_into_block "  cask \"${pkg}\""
+    echo "  + cask \"${pkg}\" → ${BLOCK}"
+    (( added++ )) || true
   fi
-done
+done < <(brew list --cask 2>/dev/null)
 
-echo ""
-echo "Review the above and manually add intentional packages to:"
-echo "  $BREWFILE"
+if [[ $added -eq 0 ]]; then
+  echo "Brewfile is up to date."
+else
+  echo ""
+  echo "${added} package(s) added to ${BLOCK} block in Brewfile."
+  echo "Move to the common section if needed on both platforms."
+fi
