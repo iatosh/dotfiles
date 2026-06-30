@@ -1,251 +1,333 @@
 #!/usr/bin/env bash
-set -e
+set -eo pipefail
 
-# 定数定義
 DOTFILES="${HOME}/dotfiles"
-EXCLUDE_DIRS=("bin" "brew" ".git" "theme" "misc" "config")
-BREW_PATHS=(
-	"/opt/homebrew/bin/brew"
-	"/usr/local/bin/brew"
-	"${HOME}/.linuxbrew/bin/brew"
-	"/home/linuxbrew/.linuxbrew/bin/brew"
-)
+CONF="${DOTFILES}/brew/install.conf"
 
-# OS判定
+# ─── Plain output (used before gum is available) ──────────────────────────────
+
+_info()    { printf "  \033[0;34m▸\033[0m %s\n" "$1"; }
+_success() { printf "  \033[0;32m✓\033[0m %s\n" "$1"; }
+_err()     { printf "  \033[0;31m✗\033[0m %s\n" "$1"; }
+_header()  { printf "\n\033[1;36m  ══ %s ══\033[0m\n\n" "$1"; }
+
+# ─── Load config ──────────────────────────────────────────────────────────────
+
+[[ -f "$CONF" ]] || { _err "install.conf not found: $CONF"; exit 1; }
+# shellcheck source=brew/install.conf
+source "$CONF"
+
+# ─── OS detection ─────────────────────────────────────────────────────────────
+
+OS=""
 case "$(uname -s)" in
-Linux*) OS="Linux" ;;
-Darwin*) OS="Mac" ;;
-*) OS="UNKNOWN:$(uname -s)" ;;
+  Linux*)  OS="linux"  ;;
+  Darwin*) OS="darwin" ;;
+  *)       _err "Unsupported OS: $(uname -s)"; exit 1 ;;
 esac
 
-if [[ ${OS} == "Linux" ]]; then
-	EXCLUDE_DIRS+=("karabiner")
-fi
+ENV_TYPE=""  # linux only: "shared" | "private"
 
-# 色付き出力関数
-print_header() { printf "\n\033[1;36m%s\033[0m\n\n" "$1"; }
-print_info() { printf "\033[0;34m%s\033[0m\n" "$1"; }
-print_success() { printf "\033[0;32m%s\033[0m\n" "$1"; }
-print_warning() { printf "\033[0;33m%s\033[0m\n" "$1"; }
-print_error() { printf "\033[0;31m%s\033[0m\n" "$1"; }
+# ─── Bootstrap gum ────────────────────────────────────────────────────────────
 
-# Homebrewのパス設定
-setup_brew_path() {
-	for brew_path in "${BREW_PATHS[@]}"; do
-		if [[ -f "${brew_path}" ]]; then
-			eval "$("${brew_path}" shellenv)"
-			return 0
-		fi
-	done
-	return 1
+bootstrap_gum() {
+  if command -v gum >/dev/null 2>&1; then
+    _success "gum found."
+    return 0
+  fi
+
+  _info "Downloading gum..."
+  local install_dir="${HOME}/.local/bin"
+  mkdir -p "$install_dir"
+
+  local gum_os gum_arch
+  case "$OS" in
+    linux)  gum_os="Linux"  ;;
+    darwin) gum_os="Darwin" ;;
+  esac
+  case "$(uname -m)" in
+    x86_64)        gum_arch="x86_64" ;;
+    aarch64|arm64) gum_arch="arm64"  ;;
+    *) _err "Unsupported arch: $(uname -m)"; exit 1 ;;
+  esac
+
+  local version
+  version=$(curl -sI "https://github.com/charmbracelet/gum/releases/latest" \
+    | grep -i "^location:" | grep -oE "v[0-9]+\.[0-9]+\.[0-9]+" | head -1)
+  [[ -z "$version" ]] && { _err "Could not detect gum version."; exit 1; }
+
+  local fname="gum_${version#v}_${gum_os}_${gum_arch}.tar.gz"
+  local url="https://github.com/charmbracelet/gum/releases/download/${version}/${fname}"
+  local tmpdir
+  tmpdir=$(mktemp -d)
+
+  curl -sL "$url" -o "${tmpdir}/${fname}"
+  tar -xzf "${tmpdir}/${fname}" -C "$tmpdir"
+  mv "${tmpdir}/gum" "${install_dir}/gum"
+  chmod +x "${install_dir}/gum"
+  rm -rf "$tmpdir"
+
+  export PATH="${install_dir}:${PATH}"
+  _success "gum installed to ${install_dir}/gum"
 }
 
-# 依存関係のインストール
-install_dependencies() {
-	print_header "Installing dependencies"
+# ─── Symlink (bash-native, no stow dependency) ────────────────────────────────
 
-	# Homebrewのインストール
-	if ! command -v brew >/dev/null 2>&1; then
-		print_info "Installing Homebrew..."
-		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-		setup_brew_path
-		print_success "Homebrew installed successfully."
-	else
-		print_info "Homebrew is already installed."
-	fi
+symlink_package() {
+  local action=$1  # --restow | --delete
+  local pkg=$2
+  local pkg_dir target
 
-	# 必要なパッケージのインストール
-	local packages=("stow" "gum")
-	local package_names=("GNU Stow" "Charmbracelet Gum")
+  # config/<subdir> packages target $HOME/.config/<subdir>
+  if [[ "$pkg" == config/* ]]; then
+    local subname="${pkg#config/}"
+    pkg_dir="${DOTFILES}/config/${subname}"
+    target="${HOME}/.config/${subname}"
+  else
+    pkg_dir="${DOTFILES}/${pkg}"
+    target="${HOME}"
+  fi
 
-	for i in "${!packages[@]}"; do
-		if ! command -v "${packages[$i]}" >/dev/null 2>&1; then
-			print_info "Installing ${package_names[$i]}..."
-			brew install "${packages[$i]}"
-			print_success "${package_names[$i]} installed successfully."
-		else
-			print_info "${package_names[$i]} is already installed."
-		fi
-	done
+  if [[ ! -d "$pkg_dir" ]]; then
+    gum style --foreground 196 "  ✗ Not found: ${pkg}"
+    return 1
+  fi
 
-	print_success "All dependencies are installed."
+  local count=0
+  while IFS= read -r src; do
+    local rel="${src#${pkg_dir}/}"
+    local dst="${target}/${rel}"
+    case "$action" in
+      --restow)
+        mkdir -p "$(dirname "$dst")"
+        ln -sf "$src" "$dst"
+        ;;
+      --delete)
+        [[ -L "$dst" ]] && rm "$dst"
+        ;;
+    esac
+    (( count++ )) || true
+  done < <(find "$pkg_dir" -not -type d \
+    -not -path "*/.git/*" -not -name ".git" \
+    -not -name "README*" -not -name "*.md" -not -name ".DS_Store")
+
+  gum style --foreground 46 "  ✓ ${pkg} (${count} files)"
 }
 
-# Brewfileのインストール
-install_brewfile() {
-	gum style --foreground 212 "Installing applications from Brewfile..."
-	local brewfile="${DOTFILES}/brew/Brewfile"
+# ─── Package detection ────────────────────────────────────────────────────────
 
-	if [[ -f "${brewfile}" ]]; then
-		gum spin --spinner dot --title "Installing brew packages..." -- brew bundle --file="${brewfile}"
-		gum style --foreground 46 "Brewfile installed successfully."
-	else
-		gum style --foreground 196 "Brewfile not found."
-	fi
-}
-
-# macOSデフォルト設定の適用
-apply_macos_defaults() {
-	if [[ ${OS} != "Mac" ]]; then
-		gum style --foreground 220 "macOS defaults skipped (not macOS)."
-		return
-	fi
-
-	local defaults_script="${DOTFILES}/bin/macos/defaults.sh"
-	gum style --foreground 212 "Applying macOS default settings..."
-
-	if [[ -f "${defaults_script}" ]]; then
-		gum confirm "Do you want to apply macOS default settings? This may restart some applications." && {
-			gum spin --spinner dot --title "Applying settings..." -- bash "${defaults_script}"
-			gum style --foreground 46 "macOS settings applied successfully."
-		}
-	else
-		gum style --foreground 196 "macOS defaults script not found."
-	fi
-}
-
-# stowの実行
-run_stow() {
-	local action=$1
-	shift
-	local packages=("$@")
-
-	cd "${DOTFILES}" || exit 1
-
-	for package in "${packages[@]}"; do
-		if [[ -d ${package} ]]; then
-			gum style --foreground 212 "stow ${action} ${package}"
-			if gum spin --spinner dot --title "Processing ${package}..." -- stow --verbose --target="${HOME}" "${action}" "${package}"; then
-				gum style --foreground 46 "✓ ${package} processed"
-			else
-				gum style --foreground 196 "✗ ${package} failed"
-			fi
-		else
-			gum style --foreground 196 "Package directory not found: ${package}"
-		fi
-	done
-
-	gum style --foreground 46 "All packages processed successfully!"
-}
-
-# config stowの実行
-run_config_stow() {
-	local action=$1
-	
-	if [[ ! -d "${DOTFILES}/config" ]]; then
-		gum style --foreground 196 "Config directory not found."
-		return 1
-	fi
-	
-	# config内のパッケージを検出して表示
-	local config_packages=()
-	local dir
-	for dir in "$DOTFILES/config"/*/; do
-		[[ -d "$dir" ]] && config_packages+=("$(basename "$dir")")
-	done
-	
-	if [[ ${#config_packages[@]} -eq 0 ]]; then
-		gum style --foreground 196 "No config packages found."
-		return 1
-	fi
-	
-	gum style --foreground 212 "Detected config packages: $(gum style --foreground 220 "${config_packages[*]}")"
-	
-	cd "${DOTFILES}" || exit 1
-	
-	gum style --foreground 212 "stow ${action} config (target: ~/.config)"
-	if gum spin --spinner dot --title "Processing config packages..." -- stow --verbose --target="${HOME}/.config" "${action}" config; then
-		gum style --foreground 46 "✓ Config packages processed successfully!"
-	else
-		gum style --foreground 196 "✗ Config packages failed"
-	fi
-}
-
-# パッケージ検出
 detect_packages() {
-	local packages=()
-  # local config_packages=()
-	local dir
+  local exclude=("${EXCLUDE_ALWAYS[@]}")
+  [[ "$OS" == "linux"  ]] && [[ ${#EXCLUDE_LINUX[@]}  -gt 0 ]] && exclude+=("${EXCLUDE_LINUX[@]}")
+  [[ "$OS" == "darwin" ]] && [[ ${#EXCLUDE_DARWIN[@]} -gt 0 ]] && exclude+=("${EXCLUDE_DARWIN[@]}")
 
-	# 通常のパッケージを検出
-	for dir in "$DOTFILES"/*/; do
-		dir=$(basename "$dir")
-		[[ " ${EXCLUDE_DIRS[*]} " == *" ${dir} "* ]] || packages+=("$dir")
-	done
+  is_excluded() {
+    local name=$1
+    for ex in "${exclude[@]}"; do
+      [[ "$name" == "$ex" ]] && return 0
+    done
+    return 1
+  }
 
-	# for dir in "$DOTFILES/config"/*/; do
-	# 	[[ -d "$dir" ]] && config_packages+=("$(basename "$dir")")
-	# done
-	
-	echo "${packages[@]} ${config_packages[@]}"
+  # Top-level packages (config/ handled separately below)
+  for dir in "${DOTFILES}"/*/; do
+    [[ -d "$dir" ]] || continue
+    local name
+    name=$(basename "$dir")
+    [[ "$name" == "config" ]] && continue
+    is_excluded "$name" || printf '%s\n' "$name"
+  done
+
+  # config/ subdirectories as individual packages
+  for dir in "${DOTFILES}/config"/*/; do
+    [[ -d "$dir" ]] || continue
+    local subname
+    subname=$(basename "$dir")
+    is_excluded "$subname" || printf 'config/%s\n' "$subname"
+  done
 }
 
-# アクション選択
-select_stow_action() {
-	local action
-	action=$(gum choose --height 10 "install/update (--restow)" "uninstall (--delete)")
-	case "$action" in
-	"install/update (--restow)") echo "--restow" ;;
-	"uninstall (--delete)") echo "--delete" ;;
-	esac
+# ─── Brew setup ───────────────────────────────────────────────────────────────
+
+setup_brew() {
+  if command -v brew >/dev/null 2>&1; then
+    _success "Homebrew is already installed."
+    return 0
+  fi
+
+  _info "Installing Homebrew..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+  local brew_paths=(
+    "/opt/homebrew/bin/brew"
+    "${HOME}/.linuxbrew/bin/brew"
+    "/home/linuxbrew/.linuxbrew/bin/brew"
+    "/usr/local/bin/brew"
+  )
+  for p in "${brew_paths[@]}"; do
+    [[ -f "$p" ]] && eval "$("$p" shellenv)" && break
+  done
 }
 
-# メイン処理
+# ─── mise setup ───────────────────────────────────────────────────────────────
+
+setup_mise() {
+  if command -v mise >/dev/null 2>&1; then
+    _success "mise is already installed."
+    return 0
+  fi
+  _info "Downloading mise..."
+  local install_dir="${HOME}/.local/bin"
+  mkdir -p "$install_dir"
+  curl -sL https://mise.run | MISE_INSTALL_PATH="${install_dir}/mise" sh
+  export PATH="${install_dir}:${PATH}"
+  _success "mise installed to ${install_dir}/mise"
+}
+
+install_mise_tools() {
+  setup_mise
+  gum style --foreground 212 "Installing CLI tools via mise..."
+  for entry in "${MISE_TOOLS[@]}"; do
+    local mise_name
+    [[ "$entry" == *":"* ]] && mise_name="${entry#*:}" || mise_name="$entry"
+    gum spin --spinner dot --title "  Installing ${mise_name}..." -- \
+      mise use --global "${mise_name}@latest" \
+      || gum style --foreground 196 "  ✗ Failed: ${mise_name}"
+  done
+  gum style --foreground 46 "CLI tools installation complete."
+}
+
+# ─── Brew bundle ──────────────────────────────────────────────────────────────
+
+install_brew_tools() {
+  setup_brew
+  local brewfile="${DOTFILES}/brew/Brewfile"
+  [[ -f "$brewfile" ]] || { gum style --foreground 196 "Brewfile not found."; return 1; }
+  gum spin --spinner dot --title "Installing from Brewfile..." -- \
+    brew bundle --file="$brewfile"
+  gum style --foreground 46 "Brewfile installation complete."
+}
+
+# ─── macOS defaults ───────────────────────────────────────────────────────────
+
+apply_macos_defaults() {
+  local script="${DOTFILES}/bin/macos/defaults.sh"
+  if [[ ! -f "$script" ]]; then
+    gum style --foreground 220 "macOS defaults script not found."
+    return
+  fi
+  gum confirm "Apply macOS default settings? (Some apps may restart)" \
+    && gum spin --spinner dot --title "Applying macOS defaults..." -- bash "$script" \
+    && gum style --foreground 46 "macOS defaults applied." \
+    || true
+}
+
+# ─── Stow flow ────────────────────────────────────────────────────────────────
+
+stow_flow() {
+  local all_pkgs=()
+  while IFS= read -r pkg; do
+    all_pkgs+=("$pkg")
+  done < <(detect_packages)
+
+  if [[ ${#all_pkgs[@]} -eq 0 ]]; then
+    gum style --foreground 220 "No packages detected."
+    return
+  fi
+
+  gum style --foreground 212 "Select packages to stow (space to toggle, enter to confirm):"
+  local selected
+  selected=$(gum choose --no-limit "${all_pkgs[@]}") || true
+  [[ -z "$selected" ]] && { gum style --foreground 220 "No packages selected."; return; }
+
+  local action
+  action=$(gum choose --header "Action:" \
+    "Install / Update (--restow)" \
+    "Uninstall (--delete)") || return
+
+  local flag
+  [[ "$action" == "Install / Update (--restow)" ]] && flag="--restow" || flag="--delete"
+
+  gum confirm "Proceed with ${flag} for selected packages?" || return
+
+  while IFS= read -r pkg; do
+    [[ -n "$pkg" ]] && symlink_package "$flag" "$pkg"
+  done <<< "$selected"
+
+  gum style --foreground 46 "Stow complete."
+}
+
+# ─── CLI install flow ─────────────────────────────────────────────────────────
+
+cli_flow() {
+  if [[ "$OS" == "linux" && "$ENV_TYPE" == "shared" ]]; then
+    install_mise_tools
+  else
+    install_brew_tools
+  fi
+}
+
+# ─── Main ─────────────────────────────────────────────────────────────────────
+
 main() {
-	print_header "Setting up dotfiles"
-	install_dependencies
+  _header "Dotfiles Setup"
 
-	gum style \
-		--border normal \
-		--margin "1" \
-		--padding "1" \
-		--border-foreground 212 \
-		"Welcome to dotfiles installer"
+  # Phase 0: bootstrap (plain output, no gum yet)
+  bootstrap_gum
 
-	local choice
-	choice=$(gum choose --height 15 \
-		"Stow all packages" \
-		"Install Brewfile" \
-		"Apply macOS defaults" \
-		"Full installation" \
-		"Exit")
+  # Linux: determine environment type via gum
+  if [[ "$OS" == "linux" ]]; then
+    local env_choice
+    env_choice=$(gum choose \
+      --header "What kind of Linux environment is this?" \
+      "Shared server (no root — use mise)" \
+      "Private server (can install Homebrew)")
+    [[ "$env_choice" == *"Shared"* ]] && ENV_TYPE="shared" || ENV_TYPE="private"
+  fi
 
-	case "$choice" in
-	"Stow all packages")
-		local action
-		action=$(select_stow_action)
-		read -r -a packages <<<"$(detect_packages)"
-		gum style --foreground 212 "Detected packages: $(gum style --foreground 220 "${packages[*]}")"
-		gum confirm "Continue with stow $action for these packages?" && {
-			run_stow "$action" "${packages[@]}"
-			run_config_stow "$action"
-		}
-		;;
+  # Welcome banner
+  gum style \
+    --border double \
+    --margin "1" \
+    --padding "1 2" \
+    --border-foreground 212 \
+    "✦  Dotfiles Installer  ✦" \
+    "OS: ${OS}${ENV_TYPE:+ | ${ENV_TYPE} server}"
 
-	"Install Brewfile")
-		install_brewfile
-		;;
+  # Build menu options
+  local opts=("Stow packages" "Install CLI tools" "Full setup" "Exit")
+  [[ "$OS" == "darwin" ]] && opts=(
+    "Stow packages"
+    "Install CLI tools"
+    "Full setup"
+    "Apply macOS defaults"
+    "Exit"
+  )
 
-	"Apply macOS defaults")
-		apply_macos_defaults
-		;;
+  local choice
+  choice=$(gum choose --height 8 "${opts[@]}") || exit 0
 
-	"Full installation")
-		install_brewfile
-		read -r -a packages <<<"$(detect_packages)"
-		gum style --foreground 212 "Stowing all packages..."
-		run_stow "--restow" "${packages[@]}"
-		run_config_stow "--restow"
-		apply_macos_defaults
-		;;
+  case "$choice" in
+    "Stow packages")
+      stow_flow
+      ;;
+    "Install CLI tools")
+      cli_flow
+      ;;
+    "Full setup")
+      stow_flow
+      cli_flow
+      [[ "$OS" == "darwin" ]] && apply_macos_defaults
+      ;;
+    "Apply macOS defaults")
+      apply_macos_defaults
+      ;;
+    "Exit")
+      exit 0
+      ;;
+  esac
 
-	"Exit")
-		gum style --foreground 212 "Exiting..."
-		exit 0
-		;;
-	esac
-
-	gum style --foreground 46 "Dotfiles setup completed!"
+  gum style --foreground 46 "✦ Dotfiles setup complete!"
 }
 
 main

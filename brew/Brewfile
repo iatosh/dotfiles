@@ -1,14 +1,140 @@
-
-# tap repositories and their packages
-
+# Common CLI tools (all platforms with Homebrew)
 brew "bat"
 brew "btop"
 brew "eza"
+brew "fd"
 brew "fzf"
 brew "gh"
+brew "git-delta"
+brew "gum"
+brew "lazygit"
 brew "neovim"
-brew "thefuck"
+brew "ripgrep"
+brew "starship"
+brew "tmux"
+brew "yazi"
 brew "zoxide"
 
-# Main file
-main ./Brewfile.$PLATFORM
+on_macos do
+  # CLI tools
+  brew "bash"
+  brew "claude-squad"
+  brew "cloudflared"
+  brew "cpanminus"
+  brew "deno"
+  brew "direnv"
+  brew "espeak-ng"
+  brew "fastfetch"
+  brew "ffmpeg"
+  brew "gmic"
+  brew "gnupg"
+  brew "go"
+  brew "helix"
+  brew "imagemagick"
+  brew "mas"
+  brew "node"
+  brew "nvm"
+  brew "pake"
+  brew "pixi"
+  brew "pnpm"
+  brew "pv"
+  brew "python@3.13"
+  brew "rust"
+  brew "stow"
+  brew "tokei"
+  brew "uv"
+  brew "yq"
+  brew "yt-dlp"
+  brew "zinit"
+
+  tap "charmbracelet/tap"
+  brew "crush"
+
+  tap "daipeihust/tap"
+  brew "im-select"
+
+  tap "rcmdnk/file"
+  brew "brew-file"
+
+  # Casks
+  cask "aldente"
+  cask "amazon-q"
+  cask "antigravity"
+  cask "appcleaner"
+  cask "arc"
+  cask "betterdisplay"
+  cask "blender"
+  cask "cap"
+  cask "claude"
+  cask "claude-code"
+  cask "codexbar"
+  cask "cursor"
+  cask "discord"
+  cask "displaylink"
+  cask "dockdoor"
+  cask "drawio"
+  cask "eqmac"
+  cask "flashspace"
+  cask "ghostty"
+  cask "gimp"
+  cask "git-credential-manager"
+  cask "google-chrome"
+  cask "google-drive"
+  cask "hammerspoon"
+  cask "iina"
+  cask "imageoptim"
+  cask "iterm2"
+  cask "itermai"
+  cask "jan"
+  cask "karabiner-elements"
+  cask "keyboardcleantool"
+  cask "lm-studio"
+  cask "maccy"
+  cask "mactex-no-gui"
+  cask "macwhisper"
+  cask "mia-for-gmail"
+  cask "microsoft-auto-update"
+  cask "microsoft-office"
+  cask "moonlight"
+  cask "musescore"
+  cask "ngrok"
+  cask "nomachine"
+  cask "obsidian"
+  cask "raspberry-pi-imager"
+  cask "rawtherapee"
+  cask "raycast"
+  cask "slack"
+  cask "the-unarchiver"
+  cask "tunnelblick"
+  cask "visual-studio-code"
+  cask "wezterm"
+  cask "xquartz"
+  cask "yt-music"
+  cask "zed"
+  cask "zoom"
+  cask "zotero"
+
+  tap "manaflow-ai/cmux"
+  cask "cmux"
+
+  tap "nikitabobko/tap"
+  cask "aerospace"
+
+  tap "tw93/tap"
+  cask "kakuku"
+
+  # App Store
+  mas "Amphetamine", id: 937984704
+  mas "Bandicam", id: 6745725677
+  mas "Dropover", id: 1355679052
+  mas "Goodnotes", id: 1444383602
+  mas "Hidden Bar", id: 1452453066
+  mas "Keynote Creator Studio", id: 361285480
+  mas "Keynote", id: 409183694
+  mas "LINE", id: 539883307
+  mas "Remote Mouse", id: 403195710
+  mas "RunCat", id: 497799835
+  mas "Spark", id: 1176895641
+  mas "Tailscale", id: 1475387142
+  mas "Xcode", id: 497799835
+end
