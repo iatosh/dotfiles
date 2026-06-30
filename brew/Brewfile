@@ -15,6 +15,11 @@ brew "tmux"
 brew "yazi"
 brew "zoxide"
 
+on_linux do
+  # Linux-specific tools (private server with Homebrew)
+  # Move to common section above if also needed on macOS
+end
+
 on_macos do
   # CLI tools
   brew "bash"
