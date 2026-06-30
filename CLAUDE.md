@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a comprehensive dotfiles repository for macOS and Linux development environments, managed with GNU Stow for symlink management and Gum for beautiful CLI interfaces. The configuration supports a full development stack including Zsh, Neovim, Tmux, Wezterm, and various CLI tools.
+A cross-platform dotfiles repository for macOS and Linux (including shared servers without root). Uses a bash-native symlink manager (no stow dependency), Homebrew for package management, and mise for rootless CLI tool installation on shared Linux servers.
 
 ## Common Commands
 
@@ -13,71 +13,58 @@ This is a comprehensive dotfiles repository for macOS and Linux development envi
 # Interactive installation (recommended)
 ./install.sh
 
-# Uninstall all configurations
-./install.sh --uninstall
-
-# Update after pulling changes
-git pull && ./install.sh
+# Update brew packages and auto-insert new ones into Brewfile
+bin/utils/update-brew.sh
 ```
 
 ### Package Management
 ```bash
-# Install all Homebrew packages
+# Install all packages
 brew bundle --file=brew/Brewfile
 
-# Install OS-specific packages
-brew bundle --file=brew/Brewfile.darwin    # macOS only
-brew bundle --file=brew/Brewfile.linux     # Linux only
-
-# Update brew packages
-bin/utils/update-brew.sh
-```
-
-### macOS Configuration
-```bash
 # Apply macOS system defaults
 bin/macos/defaults.sh
 ```
 
 ## Architecture
 
+### Symlink Strategy
+- **No stow dependency**: `install.sh` uses a bash-native `symlink_package()` with `find + ln -sf`
+- Top-level dirs (e.g. `zsh/`, `git/`) are symlinked targeting `$HOME`
+- `config/<subdir>` packages target `$HOME/.config/<subdir>` individually
+- Exclusions defined in `brew/install.conf` (`EXCLUDE_ALWAYS`, `EXCLUDE_LINUX`, `EXCLUDE_DARWIN`)
+
 ### Package Management Strategy
-- **GNU Stow**: Creates symlinks from `~` and `~/.config` to repository files
-- **Homebrew**: Cross-platform package management with OS-specific Brewfiles
-- **Modular Configuration**: Each tool has its own directory that can be independently stowed
+- **Single Brewfile** (`brew/Brewfile`) with `on_macos do` / `on_linux do` blocks
+- **mise**: used on shared Linux servers (no root) — tools defined in `brew/install.conf` `MISE_TOOLS`
+- `bin/utils/update-brew.sh`: auto-inserts `brew leaves` + casks into the correct OS block
 
 ### Key Directories
 - `config/`: XDG-compliant configurations (symlinked to `~/.config`)
-- `brew/`: Homebrew bundle files for different platforms
+- `brew/`: Brewfile and install.conf
 - `bin/`: Executable scripts and utilities
 - `zsh/.zsh/`: Modularized Zsh configuration (aliases, env, functions, etc.)
 
 ### Configuration Modules
 - **Zsh**: Zinit plugin manager + Powerlevel10k theme + modular config in `zsh/.zsh/`
-- **Neovim**: Managed as Git submodule based on Kickstart.nvim
+- **Neovim**: Managed as Git submodule
 - **Tmux**: Feature-rich setup with plugins in `config/tmux/plugins/`
 - **Wezterm**: Modern terminal emulator with custom configuration
 - **Git**: Global Git configuration and aliases
 
-### Secret Management
-Store sensitive data in `~/dotfiles/.secrets` (automatically sourced by `zsh/.zsh/env.zsh` if present).
-
 ### Platform Support
-- **Darwin (macOS)**: Full feature set including Karabiner-Elements key remapping
-- **Linux**: All features except macOS-specific tools (Karabiner excluded automatically)
+- **Darwin (macOS)**: Full feature set including Karabiner-Elements, Aerospace
+- **Linux private server**: Homebrew-based (same Brewfile, `on_linux` block)
+- **Linux shared server**: mise-based, no root required
 
-### Current Git State
-- Working branch: `darwin`
-- Main branch: `main`
-- Neovim config managed as submodule
+### Secret Management
+Store sensitive data in `~/dotfiles/.secrets` (auto-sourced by `zsh/.zsh/env.zsh`).
 
-## Development Workflow
+## Git Commit Style
 
-When modifying configurations:
-1. Test changes in the specific tool/application
-2. Update the relevant configuration file in its module directory
-3. Use `./install.sh` to re-stow if needed
-4. Commit changes with descriptive messages following the existing emoji-prefixed format
+- Use emoji prefix (e.g. `✨`, `🔧`, `●`, `◆`) to match existing history
+- **Do not add `Co-Authored-By` trailers**
+- Keep messages concise and descriptive
 
 ## Notable Tools and CLIs
-The repository configures modern CLI alternatives: `bat` (cat), `eza` (ls), `fzf` (fuzzy finder), `ripgrep` (grep), `zoxide` (cd), `btop` (top), and `fd` (find).
+`bat` (cat), `eza` (ls), `fzf` (fuzzy finder), `ripgrep` (grep), `zoxide` (cd), `btop` (top), `fd` (find), `gum` (TUI), `mise` (runtime manager)
