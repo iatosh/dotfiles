@@ -246,9 +246,12 @@ stow_flow() {
     return
   fi
 
-  gum style --foreground 212 "Select packages to stow (space to toggle, enter to confirm):"
+  local preselected
+  preselected=$(IFS=,; printf '%s' "${all_pkgs[*]}")
+
+  gum style --foreground 212 "Deselect packages to skip (space to toggle, enter to confirm):"
   local selected
-  selected=$(gum choose --no-limit "${all_pkgs[@]}") || true
+  selected=$(gum choose --no-limit --selected="$preselected" "${all_pkgs[@]}") || true
   [[ -z "$selected" ]] && { gum style --foreground 220 "No packages selected."; return; }
 
   local action
