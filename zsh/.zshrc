@@ -23,15 +23,23 @@ for config_file in $DOTFILES_PATH/zsh/.zsh/*.zsh(N); do
 done
 
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/atosh/.lmstudio/bin"
+if [[ -d "$HOME/.lmstudio/bin" ]]; then
+    export PATH="$PATH:$HOME/.lmstudio/bin"
+fi
 # End of LM Studio CLI section
 
-
-alias claude-mem='bun "/Users/atosh/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
+CLAUDE_MEM_WORKER="$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"
+if [[ -f "$CLAUDE_MEM_WORKER" ]]; then
+    alias claude-mem="bun \"$CLAUDE_MEM_WORKER\""
+fi
+unset CLAUDE_MEM_WORKER
 
 # Added by Antigravity
-export PATH="/Users/atosh/.antigravity/antigravity/bin:$PATH"
-
+if [[ -d "$HOME/.antigravity/antigravity/bin" ]]; then
+    export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+fi
 
 # bun completions
-[ -s "/Users/atosh/.bun/_bun" ] && source "/Users/atosh/.bun/_bun"
+if [[ -s "$HOME/.bun/_bun" ]]; then
+    source "$HOME/.bun/_bun"
+fi
