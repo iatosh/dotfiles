@@ -29,6 +29,8 @@ fi
 
 # NVM - Node Version Manager
 if [ -s "$HOMEBREW_PREFIX/opt/nvm/nvm.sh" ]; then
+    export NVM_DIR="$HOME/.nvm"
+    [ -d "$NVM_DIR" ] || mkdir -p "$NVM_DIR"
     source "$HOMEBREW_PREFIX/opt/nvm/nvm.sh"
 fi
 

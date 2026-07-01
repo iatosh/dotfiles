@@ -19,7 +19,7 @@ elif [[ -f ~/.linuxbrew/bin/brew ]]; then
 elif [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
     # Linux (system installation)
     HOMEBREW_PATH="/home/linuxbrew/.linuxbrew"
-else
+elif [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Warning: Homebrew not found"
 fi
 

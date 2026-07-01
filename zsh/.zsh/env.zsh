@@ -21,10 +21,6 @@ export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
 # Homebrew
 export HOMEBREW_BREWFILE="$DOTFILES_PATH/pkg/Brewfile"
 
-# NVM directory
-export NVM_DIR="$HOME/.nvm"
-[ -d "$NVM_DIR" ] || mkdir -p "$NVM_DIR"
-
 # Bun
 export BUN_INSTALL="$HOME/.bun"
 
