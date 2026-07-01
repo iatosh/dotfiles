@@ -14,13 +14,13 @@ A cross-platform dotfiles repository for macOS and Linux (including shared serve
 ./install.sh
 
 # Update brew packages and auto-insert new ones into Brewfile
-bin/utils/update-brew.sh
+pkg/update-brew.sh
 ```
 
 ### Package Management
 ```bash
 # Install all packages
-brew bundle --file=brew/Brewfile
+brew bundle --file=pkg/Brewfile
 
 # Apply macOS system defaults
 bin/macos/defaults.sh
@@ -32,16 +32,16 @@ bin/macos/defaults.sh
 - **No stow dependency**: `install.sh` uses a bash-native `symlink_package()` with `find + ln -sf`
 - Top-level dirs (e.g. `zsh/`, `git/`) are symlinked targeting `$HOME`
 - `config/<subdir>` packages target `$HOME/.config/<subdir>` individually
-- Exclusions defined in `brew/install.conf` (`EXCLUDE_ALWAYS`, `EXCLUDE_LINUX`, `EXCLUDE_DARWIN`)
+- Exclusions defined in `pkg/install.conf` (`EXCLUDE_ALWAYS`, `EXCLUDE_LINUX`, `EXCLUDE_DARWIN`)
 
 ### Package Management Strategy
-- **Single Brewfile** (`brew/Brewfile`) with `on_macos do` / `on_linux do` blocks
-- **mise**: used on shared Linux servers (no root) — tools defined in `brew/install.conf` `MISE_TOOLS`
-- `bin/utils/update-brew.sh`: auto-inserts `brew leaves` + casks into the correct OS block
+- **Single Brewfile** (`pkg/Brewfile`) with `on_macos do` / `on_linux do` blocks
+- **mise**: used on shared Linux servers (no root) — tools defined in `pkg/install.conf` `MISE_TOOLS`
+- `pkg/update-brew.sh`: auto-inserts `brew leaves` + casks into the correct OS block
 
 ### Key Directories
 - `config/`: XDG-compliant configurations (symlinked to `~/.config`)
-- `brew/`: Brewfile and install.conf
+- `pkg/`: Brewfile, install.conf, update-brew.sh
 - `bin/`: Executable scripts and utilities
 - `zsh/.zsh/`: Modularized Zsh configuration (aliases, env, functions, etc.)
 

@@ -19,7 +19,7 @@ export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
 export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
 
 # Homebrew
-export HOMEBREW_BREWFILE="$DOTFILES_PATH/brew/Brewfile"
+export HOMEBREW_BREWFILE="$DOTFILES_PATH/pkg/Brewfile"
 
 # NVM directory
 export NVM_DIR="$HOME/.nvm"

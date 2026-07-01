@@ -2,7 +2,7 @@
 set -eo pipefail
 
 DOTFILES="$HOME/dotfiles"
-BREWFILE="$DOTFILES/brew/Brewfile"
+BREWFILE="$DOTFILES/pkg/Brewfile"
 
 # Detect which block to insert into based on OS
 case "$(uname -s)" in

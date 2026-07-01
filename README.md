@@ -40,8 +40,8 @@ My personal configuration files for macOS and Linux development environments, wi
 
 ```
 dotfiles/
-├── bin/            # Utility scripts (update-brew.sh, macos/defaults.sh, …)
-├── brew/           # Brewfile + install.conf (mise tool list, exclusions)
+├── bin/            # Utility scripts (macos/defaults.sh, …)
+├── pkg/            # Brewfile, install.conf, update-brew.sh (mise tool list, exclusions)
 ├── claude/         # Claude Code configuration
 ├── config/         # XDG configs → ~/.config/ (tmux, wezterm, zed, yazi, …)
 ├── git/            # .gitconfig

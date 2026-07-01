@@ -2,7 +2,7 @@
 set -eo pipefail
 
 DOTFILES="${HOME}/dotfiles"
-CONF="${DOTFILES}/brew/install.conf"
+CONF="${DOTFILES}/pkg/install.conf"
 
 # ─── Plain output (used before gum is available) ──────────────────────────────
 
@@ -14,7 +14,7 @@ _header()  { printf "\n\033[1;36m  ══ %s ══\033[0m\n\n" "$1"; }
 # ─── Load config ──────────────────────────────────────────────────────────────
 
 [[ -f "$CONF" ]] || { _err "install.conf not found: $CONF"; exit 1; }
-# shellcheck source=brew/install.conf
+# shellcheck source=pkg/install.conf
 source "$CONF"
 
 # ─── OS detection ─────────────────────────────────────────────────────────────
@@ -231,7 +231,7 @@ install_mise_tools() {
 
 install_brew_tools() {
   setup_brew
-  local brewfile="${DOTFILES}/brew/Brewfile"
+  local brewfile="${DOTFILES}/pkg/Brewfile"
   [[ -f "$brewfile" ]] || { gum style --foreground 196 "Brewfile not found."; return 1; }
   gum spin --spinner dot --title "Installing from Brewfile..." -- \
     brew bundle --file="$brewfile"
