@@ -56,7 +56,7 @@ dotfiles/
 
 ## Installation
 
-Requires only `git` and `curl` to get started.
+Requires `git`, `curl`, and **zsh** (all shell config is zsh-specific).
 
 ```bash
 git clone https://github.com/iatosh/dotfiles.git ~/dotfiles

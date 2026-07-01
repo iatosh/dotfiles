@@ -31,6 +31,12 @@ ENV_TYPE=""  # linux only: "shared" | "private"
 # ─── Bootstrap gum ────────────────────────────────────────────────────────────
 
 bootstrap_gum() {
+  # Bash doesn't load shell profiles, so prepend common bin locations first
+  for _p in "/opt/homebrew/bin" "/usr/local/bin" "${HOME}/.local/bin"; do
+    [[ -d "$_p" && ":${PATH}:" != *":${_p}:"* ]] && PATH="${_p}:${PATH}"
+  done
+  export PATH
+
   if command -v gum >/dev/null 2>&1; then
     _success "gum found."
     return 0
@@ -361,6 +367,7 @@ main() {
   esac
 
   gum style --foreground 46 "✦ Dotfiles setup complete!"
+  gum style --foreground 39 "  Run: source ~/.zshrc"
 }
 
 main
