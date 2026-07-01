@@ -4,6 +4,8 @@ My personal configuration files for macOS and Linux development environments, wi
 
 > **Note:** This is a personal setup tailored to my workflow — not a plug-and-play solution. Feel free to browse and borrow whatever looks useful.
 
+![demo](assets/demo.gif)
+
 ---
 
 ## What's inside
@@ -40,6 +42,7 @@ My personal configuration files for macOS and Linux development environments, wi
 
 ```
 dotfiles/
+├── assets/         # README images/gifs
 ├── bin/            # Utility scripts (macos/defaults.sh, …)
 ├── pkg/            # Brewfile, install.conf, update-brew.sh (mise tool list, exclusions)
 ├── claude/         # Claude Code configuration
