@@ -9,6 +9,9 @@
 [init]
 	defaultBranch = main
 
+[submodule]
+	recurse = true
+
 [color]
 	ui = auto
 
