@@ -79,44 +79,63 @@ bootstrap_gum() {
 # ─── Symlink (bash-native, no stow dependency) ────────────────────────────────
 
 symlink_package() {
-  local action=$1  # --restow | --delete
+  local action=$1
   local pkg=$2
-  local pkg_dir target
 
-  # config/<subdir> packages target $HOME/.config/<subdir>
   if [[ "$pkg" == config/* ]]; then
     local subname="${pkg#config/}"
-    pkg_dir="${DOTFILES}/config/${subname}"
-    target="${HOME}/.config/${subname}"
-  else
-    pkg_dir="${DOTFILES}/${pkg}"
-    target="${HOME}"
-  fi
+    local src="${DOTFILES}/config/${subname}"
+    local dst="${HOME}/.config/${subname}"
 
-  if [[ ! -d "$pkg_dir" ]]; then
-    gum style --foreground 196 "  ✗ Not found: ${pkg}"
-    return 1
-  fi
-
-  local count=0
-  while IFS= read -r src; do
-    local rel="${src#${pkg_dir}/}"
-    local dst="${target}/${rel}"
+    if [[ ! -d "$src" ]]; then
+      gum style --foreground 196 "  ✗ Not found: ${pkg}"
+      return 1
+    fi
+    mkdir -p "${HOME}/.config"
     case "$action" in
       --restow)
-        mkdir -p "$(dirname "$dst")"
-        ln -sf "$src" "$dst"
+        if [[ -d "$dst" && ! -L "$dst" ]]; then
+          gum style --foreground 220 "  ⚠ Real dir exists, skipping: ${dst}"
+          return
+        fi
+        ln -sfn "$src" "$dst"
+        gum style --foreground 46 "  ✓ ${pkg}"
         ;;
       --delete)
         [[ -L "$dst" ]] && rm "$dst"
+        gum style --foreground 46 "  ✓ removed ${pkg}"
         ;;
     esac
-    (( count++ )) || true
-  done < <(find "$pkg_dir" -not -type d \
-    -not -path "*/.git/*" -not -name ".git" \
-    -not -name "README*" -not -name "*.md" -not -name ".DS_Store")
 
-  gum style --foreground 46 "  ✓ ${pkg} (${count} files)"
+  else
+    local pkg_dir="${DOTFILES}/${pkg}"
+    if [[ ! -d "$pkg_dir" ]]; then
+      gum style --foreground 196 "  ✗ Not found: ${pkg}"
+      return 1
+    fi
+    local count=0
+    while IFS= read -r src; do
+      local name
+      name=$(basename "$src")
+      local dst="${HOME}/${name}"
+      case "$action" in
+        --restow)
+          if [[ -d "$dst" && ! -L "$dst" ]]; then
+            gum style --foreground 220 "  ⚠ Real dir exists, skipping: ${dst}"
+            continue
+          fi
+          ln -sfn "$src" "$dst"
+          ;;
+        --delete)
+          [[ -L "$dst" ]] && rm "$dst"
+          ;;
+      esac
+      (( count++ )) || true
+    done < <(find "$pkg_dir" -mindepth 1 -maxdepth 1 \
+      -not -name ".git" \
+      -not -name "README*" -not -name "*.md" -not -name ".DS_Store")
+    gum style --foreground 46 "  ✓ ${pkg} (${count} items)"
+  fi
 }
 
 # ─── Package detection ────────────────────────────────────────────────────────
