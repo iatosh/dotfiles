@@ -8,7 +8,10 @@ claude/.claude/*
 !claude/.claude/plugins/
 !claude/.claude/plugins/marketplaces/
 !claude/.claude/CLAUDE.md
-!claude/.claude/statusline.sh
+!claude/.claude/statusline-command.sh
+!claude/.claude/skills
+claude/.claude/plugins/marketplaces/thedotmack/
+claude/.claude/plugins/plugin-catalog-cache.json
 cache/
 config/zed/prompts/
 **/cache/
