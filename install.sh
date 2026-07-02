@@ -226,7 +226,7 @@ install_mise_tools() {
   for entry in "${MISE_TOOLS[@]}"; do
     local mise_name
     [[ "$entry" == *";"* ]] && mise_name="${entry#*;}" || mise_name="$entry"
-    gum spin --spinner dot --title "  Installing ${mise_name}..." -- \
+    gum spin --spinner dot --title "  Installing ${mise_name}..." --show-error -- \
       mise use --global "${mise_name}@latest" \
       || gum style --foreground 196 "  ✗ Failed: ${mise_name}"
   done
@@ -239,7 +239,7 @@ install_brew_tools() {
   setup_brew
   local brewfile="${DOTFILES}/pkg/Brewfile"
   [[ -f "$brewfile" ]] || { gum style --foreground 196 "Brewfile not found."; return 1; }
-  gum spin --spinner dot --title "Installing from Brewfile..." -- \
+  gum spin --spinner dot --title "Installing from Brewfile..." --show-error -- \
     brew bundle --file="$brewfile"
   gum style --foreground 46 "Brewfile installation complete."
 }
