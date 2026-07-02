@@ -225,7 +225,7 @@ install_mise_tools() {
   gum style --foreground 212 "Installing CLI tools via mise..."
   for entry in "${MISE_TOOLS[@]}"; do
     local mise_name
-    [[ "$entry" == *":"* ]] && mise_name="${entry#*:}" || mise_name="$entry"
+    [[ "$entry" == *";"* ]] && mise_name="${entry#*;}" || mise_name="$entry"
     gum spin --spinner dot --title "  Installing ${mise_name}..." -- \
       mise use --global "${mise_name}@latest" \
       || gum style --foreground 196 "  ✗ Failed: ${mise_name}"
