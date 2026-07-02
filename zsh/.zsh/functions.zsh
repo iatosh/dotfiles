@@ -50,12 +50,39 @@ _fzf_comprun() {
     esac
 }
 
-# Find and cd to directory
+# Pick a directory via fzf: subdirectories of $1 (default cwd) + zoxide history
+# Displays paths with $HOME shortened to ~, but returns the real absolute path
+_fcd_pick() {
+    { command -v zoxide &>/dev/null && zoxide query -l
+      find "${1:-$PWD}" -type d -name ".git" -prune -o -type d -print 2> /dev/null ; } |
+    awk -v home="$HOME" '!seen[$0]++ {
+        disp = $0
+        if (disp == home || index(disp, home "/") == 1) disp = "~" substr(disp, length(home) + 1)
+        print disp "\t" $0
+    }' |
+    fzf +m --delimiter='\t' --with-nth=1 --preview 'eza --tree --color=always {2} | head -200' |
+    cut -f2
+}
+
+# Jump to a directory via zoxide's z (falls back to cd if zoxide isn't installed)
+_fcd_jump() {
+    if command -v zoxide &>/dev/null; then z "$1"; else cd "$1"; fi
+}
+
+# Find and cd to directory (also searches zoxide history); also bound to Ctrl+G as a zle widget
 fcd() {
     local dir
-    dir=$(find ${1:-.} -type d -name ".git" -prune -o -type d -print 2> /dev/null | fzf +m) &&
-    cd "$dir"
+    dir=$(_fcd_pick "$1") && _fcd_jump "$dir"
+    if [[ -n $WIDGET ]]; then
+        # Powerlevel10k only recomputes prompt segments in precmd, so a plain
+        # `zle reset-prompt` redraws the stale pre-cd prompt; re-run precmd first.
+        local fn
+        for fn in $precmd_functions; do "$fn"; done
+        zle reset-prompt
+    fi
 }
+zle -N fcd
+bindkey '^G' fcd
 
 # Find file and open in editor
 fe() {
@@ -63,16 +90,6 @@ fe() {
     IFS=$'\n' files=($(fzf --query="$1" --multi --select-1 --exit-0))
     [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
 }
-
-# Ctrl+G: fzf directory search and cd
-fzf-cd-widget() {
-    local dir
-    dir=$(find ${1:-.} -type d -name ".git" -prune -o -type d -print 2> /dev/null | fzf +m --preview 'eza --tree --color=always {} | head -200') &&
-    cd "$dir"
-    zle reset-prompt
-}
-zle -N fzf-cd-widget
-bindkey '^G' fzf-cd-widget
 
 # ----------------------------------------------------------------------------
 # Git Functions
