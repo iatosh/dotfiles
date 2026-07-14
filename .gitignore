@@ -5,13 +5,11 @@ config/tmux/plugins/
 claude/.claude/*
 !claude/.claude/commands/
 !claude/.claude/modules/
-!claude/.claude/plugins/
-!claude/.claude/plugins/marketplaces/
 !claude/.claude/CLAUDE.md
+!claude/.claude/RTK.md
+!claude/.claude/settings.json
 !claude/.claude/statusline-command.sh
 !claude/.claude/skills
-claude/.claude/plugins/marketplaces/thedotmack/
-claude/.claude/plugins/plugin-catalog-cache.json
 cache/
 config/zed/prompts/
 **/cache/
