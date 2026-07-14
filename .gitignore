@@ -17,3 +17,15 @@ config/zed/prompts/
 **/cache/
 node_modules/
 **/node_modules/
+tail
+codex/.codex/*
+!codex/.codex/hooks.json
+!codex/.codex/rules/
+!codex/.codex/skills
+!codex/.codex/herdr-agent-state.sh
+config/herdr/*
+!config/herdr/config.toml
+agents/.agents/skills/.system/
+agents/.agents/skills/agmsg/db/
+agents/.agents/skills/agmsg/run/
+agents/.agents/skills/agmsg/teams/

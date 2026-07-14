@@ -149,3 +149,5 @@ You should use the following configuration to guide your behavior.
 
 ---
 *SuperClaude v2.0.1 | Development framework | Evidence-based methodology | Advanced Claude Code configuration*
+
+@RTK.md

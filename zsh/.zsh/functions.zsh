@@ -194,7 +194,7 @@ sst() {
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   # SSH to kodama with tailscale-aware host selection
-  sk() { 
+  sk() {
     # Tailscaleの出力から100.で始まるIPアドレスがあるかチェック（接続中の証拠）
     if tailscale status 2>/dev/null | grep -q "100\."; then
     else
@@ -204,3 +204,15 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     sst kodama
   }
 fi
+
+# --- for agmsg ---
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  export OPENAI_BASE_URL="http://kodama:4000/v1"
+else
+  export OPENAI_BASE_URL="http://192.168.11.147:4000/v1"
+fi
+codex() {
+  export OPENAI_API_KEY=KODAMA_LLM
+  export OPENAI_MODEL_NAME="qwen3.6-27b"
+  /Users/atosh/.agents/skills/agmsg/scripts/drivers/types/codex/codex-shim.sh "$@"
+}

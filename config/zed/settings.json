@@ -70,6 +70,9 @@
   "agent_buffer_font_size": 14.0,
   "agent_servers": {
     "github-copilot-cli": {
+      "default_config_options": {
+        "mode": "https://agentclientprotocol.com/protocol/session-modes#autopilot"
+      },
       "type": "registry",
     },
     "claude-acp": {
@@ -88,8 +91,8 @@
   "agent": {
     "dock": "right",
     "inline_assistant_model": {
-      "provider": "copilot_chat",
-      "model": "gpt-5.2",
+      "provider": "zed.dev",
+      "model": "claude-sonnet-5",
       "enable_thinking": false,
     },
     "default_model": {

@@ -315,6 +315,105 @@
       "skillFolderHash": "fe9ea82cad2b42a9c244acc275c9091c414ff528",
       "installedAt": "2026-06-23T18:58:19.082Z",
       "updatedAt": "2026-06-23T18:58:19.082Z"
+    },
+    "caveman": {
+      "source": "juliusbrussee/caveman",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/juliusbrussee/caveman.git",
+      "skillPath": "skills/caveman/SKILL.md",
+      "skillFolderHash": "166040c027f7764d43df36abc5df0079bfc6394b",
+      "installedAt": "2026-07-07T01:55:33.913Z",
+      "updatedAt": "2026-07-07T01:55:33.913Z"
+    },
+    "caveman-commit": {
+      "source": "juliusbrussee/caveman",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/juliusbrussee/caveman.git",
+      "skillPath": "skills/caveman-commit/SKILL.md",
+      "skillFolderHash": "6ba13fa3503e9607eed8f94828b524510d83b7ef",
+      "installedAt": "2026-07-07T01:55:37.908Z",
+      "updatedAt": "2026-07-07T01:55:37.908Z"
+    },
+    "caveman-review": {
+      "source": "juliusbrussee/caveman",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/juliusbrussee/caveman.git",
+      "skillPath": "skills/caveman-review/SKILL.md",
+      "skillFolderHash": "2d9762b7aec395b9713fde57fb8965bc3bbd2c3f",
+      "installedAt": "2026-07-07T01:55:42.633Z",
+      "updatedAt": "2026-07-07T01:55:42.633Z"
+    },
+    "caveman-compress": {
+      "source": "juliusbrussee/caveman",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/juliusbrussee/caveman.git",
+      "skillPath": "skills/caveman-compress/SKILL.md",
+      "skillFolderHash": "1284ac809fbdaeb9e871f84ee850aebe10c85030",
+      "installedAt": "2026-07-07T01:55:47.193Z",
+      "updatedAt": "2026-07-07T01:55:47.193Z"
+    },
+    "caveman-help": {
+      "source": "juliusbrussee/caveman",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/juliusbrussee/caveman.git",
+      "skillPath": "skills/caveman-help/SKILL.md",
+      "skillFolderHash": "b4f5ebc5f3ce9bfa652996b5161bbe3cc0b88297",
+      "installedAt": "2026-07-07T01:55:51.607Z",
+      "updatedAt": "2026-07-07T01:55:51.607Z"
+    },
+    "cavecrew": {
+      "source": "juliusbrussee/caveman",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/juliusbrussee/caveman.git",
+      "skillPath": "skills/cavecrew/SKILL.md",
+      "skillFolderHash": "326ab384eb445cc0a74608d6f0c0abe6558bb44a",
+      "installedAt": "2026-07-07T01:59:00.336Z",
+      "updatedAt": "2026-07-07T01:59:00.336Z"
+    },
+    "caveman-stats": {
+      "source": "juliusbrussee/caveman",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/juliusbrussee/caveman.git",
+      "skillPath": "skills/caveman-stats/SKILL.md",
+      "skillFolderHash": "62b175240e2851f0b9be4f279737cbd74ed2e769",
+      "installedAt": "2026-07-07T01:59:04.484Z",
+      "updatedAt": "2026-07-07T01:59:04.484Z"
+    },
+    "ts-library": {
+      "source": "onmax/nuxt-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/onmax/nuxt-skills.git",
+      "skillPath": "skills/ts-library/SKILL.md",
+      "skillFolderHash": "ce2485918bc681d871b9bf15066e4637c2b9dfa0",
+      "installedAt": "2026-07-09T03:35:51.948Z",
+      "updatedAt": "2026-07-09T03:35:51.948Z"
+    },
+    "herdr": {
+      "source": "ogulcancelik/herdr",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/ogulcancelik/herdr.git",
+      "skillPath": "SKILL.md",
+      "skillFolderHash": "36b2e2f5463139a284483732131ce44977881239",
+      "installedAt": "2026-07-09T04:28:36.562Z",
+      "updatedAt": "2026-07-09T04:28:36.562Z"
+    },
+    "using-git-worktrees": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/obra/superpowers.git",
+      "skillPath": "skills/using-git-worktrees/SKILL.md",
+      "skillFolderHash": "069a24665c6ce34ca78da57727c84e3c05e65c76",
+      "installedAt": "2026-07-09T16:08:03.495Z",
+      "updatedAt": "2026-07-09T16:08:03.495Z"
+    },
+    "create-readme": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/github/awesome-copilot.git",
+      "skillPath": "skills/create-readme/SKILL.md",
+      "skillFolderHash": "f65537a3461b663121fe195697979c17a8004ea5",
+      "installedAt": "2026-07-13T00:55:55.817Z",
+      "updatedAt": "2026-07-13T00:55:55.817Z"
     }
   },
   "dismissed": {

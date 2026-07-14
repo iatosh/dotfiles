@@ -1,0 +1,9 @@
+#compdef opencli
+# Zsh completion for opencli (auto-installed)
+_opencli() {
+  local -a completions
+  local cword=$((CURRENT - 1))
+  completions=(${(f)"$(opencli --get-completions --cursor "$cword" "${words[@]:1}" 2>/dev/null)"})
+  compadd -a completions
+}
+_opencli

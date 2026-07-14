@@ -45,7 +45,7 @@ local function create_theme(name, palette)
     -- Tab bar colors
     tab_bar = {
       background = palette.dark1,
-      
+
       active_tab = {
         bg_color = palette.background,
         fg_color = palette.accent3,
@@ -54,23 +54,23 @@ local function create_theme(name, palette)
         italic = false,
         strikethrough = false,
       },
-      
+
       inactive_tab = {
         bg_color = palette.dark1,
         fg_color = palette.dimmed2,
       },
-      
+
       inactive_tab_hover = {
         bg_color = palette.dimmed5,
         fg_color = palette.dimmed1,
         italic = false,
       },
-      
+
       new_tab = {
         bg_color = palette.dark1,
         fg_color = palette.dimmed2,
       },
-      
+
       new_tab_hover = {
         bg_color = palette.dimmed5,
         fg_color = palette.dimmed1,
@@ -111,7 +111,7 @@ local palettes = {
     dimmed4 = "#5b595c",
     dimmed5 = "#403e41",
   },
-  
+
   octagon = {
     dark2 = "#161821",
     dark1 = "#1e1f2b",
@@ -129,7 +129,7 @@ local palettes = {
     dimmed4 = "#535763",
     dimmed5 = "#3a3d4b",
   },
-  
+
   machine = {
     dark2 = "#161b1e",
     dark1 = "#1d2528",
@@ -147,7 +147,7 @@ local palettes = {
     dimmed4 = "#545f62",
     dimmed5 = "#3a4449",
   },
-  
+
   ristretto = {
     dark2 = "#191515",
     dark1 = "#211c1c",
@@ -165,7 +165,7 @@ local palettes = {
     dimmed4 = "#5b5353",
     dimmed5 = "#403838",
   },
-  
+
   spectrum = {
     dark2 = "#131313",
     dark1 = "#191919",
@@ -183,7 +183,7 @@ local palettes = {
     dimmed4 = "#525053",
     dimmed5 = "#363537",
   },
-  
+
   classic = {
     dark2 = "#161613",
     dark1 = "#1d1e19",
@@ -226,7 +226,7 @@ function module.register_color_schemes(config)
   if not config.color_schemes then
     config.color_schemes = {}
   end
-  
+
   for name, palette in pairs(palettes) do
     local scheme_name = "Monokai Pro (" .. name:gsub("^%l", string.upper) .. ")"
     config.color_schemes[scheme_name] = create_theme(scheme_name, palette)
@@ -237,14 +237,14 @@ end
 function module.apply_to_config(config, variant)
   -- Register all color schemes first
   module.register_color_schemes(config)
-  
+
   -- Set the default variant (if not specified, use "pro")
-  variant = variant or "pro" 
+  variant = variant or "pro"
   local scheme_name = "Monokai Pro (" .. variant:gsub("^%l", string.upper) .. ")"
 
   -- Apply the color scheme
   config.color_scheme = scheme_name
-  
+
   -- Optional: Add inactive pane dimming for better visibility when using splits
   config.inactive_pane_hsb = {
     saturation = 0.8,
