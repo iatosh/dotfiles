@@ -17,6 +17,10 @@ typeset -U path PATH
 # Set dotfiles path
 DOTFILES_PATH=$HOME/dotfiles
 
+# Source API keys and private configurations
+SECRET_FILE="$DOTFILES_PATH/.secrets"
+[[ -f "$SECRET_FILE" ]] && source "$SECRET_FILE"
+
 # Load all configuration files
 for config_file in $DOTFILES_PATH/zsh/.zsh/*.zsh(N); do
     source "$config_file"

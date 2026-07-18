@@ -206,13 +206,21 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 # --- for agmsg ---
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  export OPENAI_BASE_URL="http://kodama:4000/v1"
-else
-  export OPENAI_BASE_URL="http://192.168.11.147:4000/v1"
-fi
 codex() {
-  export OPENAI_API_KEY=KODAMA_LLM
-  export OPENAI_MODEL_NAME="qwen3.6-27b"
-  /Users/atosh/.agents/skills/agmsg/scripts/drivers/types/codex/codex-shim.sh "$@"
+  OPENAI_BASE_URL=$KODAMA_ENDPOINT \
+  OPENAI_API_KEY=$KODAMA_KEY \
+  OPENAI_MODEL_NAME="qwen3.6-27b" \
+  $HOME/.agents/skills/agmsg/scripts/drivers/types/codex/codex-shim.sh "$@"
+}
+
+ccl() {
+  ANTHROPIC_BASE_URL=$KODAMA_ENDPOINT \
+  ANTHROPIC_AUTH_TOKEN=$KODAMA_KEY \
+  ANTHROPIC_MODEL="qwen3.6-27b" \
+  ANTHROPIC_DEFAULT_HAIKU_MODEL="qwen3.6-35b" \
+  ANTHROPIC_SMALL_FAST_MODEL="qwen3.6-35b" \
+  CLAUDE_CODE_ATTRIBUTION_HEADER=0 \
+  CLAUDE_CODE_ENABLE_TELEMETRY=0 \
+  CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1 \
+  claude
 }

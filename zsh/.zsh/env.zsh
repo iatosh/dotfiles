@@ -77,10 +77,3 @@ setopt PRINT_EIGHT_BIT    # Display 8-bit characters properly
 setopt PROMPT_SUBST       # Enable command substitution in prompt
 setopt NO_BEEP           # Disable terminal beep
 
-# ----------------------------------------------------------------------------
-# Load Secrets
-# ----------------------------------------------------------------------------
-
-# Source API keys and private configurations
-SECRET_FILE="$DOTFILES_PATH/.secrets"
-[[ -f "$SECRET_FILE" ]] && source "$SECRET_FILE"
