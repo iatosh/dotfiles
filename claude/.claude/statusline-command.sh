@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Claude Code statusLine command
 # Prints: dir, a color-coded context usage bar, and the 5h rate limit
 # with time-to-reset shown via an hourglass icon whose fill reflects how
@@ -11,9 +11,46 @@ dir=$(printf '%s' "$input" | jq -r '.workspace.current_dir // empty')
 [ -z "$dir" ] && dir=$(pwd)
 dir="${dir/#$HOME/~}"
 
+# p10k-style path shortening: components collapse to their first character
+# (dotfile dirs keep the dot plus one char, so .config reads as .c), but only
+# as many as needed — shortening walks left to right and stops as soon as the
+# path fits DIR_MAX_LEN. The current directory is never touched, and neither
+# are components of DIR_KEEP_LEN chars or fewer, since abbreviating those
+# saves almost nothing.
+DIR_MAX_LEN=20
+DIR_KEEP_LEN=4
+shorten_dir() {
+  p=$1
+  [ "${#p}" -le "$DIR_MAX_LEN" ] && { printf '%s' "$p"; return; }
+  case "$p" in
+    /*) lead="/"; rest="${p#/}" ;;
+    *)  lead="";  rest="$p" ;;
+  esac
+  IFS='/' read -r -a parts <<< "$rest"
+  n=${#parts[@]}
+  join_parts() { local IFS='/'; printf '%s%s' "$lead" "${parts[*]}"; }
+  i=0
+  while [ "$i" -lt $((n - 1)) ]; do
+    cur=$(join_parts)
+    [ "${#cur}" -le "$DIR_MAX_LEN" ] && break
+    seg="${parts[$i]}"
+    if [ "${#seg}" -gt "$DIR_KEEP_LEN" ]; then
+      case "$seg" in
+        .?*) parts[$i]="${seg:0:2}" ;;
+        *)   parts[$i]="${seg:0:1}" ;;
+      esac
+    fi
+    i=$((i+1))
+  done
+  join_parts
+}
+dir=$(shorten_dir "$dir")
+
 ctx=$(printf '%s' "$input" | jq -r '.context_window.used_percentage // empty')
 five=$(printf '%s' "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
 five_reset=$(printf '%s' "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
+model=$(printf '%s' "$input" | jq -r '.model.display_name // empty')
+effort=$(printf '%s' "$input" | jq -r '.effort.level // empty')
 
 FIVE_HOUR_SECS=18000
 
@@ -22,6 +59,8 @@ FIVE_HOUR_SECS=18000
 RESET=$(printf '\033[00m')
 DIM=$(printf '\033[02m')
 TRACK=$(printf '\033[38;5;238m')
+DIRCOLOR=$(printf '\033[34m')
+DIRCOLOR_BOLD=$(printf '\033[01;34m')
 
 # Continuous truecolor gradient green -> yellow -> red, saturating to
 # pure red by 90 (rather than only at 100) so high usage reads as urgent
@@ -74,6 +113,17 @@ hourglass_icon() {
   fi
 }
 
+# Effort level -> braille fill glyph, same dot family as the context/rate
+# bars so it reads as one visual language.
+effort_icon() {
+  case "$1" in
+    low)    printf '⣀' ;;
+    medium) printf '⣄' ;;
+    high)   printf '⣦' ;;
+    xhigh)  printf '⣶' ;;
+    max)    printf '⣿' ;;
+  esac
+}
 # Seconds until epoch -> "Xh Ym" (or "Ym" under an hour)
 fmt_remaining() {
   now=$(date +%s)
@@ -86,14 +136,14 @@ fmt_remaining() {
   fi
 }
 
-suffix=""
-
 # Context usage: gauge + percentage
+ctx_seg=""
 if [ -n "$ctx" ]; then
-  suffix="$(bar "$ctx") $(cont_color "$ctx")$(printf '%.0f' "$ctx")%${RESET}"
+  ctx_seg="$(bar "$ctx") $(cont_color "$ctx")$(printf '%.0f' "$ctx")%${RESET}"
 fi
 
 # 5h rate limit: percentage + hourglass + time-to-reset, in brackets
+limit_seg=""
 if [ -n "$five" ]; then
   seg="${DIM}[${RESET}$(cont_color "$five")$(printf '%.0f' "$five")%${RESET}"
   if [ -n "$five_reset" ]; then
@@ -104,12 +154,40 @@ if [ -n "$five" ]; then
     seg="${seg} ${DIM}${icon} $(fmt_remaining "$five_reset")${RESET}"
   fi
   seg="${seg}${DIM}]${RESET}"
-  [ -n "$suffix" ] && suffix="$suffix "
-  suffix="${suffix}${seg}"
+  limit_seg="$seg"
 fi
 
-if [ -n "$suffix" ]; then
-  printf '\033[01;34m%s\033[00m %s' "$dir" "$suffix"
-else
-  printf '\033[01;34m%s\033[00m' "$dir"
+# Model name + effort. Dim throughout (no gradient color) so it never
+# competes with the saturated context/rate-limit bars elsewhere on the line
+# — the glyph's fill step alone carries the level. No effort field (model
+# doesn't support it) -> no icon, just the plain model name.
+model_seg=""
+if [ -n "$model" ]; then
+  if [ -n "$effort" ]; then
+    model_seg="${DIM}$(effort_icon "$effort") ${model}${RESET}"
+  else
+    model_seg="${DIM}${model}${RESET}"
+  fi
 fi
+
+# Split off the last path component so it can be bolded on its own,
+# with the rest of the path in regular weight.
+if [ "$dir" != "${dir%/*}" ]; then
+  dir_parent="${dir%/*}/"
+  dir_base="${dir##*/}"
+else
+  dir_parent=""
+  dir_base="$dir"
+fi
+
+# Line 1: directory (parent dim, current component bold), then the 5h rate limit
+line1="${DIRCOLOR}${dir_parent}${RESET}${DIRCOLOR_BOLD}${dir_base}${RESET}"
+[ -n "$limit_seg" ] && line1="${line1} ${limit_seg}"
+
+# Line 2: model name, then context usage gauge
+line2="$model_seg"
+if [ -n "$ctx_seg" ]; then
+  [ -n "$line2" ] && line2="${line2} ${ctx_seg}" || line2="$ctx_seg"
+fi
+
+printf '%s\n%s' "$line1" "$line2"
