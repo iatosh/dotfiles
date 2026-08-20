@@ -180,7 +180,7 @@ else
   dir_base="$dir"
 fi
 
-# Line 1: directory (parent dim, current component bold), then the 5h rate limit
+# Line 1: directory (parent normal weight, current component bold), then the 5h rate limit
 line1="${DIRCOLOR}${dir_parent}${RESET}${DIRCOLOR_BOLD}${dir_base}${RESET}"
 [ -n "$limit_seg" ] && line1="${line1} ${limit_seg}"
 
