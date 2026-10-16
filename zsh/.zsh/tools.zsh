@@ -43,8 +43,8 @@ if [[ -s "$HOME/.bun/_bun" ]]; then
     source "$HOME/.bun/_bun"
 fi
 
-if [[ -s "$HOME/.deno/env"]]; then
-  source "$HOME/.deno/env"
+if [[ -s "$HOME/.deno/env" ]]; then
+    source "$HOME/.deno/env"
 fi
 
 # ----------------------------------------------------------------------------

@@ -53,3 +53,6 @@ export PATH="$HOME/.grok/bin:$PATH"
 fpath=(~/.grok/completions/zsh $fpath)
 autoload -Uz compinit && compinit -C
 # <<< grok installer <<<
+
+# TeX Live (user-local, 2026)
+export PATH="$HOME/texlive-current/2026/bin/x86_64-linux:$PATH"

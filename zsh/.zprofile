@@ -29,4 +29,4 @@ if [[ -n "$HOMEBREW_PATH" ]]; then
 fi
 
 # Added by Obsidian
-export PATH="$PATH:/Applications/Obsidian.app/Contents/MacOS"
+# export PATH="$PATH:/Applications/Obsidian.app/Contents/MacOS"
