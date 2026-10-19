@@ -1,7 +1,6 @@
 .secrets
 .DS_Store
 misc/
-config/tmux/plugins/
 claude/.claude/*
 !claude/.claude/commands/
 !claude/.claude/modules/
