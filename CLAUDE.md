@@ -49,7 +49,7 @@ bin/macos/defaults.sh
 - **Zsh**: Zinit plugin manager + Powerlevel10k theme + modular config in `zsh/.zsh/`
 - **Neovim**: Managed as Git submodule
 - **Herdr**: Terminal workspace manager for AI coding agents (`config/herdr/`)
-- **Wezterm**: Modern terminal emulator with custom configuration
+- **Ghostty**: Terminal emulator (`config/ghostty/`, Monokai Pro theme)
 - **Git**: Global Git configuration and aliases
 
 ### Platform Support

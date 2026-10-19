@@ -15,7 +15,7 @@ My personal configuration files for macOS and Linux development environments, wi
 | Shell | Zsh + [Zinit](https://github.com/zdharma-continuum/zinit) | Modular config under `zsh/.zsh/` |
 | Prompt | [Powerlevel10k](https://github.com/romkatv/powerlevel10k) | |
 | Editor | [Neovim](https://neovim.io) | Managed as a submodule, based on Kickstart.nvim |
-| Terminal | [WezTerm](https://wezfurlong.org/wezterm/) | |
+| Terminal | [Ghostty](https://ghostty.org) | |
 | Multiplexer | herdr | Workspace manager for AI coding agents |
 | Key remapping | [Karabiner-Elements](https://karabiner-elements.pqrs.org) | macOS only |
 | Window manager | [Aerospace](https://github.com/nikitabobko/AeroSpace) | macOS only |
