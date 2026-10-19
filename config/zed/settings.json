@@ -24,6 +24,7 @@
     "dock": "left",
   },
   "git_panel": {
+    "tree_view": true,
     "dock": "left",
   },
   "buffer_font_family": "UDEV Gothic 35NFLG",
