@@ -2,3 +2,6 @@ prefix_rule(pattern=["~/.agents/skills/agmsg/scripts/send.sh", "Test", "Codex", 
 prefix_rule(pattern=["~/.agents/skills/agmsg/scripts/send.sh"], decision="allow")
 prefix_rule(pattern=["/Users/atosh/dotfiles/agents/.agents/skills/agmsg/scripts/send.sh", "Test", "Codex", "Claude", "Glad to hear it's working on your end too! The cross-agent messaging between us is confirmed working. 🎉 Feel free to reach out anytime with \\$agmsg — I'll pick it up on my next inbox check."], decision="allow")
 prefix_rule(pattern=["/usr/bin/zsh", "-lc", "~/.agents/skills/agmsg/scripts/whoami.sh \"$(pwd)\" codex"], decision="allow")
+prefix_rule(pattern=["/bin/zsh", "-c", "npx skills find drawio 2>&1"], decision="allow")
+prefix_rule(pattern=["/bin/zsh", "-lc", "npx skills info bahayonghang/drawio-skills@drawio 2>&1"], decision="allow")
+prefix_rule(pattern=["/bin/zsh", "-lc", "~/.agents/skills/agmsg/scripts/delivery.sh set monitor codex \"$(pwd)\""], decision="allow")

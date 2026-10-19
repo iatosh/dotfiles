@@ -211,12 +211,16 @@ backspace = ['close-all-windows-but-current', 'mode main']
   run = 'move-node-to-workspace D' # mnemonics D - Draw
 
 [[on-window-detected]]
-  if.app-id = 'com.github.wez.wezterm'
-  run = 'move-node-to-workspace W' # mnemonics W - WezTerm
+  if.app-id = 'com.mitchellh.ghostty'
+  run = 'move-node-to-workspace W' # mnemonics W - terminal (Ghostty)
 
 [[on-window-detected]]
   if.app-id = 'company.thebrowser.Browser'
   run = 'move-node-to-workspace B' # mnemonics B - Browser
+
+[[on-window-detected]]
+  if.app-id = 'at.studio.AsideBrowser'
+  run = 'move-node-to-workspace B'
 
 [[on-window-detected]]
   if.app-id = 'com.anthropic.claudefordesktop'

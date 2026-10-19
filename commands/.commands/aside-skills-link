@@ -1,0 +1,50 @@
+#!/bin/sh
+# Link every Aside profile's skills/user to ~/.agents/skills.
+# Existing real dirs are moved to ~/.aside/backups/ (not deleted).
+set -eu
+
+SRC="$HOME/.agents/skills"
+BACKUP="$HOME/.aside/backups"
+stamp=$(date +%Y%m%d%H%M%S)
+
+for skills in "$HOME"/.aside/u/*/skills; do
+  [ -d "$skills" ] || continue
+  profile=$(basename "$(dirname "$skills")")
+  user="$skills/user"
+
+  if [ -L "$user" ]; then
+    if [ "$(readlink "$user")" = "$SRC" ]; then
+      echo "u/$profile: already linked"
+      continue
+    fi
+    rm "$user"
+  elif [ -e "$user" ]; then
+    # Custom skills that exist only in this profile: optionally move into $SRC
+    for s in "$user"/*/; do
+      [ -d "$s" ] || continue
+      name=$(basename "$s")
+      [ -e "$SRC/$name" ] && continue
+      if gum confirm "u/$profile: keep custom skill '$name'? (move to $SRC)"; then
+        mv "$user/$name" "$SRC/$name"
+        echo "u/$profile: '$name' moved to $SRC"
+      else
+        echo "u/$profile: '$name' left in backup"
+      fi
+    done
+    mkdir -p "$BACKUP"
+    mv "$user" "$BACKUP/skills-user-u$profile-$stamp"
+    echo "u/$profile: backed up to $BACKUP/skills-user-u$profile-$stamp"
+  fi
+
+  ln -s "$SRC" "$user"
+  echo "u/$profile: linked"
+done
+
+if gum confirm "Restart Aside?"; then
+  osascript -e 'quit app "Aside"'
+  while pgrep -xq Aside; do sleep 0.5; done
+  open -a Aside
+  echo "Aside restarted"
+else
+  echo "Restart Aside later to reload skills."
+fi

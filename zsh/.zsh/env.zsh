@@ -45,6 +45,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     export PATH="$PATH:/Library/TeX/texbin/"
 fi
 
+# matlab
+export MATLAB_JAVA="/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
+
 # Language tools
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="$PATH:$HOME/.lmstudio/bin"

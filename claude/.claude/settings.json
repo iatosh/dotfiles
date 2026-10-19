@@ -51,7 +51,10 @@
   "enabledPlugins": {
     "caveman@caveman": true,
     "claude-mem@thedotmack": true,
-    "last30days@last30days-skill": true
+    "last30days@last30days-skill": true,
+    "cc-plugin-you-should-know@builtin": true,
+    "pstack@cursor-plugins": true,
+    "cloudflare@cloudflare": true
   },
   "extraKnownMarketplaces": {
     "caveman": {
@@ -71,15 +74,27 @@
         "source": "github",
         "repo": "thedotmack/claude-mem"
       }
+    },
+    "cursor-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "cursor/plugins"
+      }
+    },
+    "cloudflare": {
+      "source": {
+        "source": "github",
+        "repo": "cloudflare/skills"
+      }
     }
   },
-  "effortLevel": "medium",
+  "effortLevel": "high",
   "modelSettings": {
     "claude-opus-5": {
       "effortLevel": "high"
     },
     "qwen3.8-27b-int4-dflash2": {
-      "effortLevel": "xhigh"
+      "effortLevel": "high"
     },
     "qwen3.8-27b": {
       "effortLevel": "xhigh"
@@ -89,36 +104,13 @@
     },
     "claude-opus-5-5": {
       "effortLevel": "high"
+    },
+    "claude-sonnet-5-5": {
+      "effortLevel": "high"
     }
   },
   "tui": "fullscreen",
   "agentPushNotifEnabled": true,
-  "autoMode": {
-    "environment": [
-      "### Org-wide",
-      "**Organization**: None configured",
-      "**Cloud provider(s)**: None configured",
-      "**Repository visibility**: PUBLIC — ttlabtuat/EEG-FM-Benchmark (confirmed via gh)",
-      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
-      "**Secrets management**: None configured",
-      "**Default / protected branches**: Default branch `main`; no branch protection rules or rulesets listed (per gh) — treat `main` as unprotected but still exercise care with force-pushes",
-      "**CI/CD deploy targets**: None configured",
-      "**Network posture**: None configured",
-      "**Source control**: The trusted repo and its remote(s) only — origin github.com:ttlabtuat/EEG-FM-Benchmark.git (no additional orgs configured)",
-      "**Trusted internal domains**: None configured",
-      "**Trusted cloud buckets**: None configured",
-      "**Key internal services**: None configured",
-      "**Internal package registry**: None configured",
-      "**Sensitive data locations & audiences**: any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar. Note: repo .gitignore excludes `.env`, `.env.*`, `*.key`, and one unusual/redacted pattern, suggesting local secrets or credential files may exist in this working tree",
-      "**Data retention / declassification**: None configured",
-      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment",
-      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
-      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
-      "### User-specific",
-      "**Primary use of Claude Code**: software development (EEG foundation model benchmarking research)",
-      "**Trusted repo**: /home/atosh/Workspace/EEG-FM-Benchmark (working directory) and its remote origin github.com:ttlabtuat/EEG-FM-Benchmark.git. Repository is PUBLIC — only this repo's own work belongs there; content ported or first read from outside this session's repo is not its own work. Secrets and sensitive data are never cleared into this repo regardless of visibility",
-      "**Org-specific CLIs**: None configured",
-      "routine shell/file operations under /home/atosh/Workspace/EEG-FM-Benchmark/ are within the trusted repo scope"
-    ]
-  }
+  "advisorModel": "opus",
+  "skipWorkflowUsageWarning": true
 }

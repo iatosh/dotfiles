@@ -15,8 +15,8 @@ My personal configuration files for macOS and Linux development environments, wi
 | Shell | Zsh + [Zinit](https://github.com/zdharma-continuum/zinit) | Modular config under `zsh/.zsh/` |
 | Prompt | [Powerlevel10k](https://github.com/romkatv/powerlevel10k) | |
 | Editor | [Neovim](https://neovim.io) | Managed as a submodule, based on Kickstart.nvim |
-| Terminal | [WezTerm](https://wezfurlong.org/wezterm/) | |
-| Multiplexer | [Tmux](https://github.com/tmux/tmux) | Plugin manager via TPM |
+| Terminal | [Ghostty](https://ghostty.org) | |
+| Multiplexer | herdr | Workspace manager for AI coding agents |
 | Key remapping | [Karabiner-Elements](https://karabiner-elements.pqrs.org) | macOS only |
 | Window manager | [Aerospace](https://github.com/nikitabobko/AeroSpace) | macOS only |
 | Git UI | [Lazygit](https://github.com/jesseduffield/lazygit) | |
@@ -46,7 +46,7 @@ dotfiles/
 ├── bin/            # Utility scripts (macos/defaults.sh, …)
 ├── pkg/            # Brewfile, install.conf, update-brew.sh (mise tool list, exclusions)
 ├── claude/         # Claude Code configuration
-├── config/         # XDG configs → ~/.config/ (tmux, wezterm, zed, yazi, …)
+├── config/         # XDG configs → ~/.config/ (ghostty, herdr, zed, yazi, …)
 ├── git/            # .gitconfig
 ├── karabiner/      # Karabiner-Elements (macOS)
 ├── nvim/           # Neovim config (git submodule)
