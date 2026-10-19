@@ -1,4 +1,4 @@
-# Ghostty config — migrated from WezTerm (config/wezterm/)
+# Ghostty config — migrated from WezTerm (the old config/wezterm/ was removed; see git history)
 # Source: wezterm.lua / ui.lua / colors.lua ("pro" = Monokai Pro variant)
 
 # --- Font (ui.lua font_settings) ---

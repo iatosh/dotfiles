@@ -111,7 +111,6 @@ on_macos do
   cask "the-unarchiver"
   cask "tunnelblick"
   cask "visual-studio-code"
-  cask "wezterm"
   cask "xquartz"
   cask "yt-music"
   cask "zed"
