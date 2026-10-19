@@ -2,7 +2,7 @@
   "env": {
     "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1"
   },
-  "model": "sonnet[1m]",
+  "model": "opus",
   "hooks": {
     "SessionStart": [
       {
@@ -35,7 +35,10 @@
   "enabledPlugins": {
     "caveman@caveman": true,
     "claude-mem@thedotmack": true,
-    "last30days@last30days-skill": true
+    "last30days@last30days-skill": true,
+    "cc-plugin-you-should-know@builtin": true,
+    "pstack@cursor-plugins": true,
+    "cloudflare@cloudflare": true
   },
   "extraKnownMarketplaces": {
     "caveman": {
@@ -49,8 +52,37 @@
         "source": "github",
         "repo": "mvanhorn/last30days-skill"
       }
+    },
+    "cursor-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "cursor/plugins"
+      }
+    },
+    "cloudflare": {
+      "source": {
+        "source": "github",
+        "repo": "cloudflare/skills"
+      }
     }
   },
-  "effortLevel": "medium",
-  "tui": "fullscreen"
+  "effortLevel": "high",
+  "modelSettings": {
+    "qwen3.8-27b-int4-dflash2": {
+      "effortLevel": "high"
+    },
+    "claude-sonnet-5": {
+      "effortLevel": "high"
+    },
+    "claude-sonnet-5-5": {
+      "effortLevel": "high"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    }
+  },
+  "advisorModel": "opus",
+  "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
+  "agentPushNotifEnabled": true
 }
