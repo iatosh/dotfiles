@@ -219,6 +219,10 @@ backspace = ['close-all-windows-but-current', 'mode main']
   run = 'move-node-to-workspace B' # mnemonics B - Browser
 
 [[on-window-detected]]
+  if.app-id = 'at.studio.AsideBrowser'
+  run = 'move-node-to-workspace B'
+
+[[on-window-detected]]
   if.app-id = 'com.anthropic.claudefordesktop'
   run = 'move-node-to-workspace A' # mnemonics A - Anthropic
 
