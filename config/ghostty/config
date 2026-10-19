@@ -1,0 +1,50 @@
+# Ghostty config — migrated from WezTerm (config/wezterm/)
+# Source: wezterm.lua / ui.lua / colors.lua ("pro" = Monokai Pro variant)
+
+# --- Font (ui.lua font_settings) ---
+font-family = "JetBrainsMono Nerd Font"
+font-family = "UDEV Gothic 35NFLG"
+font-size = 14
+
+# --- Cursor (ui.lua cursor_settings) ---
+# WezTerm also set cursor_blink_rate=500 (ms) and Constant easing —
+# Ghostty has no blink-rate/easing knobs, blink timing follows OS/default.
+cursor-style = bar
+cursor-style-blink = true
+cursor-color = #fcfcfa
+cursor-text = #2d2a2e
+
+# --- Window (ui.lua window_settings) ---
+# WezTerm window_decorations="RESIZE" (no titlebar, resizable) -> closest native equivalent:
+macos-titlebar-style = hidden
+background-opacity = 0.9
+background-blur = true
+window-padding-x = 12,8
+window-padding-y = 12,0
+
+# NOTE: hide_tab_bar_if_only_one_tab / tab_bar_at_bottom / use_fancy_tab_bar have no
+# Ghostty equivalent — it uses native macOS tabs (always top, OS-drawn, no bottom option).
+
+# --- Colors: Monokai Pro "pro" variant (colors.lua) ---
+theme = Monokai Pro
+
+# --- Inactive pane dimming (colors.lua inactive_pane_hsb approximation) ---
+unfocused-split-opacity = 0.8
+
+# --- QoL ---
+copy-on-select = true
+clipboard-trim-trailing-spaces = true
+shell-integration = detect
+scrollback-limit = 10000000
+link-url = true
+link-previews = true
+window-save-state = always
+clipboard-write = allow
+# OSC 52 write許可 — nvim(SSH先)からのヤンクをローカルクリップボードへ直接反映するため
+
+# Quick Terminal: no "enable" field, the keybind itself turns it on.
+# global: prefix needs Accessibility permission (System Settings > Privacy > Accessibility)
+keybind = global:cmd+grave_accent=toggle_quick_terminal
+quick-terminal-position = bottom
+
+# Kitty graphics protocol + Kitty keyboard protocol: on by default, no config key needed.
