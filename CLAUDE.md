@@ -48,7 +48,7 @@ bin/macos/defaults.sh
 ### Configuration Modules
 - **Zsh**: Zinit plugin manager + Powerlevel10k theme + modular config in `zsh/.zsh/`
 - **Neovim**: Managed as Git submodule
-- **Tmux**: Feature-rich setup with plugins in `config/tmux/plugins/`
+- **Herdr**: Terminal workspace manager for AI coding agents (`config/herdr/`)
 - **Wezterm**: Modern terminal emulator with custom configuration
 - **Git**: Global Git configuration and aliases
 
