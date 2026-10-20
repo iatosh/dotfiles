@@ -109,8 +109,37 @@
       "effortLevel": "high"
     }
   },
-  "tui": "fullscreen",
-  "agentPushNotifEnabled": true,
   "advisorModel": "opus",
-  "skipWorkflowUsageWarning": true
+  "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
+  "agentPushNotifEnabled": true,
+  "autoMode": {
+    "environment": [
+      "### Org-wide",
+      "**Organization**: None configured",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: Public — github.com:iatosh/dotfiles.git (confirmed via gh)",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: Local file-based — sensitive data stored in ~/dotfiles/.secrets (auto-sourced by zsh/.zsh/env.zsh) and claude/.claude/.credentials.json; both are gitignored/sensitive paths, never commit or expose their contents",
+      "**Default / protected branches**: Default branch main; no rulesets or protected branches configured (gh-confirmed) — treat main as unprotected but still avoid unrequested force-pushes",
+      "**CI/CD deploy targets**: None configured",
+      "**Network posture**: None configured",
+      "**Host containment**: None configured — assume Claude Code runs on an ordinary developer machine with open internet",
+      "**Source control**: The trusted repo (iatosh/dotfiles on github.com) and its origin remote only — no additional orgs configured",
+      "**Trusted internal domains**: None configured",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: None configured",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: ~/dotfiles/.secrets and claude/.claude/.credentials.json (and any file matching agents/.agents/skills/hyperframes-keyframes/ per .gitignore) — never commit or publish; keep local-only",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries 'prod' or 'production' as a whole word or name segment",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries 'prod' or 'production' as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: personal dotfiles/development configuration management (hobby use)",
+      "**Trusted repo**: /home/atosh/dotfiles (public repo, github.com:iatosh/dotfiles.git) — since this repo is public, only this repo's own work belongs in commits/pushes here; secrets and sensitive data (e.g. .secrets, .credentials.json) are never cleared into it regardless of visibility",
+      "**Org-specific CLIs**: None configured",
+      "Routine package/install actions under this repo's pkg/ and bin/ prefixes (e.g. install.sh, pkg/update-brew.sh, bin/macos/defaults.sh) are normal project workflow, not sensitive operations"
+    ]
+  }
 }
