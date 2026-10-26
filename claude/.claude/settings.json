@@ -2,19 +2,24 @@
   "env": {
     "CLAUDE_CODE_DISABLE_AUTO_MEMORY": "1"
   },
-  "model": "sonnet",
   "modelPicker": {
     "options": [
       {
-        "model": "gemma4-31b",
-        "label": "Gemma4-31B (local)",
-        "description": "Local vLLM, gpu0 — 262144 token context",
+        "model": "qwen3.8-27b",
+        "label": "Qwen3.8-27B Twin-Turbo-L (local)",
+        "description": "Local vLLM, gpu2 — W4A16 AWQ + MTP3 — 262144 token context",
         "behavesAs": "claude-sonnet-5"
       },
       {
-        "model": "qwen3.8-27b",
-        "label": "Qwen3.8-27B (local, via router)",
-        "description": "Local vLLM, gpu2 — 262144 token context",
+        "model": "qwen3.6-35b",
+        "label": "Qwen3.6-35B MoE (local)",
+        "description": "Local vLLM, gpu0 — AWQ-INT4 MoE + MTP3 — decode 120+ tok/s — 262144 token context",
+        "behavesAs": "claude-haiku-5"
+      },
+      {
+        "model": "swift-1.5-27b",
+        "label": "Swift-1.5-27B (local)",
+        "description": "Local vLLM, gpu1 — W4A16 AWQ + MTP3 — 58.5% fewer thinking tokens — 262144 token context",
         "behavesAs": "claude-sonnet-5"
       }
     ]
@@ -33,7 +38,7 @@
     ],
     "SessionStart": [
       {
-        "matcher": "*",
+        "matcher": "^(startup|resume|clear|compact|fork)$",
         "hooks": [
           {
             "type": "command",
@@ -107,9 +112,11 @@
     },
     "claude-sonnet-5-5": {
       "effortLevel": "high"
+    },
+    "swift-1.5-27b": {
+      "effortLevel": "high"
     }
   },
-  "advisorModel": "opus",
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
   "agentPushNotifEnabled": true,

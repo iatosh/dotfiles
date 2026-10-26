@@ -220,7 +220,20 @@ ccl() {
   ANTHROPIC_DEFAULT_HAIKU_MODEL=$LOCAL_SMALL_MODEL \
   ANTHROPIC_SMALL_FAST_MODEL=$LOCAL_SMALL_MODEL \
   CLAUDE_CODE_ATTRIBUTION_HEADER=0 \
+  CLAUDE_CODE_AUTO_MODE_MODEL=$LOCAL_SMALL_MODEL \
+  CLAUDE_CODE_AUTO_MODE_SERVER=0 \
   CLAUDE_CODE_ENABLE_TELEMETRY=0 \
   CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY=1 \
   claude
+}
+
+qs() {
+  local endpoint=${2:-localhost:9998} model=${3:-qwen3.8-tturbo-l} out=$(mktemp) t0=$EPOCHREALTIME n
+  curl -sN "$endpoint/v1/chat/completions" \
+    -H "Authorization: Bearer $LLAMA_API_KEY" -H 'Content-Type: application/json' \
+    -d "$(jq -n --arg m "$model" --arg p "$1" '{model:$m,stream:true,stream_options:{include_usage:true},max_tokens:800,chat_template_kwargs:{enable_thinking:false},messages:[{role:"user",content:$p}]}')" |
+  jq --unbuffered -Rrj 'select(startswith("data: {")) | .[6:] | fromjson
+      | if (.choices|length)==0 then "\n[\(.usage.completion_tokens) tokens]" else (.choices[0].delta.content // empty) end' | tee $out
+  n=$(grep -o '\[[0-9]* tokens\]' $out | tr -dc 0-9); rm -f $out
+  printf '\n%s tokens, %.1f tok/s\n' "$n" $(( n / (EPOCHREALTIME - t0) ))
 }
