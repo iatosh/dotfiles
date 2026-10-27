@@ -1,0 +1,17 @@
+{
+  "skill_name": "issue-writer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to add a check in the finalize script that verifies all .json sidecar files have a corresponding .edf data file. It's part of the data validation work in issue #42. Write the issue for me.",
+      "expected_output": "Type: Task. Area: area:core. Priority: Medium. Body has Purpose, Done when (testable checkboxes), Out of scope, Design references. Mentions Blocked by #42 for sidebar. No dependencies in body text.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "The converter stopped on dataset ds007. It failed at the channel renaming step with 'KeyError: channel_labels'. Expected it to use the default channel naming from the EDF header. Was using Claude Code with Sonnet, skill version 1.2.1.",
+      "expected_output": "Type: Bug. Area: area:core. Body has Dataset (ds007), Work (Conversion), Client and model, Skill version (1.2.1), What happened (KeyError: channel_labels), What was expected. No data pasted, just error line quoted.",
+      "files": []
+    }
+  ]
+}

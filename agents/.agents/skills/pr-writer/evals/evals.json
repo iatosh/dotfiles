@@ -1,0 +1,23 @@
+{
+  "skill_name": "pr-writer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I fixed a bug in the validator script where warnings were missing the key name. The change is in skills/eeg-bids-converter/scripts/validate.py. Issue #41. Write the commit message, branch name, PR body, and tell me what version to bump to (currently 1.2.1).",
+      "expected_output": "Branch: issue-41-validator-warning-key. Commit: fix: name the key in validator warnings. PR body starts with 'Closes #41'. Version bump to 1.2.2 (patch). Edit both plugin.json files.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I added a new script `list-datasets.py` to the skill that shows all datasets in a BIDS directory. Issue #45. Current version is 1.3.0. What do I need to ship this?",
+      "expected_output": "Branch: issue-45-list-datasets-script. Commit: feat: add list-datasets script. PR body starts with 'Closes #45'. Version bump to 1.4.0 (minor). Edit both plugin.json files. Tag after merge.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "I updated CONTRIBUTING.md to clarify the merge policy. Issue #29. Do I need to bump the version and release?",
+      "expected_output": "Branch: issue-29-merge-policy. Commit: docs: clarify merge policy in CONTRIBUTING. PR body starts with 'Closes #29'. No version bump, no release (change is outside skills/).",
+      "files": []
+    }
+  ]
+}

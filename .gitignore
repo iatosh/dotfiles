@@ -69,4 +69,5 @@ agents/.agents/skills/yomiyasu/
 # App-managed / scratch
 agents/.agents/skills/synced/
 agents/.agents/skills/.trash/
+agents/.agents/skills/*-workspace/
 .claude/settings.local.json
